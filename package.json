@@ -1,16 +1,40 @@
 {
   "name": "be-bound",
   "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
+  "keywords": [
+    "web-components",
+    "web-component",
+    "custom-element",
+    "custom-elements"
+  ],
+  "description": "be-bound is an attribute-based decorator/behavior that provides limited 'two-way binding' support.",
+  "main": "be-bound.js",
+  "module": "be-bound.js",
+  "type": "module",
+  "exports": {
+    ".": "./index.js",
+    "./be-bound.js": "./be-bound.js"
+  },
+  "files": [
+    "*.*"
+  ],
+  "types": "types.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "be-decorated": "0.0.125",
+    "be-hive": "0.0.48"
+  },
+  "devDependencies": {
+    "may-it-serve": "0.0.1",
+    "@skypack/package-check": "0.2.2"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bahrus/be-bound.git"
   },
-  "author": "",
+  "author": "Bruce B. Anderson <anderson.bruce.b@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/bahrus/be-bound/issues"
