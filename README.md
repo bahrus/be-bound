@@ -1,4 +1,4 @@
-# be-bound
+# be-bound [TODO]
 
 be-bound is an attribute-based decorator/behavior that provides limited "two-way binding" support. 
 
@@ -7,7 +7,9 @@ be-bound is an attribute-based decorator/behavior that provides limited "two-way
     #shadow
         ...
         <my-child-element be-bound='{
-            "myChildElementProp": "myHostElementProp"
+            "props":[
+                ["myChildElementProp", "myHostElementProp"]
+            ]
         }'>
             ...
         </my-child-element>
@@ -27,4 +29,28 @@ Limitations:
 ## Tie Breaking
 
 
-In the case that the initial values both exist at point of contact, the user can specify which value trumps the other by adding a ! to the end of the property name.
+In the case that the initial values both exist at point of contact (due for example to differing default values), by default the tie-breaker goes to the host, but the user can specify which value trumps the other.
+
+## Options
+
+Each binding can have a third element of the array that allows for fine-tuning the binding.
+
+<table>
+<thead>
+<tr>
+    <th>Name</th>
+    <th>Description</th>
+</tr>
+</thead>
+<tbody>
+    <tr>
+        <td>localValueTrumps</td>
+        <td>If initial values don't match, make the local one trump.</td>
+    </tr>
+    <tr>
+        <td>noClone</td>
+        <td>Just pass the object reference without cloning the objects.</td>
+    </tr>
+</tbody>
+</table>
+
