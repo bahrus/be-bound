@@ -20,11 +20,10 @@ So basically, this keeps the two props in sync.
 
 Limitations:
 
-1.  Binding is 100% equal -- no computed binding, just direct copy (after cloning in the case of objects).  [TODO]
-2.  No sub property support
-3.  In case of objects, clone is made first.  Timestamps used to determine the latest version. [TODO]
-4.  If the two values are equal (or timestamps match in case of objects), no action is taken. [TODO]
-5.  The two properties must be class properties with setters and getters, either defined explicitly, or dynamically via Object.defineProperty.  Exception is input element for child.
+1.  Binding is 100% equal -- no computed binding, just direct copy of primitives.
+2.  No object support yet [TODO]
+3.  If the two values are equal (or timestamps match in case of objects), no action is taken. 
+4.  The two properties must be class properties with setters and getters, either defined explicitly, or dynamically via Object.defineProperty.  Exception is input element for child.
 
 ## Tie Breaking
 
@@ -33,7 +32,7 @@ In the case that the initial values both exist at point of contact (due for exam
 
 ## Options
 
-Each binding can have a third element of the array that allows for fine-tuning the binding. [TODO]
+Each binding can have a third element of the array that allows for fine-tuning the binding. 
 
 <table>
 <thead>
@@ -49,7 +48,7 @@ Each binding can have a third element of the array that allows for fine-tuning t
     </tr>
     <tr>
         <td>noClone</td>
-        <td>Just pass the object reference without cloning the objects.</td>
+        <td>Just pass the object reference without cloning the objects. [TODO]</td>
     </tr>
 </tbody>
 </table>
