@@ -20,15 +20,25 @@ export class BoundInstance {
         subscribe(host, hostProp, this.updateChild);
         this.init(this);
     }
-    async init({ host, hostProp, child, childProp }) {
+    async init({ host, hostProp, child, childProp, options }) {
         if (tooSoon(host)) {
             await customElements.whenDefined(host.localName);
         }
-        if (host[hostProp]) {
-            this.updateChild();
+        if (options === undefined || !options.localValueTrumps) {
+            if (host[hostProp]) {
+                this.updateChild();
+            }
+            else if (child[childProp]) {
+                this.updateHost();
+            }
         }
-        else if (child[childProp]) {
-            this.updateHost();
+        else {
+            if (child[childProp]) {
+                this.updateHost();
+            }
+            else if (host[hostProp]) {
+                this.updateChild();
+            }
         }
     }
     updateHost = () => {

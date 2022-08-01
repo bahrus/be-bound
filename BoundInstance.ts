@@ -13,15 +13,24 @@ export class BoundInstance{
         this.init(this);
     }
 
-    async init({host, hostProp, child, childProp}: this){
+    async init({host, hostProp, child, childProp, options}: this){
         if(tooSoon(host)){
             await customElements.whenDefined(host.localName);
         }
-        if((host as any)[hostProp]){
-            this.updateChild();
-        }else if((child as any)[childProp]){
-            this.updateHost();
+        if(options === undefined || !options.localValueTrumps){
+            if((host as any)[hostProp]){
+                this.updateChild();
+            }else if((child as any)[childProp]){
+                this.updateHost();
+            }
+        }else{
+            if((child as any)[childProp]){
+                this.updateHost();
+            }else if((host as any)[hostProp]){
+                this.updateChild();
+            }
         }
+
     }
 
     updateHost = () => {
