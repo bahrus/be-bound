@@ -25,12 +25,16 @@ export class BoundInstance{
     }
 
     updateHost = () => {
-        console.log('updateHost');
+        const currentHostVal = (this.host  as any)[this.hostProp];
+        const currentChildVal = (this.child as any)[this.childProp];
+        if(currentChildVal === currentHostVal) return;
         (this.host  as any)[this.hostProp] = (this.child as any)[this.childProp];
     }
 
     updateChild = () => {
-        console.log('updateChild');
+        const currentHostVal = (this.host  as any)[this.hostProp];
+        const currentChildVal = (this.child as any)[this.childProp];
+        if(currentChildVal === currentHostVal) return;
         (this.child as any)[this.childProp] = (this.host as any)[this.hostProp];
     }
 }
