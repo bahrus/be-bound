@@ -18,6 +18,12 @@ export class BoundInstance {
             subscribe(child, childProp, this.updateHost);
         }
         subscribe(host, hostProp, this.updateChild);
+        this.init(this);
+    }
+    async init({ host, hostProp, child, childProp }) {
+        if (tooSoon(host)) {
+            await customElements.whenDefined(host.localName);
+        }
         if (host[hostProp]) {
             this.updateChild();
         }
@@ -33,4 +39,7 @@ export class BoundInstance {
         console.log('updateChild');
         this.child[this.childProp] = this.host[this.hostProp];
     };
+}
+export function tooSoon(element) {
+    return element.localName.includes('-') && customElements.get(element.localName) === undefined;
 }
