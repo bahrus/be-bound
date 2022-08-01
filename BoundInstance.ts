@@ -34,20 +34,50 @@ export class BoundInstance{
     }
 
     updateHost = () => {
-        const currentHostVal = (this.host  as any)[this.hostProp];
         const currentChildVal = (this.child as any)[this.childProp];
+        if(typeof currentChildVal === 'object'){
+            if(currentChildVal[childUpdateInProgress]){
+                currentChildVal[childUpdateInProgress] = false;
+                return;
+            }
+        }
+        const currentHostVal = (this.host  as any)[this.hostProp];
+        
         if(currentChildVal === currentHostVal) return;
-        (this.host  as any)[this.hostProp] = (this.child as any)[this.childProp];
+        if(typeof currentChildVal === 'object'){
+            const clone = this.options?.noClone ? currentChildVal : structuredClone(currentChildVal);
+            clone[hostUpdateInProgress] = true;
+            (this.host as any)[this.hostProp] = clone;
+        }else{
+            (this.host as any)[this.hostProp] = (this.child as any)[this.childProp];
+        }
+       
     }
 
     updateChild = () => {
         const currentHostVal = (this.host  as any)[this.hostProp];
+        if(typeof currentHostVal === 'object'){
+            if(currentHostVal[hostUpdateInProgress]){
+                currentHostVal[hostUpdateInProgress] = false;
+                return;
+            }
+        }
         const currentChildVal = (this.child as any)[this.childProp];
         if(currentChildVal === currentHostVal) return;
-        (this.child as any)[this.childProp] = (this.host as any)[this.hostProp];
+        if(typeof currentHostVal === 'object'){
+            const clone = this.options?.noClone ? currentHostVal : structuredClone(currentHostVal);
+            clone[childUpdateInProgress] = true;
+            (this.child as any)[this.childProp] = clone;
+        }else{
+            (this.child as any)[this.childProp] = currentHostVal;
+        }
+        
     }
 }
 
 export function tooSoon(element: Element){
     return element.localName.includes('-') && customElements.get(element.localName) === undefined;
 }
+
+const hostUpdateInProgress = Symbol();
+const childUpdateInProgress = Symbol();
