@@ -7,7 +7,7 @@ be-bound is an attribute-based decorator/behavior that provides limited "two-way
     #shadow
         ...
         <my-child-element be-bound='{
-            "props":[
+            "propBindings":[
                 ["myChildElementProp", "myHostElementProp"]
             ]
         }'>

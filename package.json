@@ -20,11 +20,13 @@
   ],
   "types": "types.d.ts",
   "scripts": {
+    "serve": "node node_modules/may-it-serve",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "be-decorated": "0.0.125",
-    "be-hive": "0.0.48"
+    "be-hive": "0.0.48",
+    "trans-render": "0.0.538"
   },
   "devDependencies": {
     "may-it-serve": "0.0.1",

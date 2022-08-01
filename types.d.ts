@@ -1,7 +1,7 @@
 import {BeDecoratedProps} from 'be-decorated/types';
 
 export interface BeBoundVirtualProps{
-    props: BindingPair[];
+    propBindings: BindingPair[];
 
 }
 
@@ -10,7 +10,7 @@ export interface BeBoundProps extends BeBoundVirtualProps{
 }
 
 export interface BeBoundActions {
-    
+    onProps(self: this): void;
 }
 
 export type BindingPair = [childProp: string, hostProp: string, options?: BindingOptions];

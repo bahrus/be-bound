@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <hello-world  be-definitive='{
+        "config":{
+          "tagName":"hello-world",
+          "propDefaults":{
+            "place": "Venus",
+            "transform":{
+              "span": "place"
+            }
+          }
+        }
+      
+      }'>
+        <template shadowroot='open'>
+            <div>Hello, <span>world</span></div>
+            <input be-bound='{
+                "propBindings":[
+                    ["value", "place"]
+                ] 
+            }'>
+            <be-hive></be-hive>
+        </template>
+
+    </hello-world>
+      <hello-world place=Mars></hello-world>
+      <script type=importmap>
+        {
+            "imports": {
+                "trans-render/": "../node_modules/trans-render/",
+                "xtal-element/": "../node_modules/xtal-element/",
+                "be-decorated/": "../node_modules/be-decorated/",
+                "be-hive/": "../node_modules/be-hive/"
+            }
+        }
+        </script>
+    <script type='module'>
+        import 'https://esm.run/be-definitive@0.0.55';
+        import '../be-bound.js';
+    </script>
+</body>
+</html>
