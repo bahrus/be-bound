@@ -24,7 +24,7 @@ Limitations:
 2.  No sub property support
 3.  In case of objects, clone is made first.  Timestamps used to determine the latest version.
 4.  If the two values are equal (or timestamps match in case of objects), no action is taken.
-5.  The two properties must be class properties with setters and getters, either defined explicitly, or dynamically via Object.defineProperty.
+5.  The two properties must be class properties with setters and getters, either defined explicitly, or dynamically via Object.defineProperty.  Exception is input element for child.
 
 ## Tie Breaking
 

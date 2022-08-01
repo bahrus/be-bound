@@ -18,6 +18,12 @@ export class BoundInstance {
             subscribe(child, childProp, this.updateHost);
         }
         subscribe(host, hostProp, this.updateChild);
+        if (host[hostProp]) {
+            this.updateChild();
+        }
+        else if (child[childProp]) {
+            this.updateHost();
+        }
     }
     updateHost = () => {
         console.log('updateHost');

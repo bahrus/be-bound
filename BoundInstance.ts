@@ -9,8 +9,12 @@ export class BoundInstance{
         }else{
             subscribe(child, childProp, this.updateHost);
         }
-            
         subscribe(host, hostProp, this.updateChild);
+        if((host as any)[hostProp]){
+            this.updateChild();
+        }else if((child as any)[childProp]){
+            this.updateHost();
+        }
     }
 
     updateHost = () => {
