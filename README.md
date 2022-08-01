@@ -21,14 +21,13 @@ So basically, this keeps the two props in sync.
 Limitations:
 
 1.  Binding is 100% equal -- no computed binding, just direct copy of primitives.
-2.  Object support is there also [Untested]
+2.  Object support is there also, with special logic to avoid infinite loops.  A guid key is assigned to the object to avoid this calamity [Untested].
 3.  If the two values are equal, no action is taken. 
 4.  The two properties must be class properties with setters and getters, either defined explicitly, or dynamically via Object.defineProperty.  Exception is input element for child.
 
 ## Tie Breaking
 
-
-In the case that the initial values both exist at point of contact (due for example to differing default values), by default the tie-breaker goes to the host, but the user can specify which value trumps the other.
+In the case that the initial values both exist at point of contact (due for example to differing default values), by default the tie-breaker goes to the host, but the user can swap the tie-breaker.
 
 ## Options
 

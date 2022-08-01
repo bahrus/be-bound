@@ -19,3 +19,9 @@ export interface BindingOptions{
     localValueTrumps: boolean;
     noClone: boolean;
 }
+
+export type HostSubscriptionMap = {[key: string]: HostSubscriptionStatus}
+
+export interface HostSubscriptionStatus {
+    inProgress: boolean,
+}

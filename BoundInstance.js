@@ -5,12 +5,14 @@ export class BoundInstance {
     child;
     host;
     options;
+    #guid;
     constructor(childProp, hostProp, child, host, options) {
         this.childProp = childProp;
         this.hostProp = hostProp;
         this.child = child;
         this.host = host;
         this.options = options;
+        this.#guid = crypto.randomUUID();
         if (child.localName === 'input' && childProp === 'value') {
             child.addEventListener('input', this.updateHost);
         }
@@ -44,8 +46,8 @@ export class BoundInstance {
     updateHost = () => {
         const currentChildVal = this.child[this.childProp];
         if (typeof currentChildVal === 'object') {
-            if (currentChildVal[childUpdateInProgress]) {
-                currentChildVal[childUpdateInProgress] = false;
+            if (currentChildVal[childUpdateInProgressKey]) {
+                currentChildVal[childUpdateInProgressKey] = false;
                 return;
             }
         }
@@ -54,7 +56,12 @@ export class BoundInstance {
             return;
         if (typeof currentChildVal === 'object') {
             const clone = this.options?.noClone ? currentChildVal : structuredClone(currentChildVal);
-            clone[hostUpdateInProgress] = true;
+            let updateSubscriptions = clone[hostUpdateInProgressKey];
+            if (updateSubscriptions === undefined) {
+                updateSubscriptions = {};
+                clone[hostUpdateInProgressKey] = updateSubscriptions;
+            }
+            clone[hostUpdateInProgressKey] = true;
             this.host[this.hostProp] = clone;
         }
         else {
@@ -64,9 +71,13 @@ export class BoundInstance {
     updateChild = () => {
         const currentHostVal = this.host[this.hostProp];
         if (typeof currentHostVal === 'object') {
-            if (currentHostVal[hostUpdateInProgress]) {
-                currentHostVal[hostUpdateInProgress] = false;
-                return;
+            const updateSubscriptions = currentHostVal[hostUpdateInProgressKey];
+            if (updateSubscriptions) {
+                const localSubscription = updateSubscriptions[this.#guid];
+                if (localSubscription !== undefined && localSubscription.inProgress) {
+                    localSubscription.inProgress = false;
+                    return;
+                }
             }
         }
         const currentChildVal = this.child[this.childProp];
@@ -74,7 +85,7 @@ export class BoundInstance {
             return;
         if (typeof currentHostVal === 'object') {
             const clone = this.options?.noClone ? currentHostVal : structuredClone(currentHostVal);
-            clone[childUpdateInProgress] = true;
+            clone[childUpdateInProgressKey] = true;
             this.child[this.childProp] = clone;
         }
         else {
@@ -85,5 +96,5 @@ export class BoundInstance {
 export function tooSoon(element) {
     return element.localName.includes('-') && customElements.get(element.localName) === undefined;
 }
-const hostUpdateInProgress = Symbol();
-const childUpdateInProgress = Symbol();
+const hostUpdateInProgressKey = 'cAof77nfME6DYaPacjXvbA==';
+const childUpdateInProgressKey = Symbol();
