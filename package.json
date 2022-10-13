@@ -24,12 +24,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "be-decorated": "0.0.157",
-    "be-hive": "0.0.65",
-    "trans-render": "0.0.603"
+    "be-decorated": "0.0.171",
+    "be-hive": "0.0.73",
+    "trans-render": "0.0.625"
   },
   "devDependencies": {
-    "may-it-serve": "0.0.1",
+    "may-it-serve": "0.0.3",
     "@skypack/package-check": "0.2.2"
   },
   "repository": {
