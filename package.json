@@ -24,9 +24,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "be-decorated": "0.0.171",
-    "be-hive": "0.0.73",
-    "trans-render": "0.0.625"
+    "be-decorated": "0.0.182",
+    "be-hive": "0.0.76",
+    "trans-render": "0.0.628"
   },
   "devDependencies": {
     "may-it-serve": "0.0.3",

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type=importmap>
+        {
+            "imports": {
+                "trans-render/": "../node_modules/trans-render/",
+                "xtal-element/": "../node_modules/xtal-element/",
+                "be-decorated/": "../node_modules/be-decorated/",
+                "be-hive/":  "../node_modules/be-hive/"
+            }
+        }
+    </script>
+    <div id='target'></div>
+    <script type=module>
+        import '../be-exportable.js'
+    </script>
+    <script nomodule src="./test.js" be-exportable></script>
+    <script>
+        function runScript(){
+            const scr = document.querySelector('script[nomodule]');
+            if(scr._modExport.hello === 'world'){
+                target.setAttribute('mark', 'good');
+            }
+           
+        }
+        setTimeout(() => {
+           runScript();
+       }, 4000);
+   </script>
+</body>
+</html>
