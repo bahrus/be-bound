@@ -10,7 +10,6 @@
   "description": "be-bound is an attribute-based decorator/behavior that provides limited 'two-way binding' support.",
   "main": "be-bound.js",
   "module": "be-bound.js",
-  "type": "module",
   "exports": {
     ".": "./index.js",
     "./be-bound.js": "./be-bound.js"
@@ -21,7 +20,7 @@
   "types": "types.d.ts",
   "scripts": {
     "serve": "node node_modules/may-it-serve",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "playwright test"
   },
   "dependencies": {
     "be-decorated": "0.0.182",
@@ -30,6 +29,7 @@
   },
   "devDependencies": {
     "may-it-serve": "0.0.3",
+    "@playwright/test": "1.27.1",
     "@skypack/package-check": "0.2.2"
   },
   "repository": {
