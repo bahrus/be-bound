@@ -13,7 +13,7 @@ export class BoundInstance {
         this.host = host;
         this.options = options;
         this.#guid = crypto.randomUUID();
-        if (child.localName === 'input' && childProp === 'value') {
+        if (child.localName === 'input') {
             child.addEventListener('input', this.updateHost);
         }
         else {

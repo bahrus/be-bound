@@ -2,11 +2,11 @@ import { define } from 'be-decorated/DE.js';
 import { register } from 'be-hive/register.js';
 import { BoundInstance } from './BoundInstance.js';
 export class BeBound {
-    onProps({ propBindings, proxy }) {
-        const host = proxy.getRootNode().host;
+    onProps({ propBindings, proxy, self }) {
+        const host = self.getRootNode().host;
         for (const propBinding of propBindings) {
             const [childProp, hostProp, options] = propBinding;
-            const bi = new BoundInstance(childProp, hostProp, proxy, host, options);
+            const bi = new BoundInstance(childProp, hostProp, self, host, options);
         }
     }
 }

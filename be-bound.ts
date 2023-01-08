@@ -5,11 +5,11 @@ import {BoundInstance} from './BoundInstance.js';
 
 
 export class BeBound implements Actions{
-    onProps({propBindings, proxy}: PP): void {
-        const host = (proxy.getRootNode() as any).host as Element;
+    onProps({propBindings, proxy, self}: PP): void {
+        const host = (self.getRootNode() as any).host as Element;
         for(const propBinding of propBindings!){
             const [childProp, hostProp, options] = propBinding;
-            const bi = new BoundInstance(childProp, hostProp, proxy, host, options);
+            const bi = new BoundInstance(childProp, hostProp, self, host, options);
             
         }
         

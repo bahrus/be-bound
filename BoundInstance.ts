@@ -7,7 +7,7 @@ export class BoundInstance{
 
     constructor(public childProp: string, public hostProp: string, public child: Element, public host: Element, public options: BindingOptions | undefined){
         this.#guid = crypto.randomUUID();
-        if(child.localName === 'input' && childProp === 'value'){
+        if(child.localName === 'input'){
             child.addEventListener('input', this.updateHost);
         }else{
             subscribe(child, childProp, this.updateHost);
