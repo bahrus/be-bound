@@ -20,12 +20,13 @@
   "types": "types.d.ts",
   "scripts": {
     "serve": "node node_modules/may-it-serve",
-    "test": "playwright test"
+    "test": "playwright test",
+    "safari": "npx playwright wk http://localhost:3030"
   },
   "dependencies": {
-    "be-decorated": "0.0.218",
+    "be-decorated": "0.0.219",
     "be-hive": "0.0.79",
-    "trans-render": "0.0.658"
+    "trans-render": "0.0.660"
   },
   "devDependencies": {
     "may-it-serve": "0.0.4",
