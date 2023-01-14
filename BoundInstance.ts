@@ -21,7 +21,9 @@ export class BoundInstance{
                     self.updateHost(self);
                 } );
         }
-        subscribe(host, hostProp, this.updateChild);
+        subscribe(host, hostProp, () => {
+            self.updateChild(self);
+        });
         this.init(this);
     }
 
@@ -32,7 +34,7 @@ export class BoundInstance{
         }
         if(options === undefined || !options.localValueTrumps){
             if((host as any)[hostProp]){
-                self.updateChild();
+                await self.updateChild(self);
             }else if((child as any)[childProp]){
                 await this.updateHost(self);
             }
@@ -40,7 +42,7 @@ export class BoundInstance{
             if((child as any)[childProp]){
                 await self.updateHost(self);
             }else if((host as any)[hostProp]){
-                await self.updateChild();
+                await self.updateChild(self);
             }
         }
 
@@ -81,26 +83,41 @@ export class BoundInstance{
        
     }
 
-    updateChild = () => {
-        const currentHostVal = (this.host  as any)[this.hostProp];
+    async updateChild(self: this){
+        const {host, hostProp} = self;
+        const currentHostVal = (host  as any)[hostProp];
         if(typeof currentHostVal === 'object'){
             const updateSubscriptions = currentHostVal[hostUpdateInProgressKey];
             if(updateSubscriptions){
-                const localSubscription = updateSubscriptions[this.#guid] as HostSubscriptionStatus;
+                const localSubscription = updateSubscriptions[self.#guid] as HostSubscriptionStatus;
                 if(localSubscription !== undefined && localSubscription.inProgress){
                     localSubscription.inProgress = false;
                     return;
                 }
             }
         }
-        const currentChildVal = (this.child as any)[this.childProp];
-        if(currentChildVal === currentHostVal) return;
-        if(typeof currentHostVal === 'object'){
-            const clone = this.options?.noClone ? currentHostVal : structuredClone(currentHostVal);
-            clone[childUpdateInProgressKey] = true;
-            (this.child as any)[this.childProp] = clone;
+        const {child, childProp, options} = self;
+        let currentChildVal: any;
+        if(childProp[0] === '.'){
+            const {getVal} = await import('trans-render/lib/getVal.js');
+            currentChildVal = await getVal({host: child}, childProp);
         }else{
-            (this.child as any)[this.childProp] = currentHostVal;
+            currentChildVal =  (child as any)[childProp];
+        }
+        if(currentChildVal === currentHostVal) return;
+        let newVal: any;
+        if(typeof currentHostVal === 'object'){
+            const clone = options?.noClone ? currentHostVal : structuredClone(currentHostVal);
+            clone[childUpdateInProgressKey] = true;
+            newVal = clone;
+        }else{
+            newVal = currentHostVal;
+        }
+        if(childProp[0] === '.'){
+            const {setProp} = await import('trans-render/lib/setProp.js');
+            setProp(child, childProp, newVal);
+        }else{
+            (child as any)[childProp] = newVal;
         }
         
     }

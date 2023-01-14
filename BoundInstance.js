@@ -27,7 +27,9 @@ export class BoundInstance {
                     self.updateHost(self);
                 });
         }
-        subscribe(host, hostProp, this.updateChild);
+        subscribe(host, hostProp, () => {
+            self.updateChild(self);
+        });
         this.init(this);
     }
     async init(self) {
@@ -37,7 +39,7 @@ export class BoundInstance {
         }
         if (options === undefined || !options.localValueTrumps) {
             if (host[hostProp]) {
-                self.updateChild();
+                await self.updateChild(self);
             }
             else if (child[childProp]) {
                 await this.updateHost(self);
@@ -48,7 +50,7 @@ export class BoundInstance {
                 await self.updateHost(self);
             }
             else if (host[hostProp]) {
-                await self.updateChild();
+                await self.updateChild(self);
             }
         }
     }
@@ -86,30 +88,47 @@ export class BoundInstance {
             this.host[this.hostProp] = currentChildVal;
         }
     }
-    updateChild = () => {
-        const currentHostVal = this.host[this.hostProp];
+    async updateChild(self) {
+        const { host, hostProp } = self;
+        const currentHostVal = host[hostProp];
         if (typeof currentHostVal === 'object') {
             const updateSubscriptions = currentHostVal[hostUpdateInProgressKey];
             if (updateSubscriptions) {
-                const localSubscription = updateSubscriptions[this.#guid];
+                const localSubscription = updateSubscriptions[self.#guid];
                 if (localSubscription !== undefined && localSubscription.inProgress) {
                     localSubscription.inProgress = false;
                     return;
                 }
             }
         }
-        const currentChildVal = this.child[this.childProp];
-        if (currentChildVal === currentHostVal)
-            return;
-        if (typeof currentHostVal === 'object') {
-            const clone = this.options?.noClone ? currentHostVal : structuredClone(currentHostVal);
-            clone[childUpdateInProgressKey] = true;
-            this.child[this.childProp] = clone;
+        const { child, childProp, options } = self;
+        let currentChildVal;
+        if (childProp[0] === '.') {
+            const { getVal } = await import('trans-render/lib/getVal.js');
+            currentChildVal = await getVal({ host: child }, childProp);
         }
         else {
-            this.child[this.childProp] = currentHostVal;
+            currentChildVal = child[childProp];
         }
-    };
+        if (currentChildVal === currentHostVal)
+            return;
+        let newVal;
+        if (typeof currentHostVal === 'object') {
+            const clone = options?.noClone ? currentHostVal : structuredClone(currentHostVal);
+            clone[childUpdateInProgressKey] = true;
+            newVal = clone;
+        }
+        else {
+            newVal = currentHostVal;
+        }
+        if (childProp[0] === '.') {
+            const { setProp } = await import('trans-render/lib/setProp.js');
+            setProp(child, childProp, newVal);
+        }
+        else {
+            child[childProp] = newVal;
+        }
+    }
 }
 export function tooSoon(element) {
     return element.localName.includes('-') && customElements.get(element.localName) === undefined;
