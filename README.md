@@ -28,12 +28,13 @@ So basically, this keeps the two props in sync.
 
 Limitations:
 
-1.  Binding is 100% equal -- no computed binding, just direct copy of primitives.
+1.  Binding is 100% equal -- no computed binding, just direct copy of primitives, with the following exceptions:
+    1.  If one of the properties is a string and the other numeric, toString and Number() are used during the binding [TODO]
 2.  Object support is there also, with special logic to avoid infinite loops.  A guid key is assigned to the object to avoid this calamity.
 3.  If the two values are equal, no action is taken. 
 4.  The two properties must be class properties with setters and getters, either defined explicitly, or dynamically via Object.defineProperty.  Exceptions are if the child is a(n):
     1.  input element.
-    2.  form element.
+    2.  form element. [TODO]
 
 The exceptions -- (4.1, 4.2, event handler "input" is used)
 
