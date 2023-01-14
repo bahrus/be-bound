@@ -13,11 +13,14 @@ export class BoundInstance {
         this.host = host;
         this.options = options;
         this.#guid = crypto.randomUUID();
-        if (child.localName === 'input') {
-            child.addEventListener('input', this.updateHost);
-        }
-        else {
-            subscribe(child, childProp, this.updateHost);
+        const { localName } = child;
+        switch (localName) {
+            case 'input':
+            case 'form':
+                child.addEventListener('input', this.updateHost);
+                break;
+            default:
+                subscribe(child, childProp, this.updateHost);
         }
         subscribe(host, hostProp, this.updateChild);
         this.init(this);
