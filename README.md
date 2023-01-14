@@ -33,14 +33,17 @@ Limitations:
 3.  If the two values are equal, no action is taken. 
 4.  The two properties must be class properties with setters and getters, either defined explicitly, or dynamically via Object.defineProperty.  Exceptions are if the child is a(n):
     1.  input element.
-    2.  form element. [TODO]
+    2.  form element.
 
 The exceptions -- (4.1, 4.2, event handler "input" is used)
+
+
 
 ## Real world examples
 
 [scratch-box](https://github.com/bahrus/scratch-box/blob/baseline/make.ts#L18)
 
+The child element prop key can also point to a subpath, if it starts with a ".".  This is demonstrated [here](https://github.com/bahrus/co-depends/blob/master/animated-star-rating/make.ts#L50)
 
 
 ## Tie Breaking
