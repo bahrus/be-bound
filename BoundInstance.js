@@ -14,47 +14,62 @@ export class BoundInstance {
         this.options = options;
         this.#guid = crypto.randomUUID();
         const { localName } = child;
+        const self = this;
         switch (localName) {
             case 'input':
             case 'form':
-                child.addEventListener('input', this.updateHost);
+                child.addEventListener('input', e => {
+                    this.updateHost(self);
+                });
                 break;
             default:
-                subscribe(child, childProp, this.updateHost);
+                subscribe(child, childProp, () => {
+                    self.updateHost(self);
+                });
         }
         subscribe(host, hostProp, this.updateChild);
         this.init(this);
     }
-    async init({ host, hostProp, child, childProp, options }) {
+    async init(self) {
+        const { host, hostProp, child, childProp, options } = self;
         if (tooSoon(host)) {
             await customElements.whenDefined(host.localName);
         }
         if (options === undefined || !options.localValueTrumps) {
             if (host[hostProp]) {
-                this.updateChild();
+                self.updateChild();
             }
             else if (child[childProp]) {
-                this.updateHost();
+                await this.updateHost(self);
             }
         }
         else {
             if (child[childProp]) {
-                this.updateHost();
+                await self.updateHost(self);
             }
             else if (host[hostProp]) {
-                this.updateChild();
+                await self.updateChild();
             }
         }
     }
-    updateHost = () => {
-        const currentChildVal = this.child[this.childProp];
+    async updateHost(self) {
+        const { childProp, child } = self;
+        let currentChildVal;
+        if (childProp[0] === '.') {
+            const { getVal } = await import('trans-render/lib/getVal.js');
+            currentChildVal = await getVal({ host: child }, childProp);
+        }
+        else {
+            currentChildVal = child[childProp];
+        }
         if (typeof currentChildVal === 'object') {
             if (currentChildVal[childUpdateInProgressKey]) {
                 currentChildVal[childUpdateInProgressKey] = false;
                 return;
             }
         }
-        const currentHostVal = this.host[this.hostProp];
+        const { host } = self;
+        const currentHostVal = host[this.hostProp];
         if (currentChildVal === currentHostVal)
             return;
         if (typeof currentChildVal === 'object') {
@@ -68,9 +83,9 @@ export class BoundInstance {
             this.host[this.hostProp] = clone;
         }
         else {
-            this.host[this.hostProp] = this.child[this.childProp];
+            this.host[this.hostProp] = currentChildVal;
         }
-    };
+    }
     updateChild = () => {
         const currentHostVal = this.host[this.hostProp];
         if (typeof currentHostVal === 'object') {
