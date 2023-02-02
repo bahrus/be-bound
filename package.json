@@ -24,13 +24,13 @@
     "safari": "npx playwright wk http://localhost:3030"
   },
   "dependencies": {
-    "be-decorated": "0.0.220",
+    "be-decorated": "0.0.222",
     "be-hive": "0.0.79",
-    "trans-render": "0.0.661"
+    "trans-render": "0.0.664"
   },
   "devDependencies": {
     "may-it-serve": "0.0.4",
-    "@playwright/test": "1.29.2",
+    "@playwright/test": "1.30.0",
     "@skypack/package-check": "0.2.2"
   },
   "repository": {

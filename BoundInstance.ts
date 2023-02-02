@@ -5,7 +5,7 @@ export class BoundInstance{
 
     #guid!: string;
 
-    constructor(public childProp: string, public hostProp: string, public child: Element, public host: Element, public options: BindingOptions | undefined){
+    constructor(public childProp: string, public hostProp: string, public child: Element, public host: EventTarget, public options: BindingOptions | undefined){
         this.#guid = crypto.randomUUID();
         const {localName} = child;
         const self = this;
@@ -30,7 +30,7 @@ export class BoundInstance{
     async init(self: this){
         const {host, hostProp, child, childProp, options} = self;
         if(tooSoon(host)){
-            await customElements.whenDefined(host.localName);
+            await customElements.whenDefined((host as Element).localName);
         }
         if(options === undefined || !options.localValueTrumps){
             if((host as any)[hostProp]){
@@ -123,7 +123,8 @@ export class BoundInstance{
     }
 }
 
-export function tooSoon(element: Element){
+export function tooSoon(element: EventTarget){
+    if(!(element instanceof Element)) return false;
     return element.localName.includes('-') && customElements.get(element.localName) === undefined;
 }
 

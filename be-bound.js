@@ -1,9 +1,12 @@
 import { define } from 'be-decorated/DE.js';
 import { register } from 'be-hive/register.js';
-import { BoundInstance } from './BoundInstance.js';
 export class BeBound {
-    onProps({ propBindings, proxy, self }) {
-        const host = self.getRootNode().host;
+    async onProps({ propBindings, proxy, self }) {
+        const { getHost } = await import('trans-render/lib/getHost.js');
+        const host = getHost(self);
+        if (host === null)
+            throw '404';
+        const { BoundInstance } = await import('./BoundInstance.js');
         for (const propBinding of propBindings) {
             const [childProp, hostProp, options] = propBinding;
             const bi = new BoundInstance(childProp, hostProp, self, host, options);

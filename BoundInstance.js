@@ -131,6 +131,8 @@ export class BoundInstance {
     }
 }
 export function tooSoon(element) {
+    if (!(element instanceof Element))
+        return false;
     return element.localName.includes('-') && customElements.get(element.localName) === undefined;
 }
 const hostUpdateInProgressKey = 'cAof77nfME6DYaPacjXvbA==';
