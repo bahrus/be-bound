@@ -1,7 +1,7 @@
 import {BeDecoratedProps, MinimalProxy} from 'be-decorated/types';
 
 export interface EndUserProps<TChild = any, THost = any> {
-    propBindings?: BindingTupletOrString<TChild, THost>[];
+    propBindings?: BindingTupletOrString<TChild, THost>[] | BindingTupletOrString<TChild, THost>;
 }
 export interface VirtualProps extends EndUserProps, MinimalProxy{
    

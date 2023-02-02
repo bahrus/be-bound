@@ -41,9 +41,7 @@ Limitations:
 
 The exceptions -- (4.1, 4.2, event handler "input" is used)
 
-Shortcuts:
-
-If just binding one pair of props: 
+Shortcut: 
 
 ```html
 <my-host-element>
@@ -62,6 +60,18 @@ If myChildElementProp is "value", just do:
     #shadow
         ...
         <my-child-element be-bound='["myHostElementProp"]'>
+            ...
+        </my-child-element>
+</my-host-element>
+```
+
+If only one binding:
+
+```html
+<my-host-element>
+    #shadow
+        ...
+        <my-child-element be-bound=myHostElementProp>
             ...
         </my-child-element>
 </my-host-element>
