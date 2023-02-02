@@ -10,6 +10,8 @@ be-bound is an attribute-based decorator/behavior that provides limited "two-way
 
 [![Playwright Tests](https://github.com/bahrus/be-bound/actions/workflows/CI.yml/badge.svg?branch=baseline)](https://github.com/bahrus/be-bound/actions/workflows/CI.yml)
 
+## Lingo
+
 ```html
 <my-host-element>
     #shadow
@@ -24,6 +26,8 @@ be-bound is an attribute-based decorator/behavior that provides limited "two-way
 </my-host-element>
 ```
 
+
+
 So basically, this keeps the two props in sync. 
 
 Limitations:
@@ -37,6 +41,31 @@ Limitations:
 
 The exceptions -- (4.1, 4.2, event handler "input" is used)
 
+Shortcuts:
+
+If just binding one pair of props: 
+
+```html
+<my-host-element>
+    #shadow
+        ...
+        <my-child-element be-bound='[["myChildElementProp", "myHostElementProp"]]'>
+            ...
+        </my-child-element>
+</my-host-element>
+```
+
+If myChildElementProp is "value", just do:
+
+```html
+<my-host-element>
+    #shadow
+        ...
+        <my-child-element be-bound='["myHostElementProp"]'>
+            ...
+        </my-child-element>
+</my-host-element>
+```
 
 
 ## Real world examples

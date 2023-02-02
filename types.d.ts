@@ -1,7 +1,7 @@
 import {BeDecoratedProps, MinimalProxy} from 'be-decorated/types';
 
 export interface EndUserProps<TChild = any, THost = any> {
-    propBindings?: BindingPair<TChild, THost>[];
+    propBindings?: BindingTupletOrString<TChild, THost>[];
 }
 export interface VirtualProps extends EndUserProps, MinimalProxy{
    
@@ -19,7 +19,9 @@ export interface Actions {
     onProps(pp: PP): void;
 }
 
-export type BindingPair<TChild = any, THost = any> = [childProp: keyof Partial<TChild> & string, hostProp: keyof Partial<THost> & string, options?: BindingOptions];
+export type BindingTuplet<TChild = any, THost = any> =  [childProp: keyof Partial<TChild> & string, hostProp: keyof Partial<THost> & string, options?: BindingOptions]
+
+export type BindingTupletOrString<TChild = any, THost = any> = BindingTuplet<TChild, THost> | keyof THost;
 
 export interface BindingOptions{
     localValueTrumps: boolean;

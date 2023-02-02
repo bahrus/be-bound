@@ -7,7 +7,8 @@ export class BeBound {
         if (host === null)
             throw '404';
         const { BoundInstance } = await import('./BoundInstance.js');
-        for (const propBinding of propBindings) {
+        for (const propBindingOrString of propBindings) {
+            const propBinding = (typeof propBindingOrString === 'string' ? ['value', propBindingOrString] : propBindingOrString);
             const [childProp, hostProp, options] = propBinding;
             const bi = new BoundInstance(childProp, hostProp, self, host, options);
         }
@@ -22,6 +23,8 @@ define({
         propDefaults: {
             upgrade,
             ifWantsToBe,
+            primaryProp: 'propBindings',
+            primaryPropReq: true,
             virtualProps: ['propBindings']
         },
         actions: {

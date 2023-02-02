@@ -1,5 +1,5 @@
 import {BeDecoratedProps, define} from 'be-decorated/DE.js';
-import {Actions, ProxyProps, VirtualProps, PP} from './types';
+import {Actions, ProxyProps, VirtualProps, PP, BindingTuplet} from './types';
 import {register} from 'be-hive/register.js';
 
 
@@ -9,7 +9,8 @@ export class BeBound implements Actions{
         const host = getHost(self);
         if(host === null) throw '404';
         const {BoundInstance} = await import('./BoundInstance.js');
-        for(const propBinding of propBindings!){
+        for(const propBindingOrString of propBindings!){
+            const propBinding = (typeof propBindingOrString === 'string' ? ['value', propBindingOrString] : propBindingOrString) as BindingTuplet;
             const [childProp, hostProp, options] = propBinding;
             const bi = new BoundInstance(childProp, hostProp, self, host, options);
             
@@ -30,6 +31,8 @@ define<ProxyProps & BeDecoratedProps<ProxyProps, Actions>, Actions>({
         propDefaults:{
             upgrade,
             ifWantsToBe,
+            primaryProp: 'propBindings',
+            primaryPropReq: true,
             virtualProps:['propBindings']
         },
         actions:{
