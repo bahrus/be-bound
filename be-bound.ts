@@ -6,7 +6,7 @@ import {register} from 'be-hive/register.js';
 export class BeBound implements Actions{
     async onProps({propBindings: propBindingOrBindings, proxy, self}: PP) {
         const {getHost} = await import('trans-render/lib/getHost.js');
-        const host = getHost(self);
+        const host = getHost(self, true);
         if(host === null) throw '404';
         const {BoundInstance} = await import('./BoundInstance.js');
         const propBindings = Array.isArray(propBindingOrBindings) ? propBindingOrBindings : [propBindingOrBindings];

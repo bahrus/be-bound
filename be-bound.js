@@ -3,7 +3,7 @@ import { register } from 'be-hive/register.js';
 export class BeBound {
     async onProps({ propBindings: propBindingOrBindings, proxy, self }) {
         const { getHost } = await import('trans-render/lib/getHost.js');
-        const host = getHost(self);
+        const host = getHost(self, true);
         if (host === null)
             throw '404';
         const { BoundInstance } = await import('./BoundInstance.js');
