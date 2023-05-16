@@ -9,7 +9,7 @@
 		"watch": true
 	},
 	"files": [
-		"be-bound.ts"
+		"be-bound2.ts"
 	],
 	"exclude":[
 		"build",

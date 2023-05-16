@@ -1,22 +1,24 @@
-import {BeDecoratedProps, MinimalProxy} from 'be-decorated/types';
+import { ActionOnEventConfigs } from "trans-render/froop/types";
+import {IBE} from 'be-enhanced/types';
 
-export interface EndUserProps<TChild = any, THost = any> {
+export interface EndUserProps<TChild = any, THost = any> extends IBE {
     propBindings?: BindingTupletOrString<TChild, THost>[] | BindingTupletOrString<TChild, THost>;
 }
-export interface VirtualProps extends EndUserProps, MinimalProxy{
-   
-}
 
-export type Proxy = Element & VirtualProps;
+export interface AllProps extends EndUserProps {}
 
-export interface ProxyProps extends VirtualProps{
-    proxy: Proxy;
-}
+export type AP = AllProps;
 
-export type PP = ProxyProps;
+export type PAP = Partial<AP>;
+
+export type ProPAP = Promise<PAP>;
+
+export type POA = [PAP | undefined, ActionOnEventConfigs<PAP, Actions>]
+
+
 
 export interface Actions {
-    onProps(pp: PP): void;
+    onProps(self: this): Promise<void>;
 }
 
 export type BindingTuplet<TChild = any, THost = any> =  [childProp: keyof Partial<TChild> & string, hostProp: keyof Partial<THost> & string, options?: BindingOptions]
