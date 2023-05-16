@@ -7,7 +7,7 @@
     "custom-element",
     "custom-elements"
   ],
-  "description": "be-bound is an attribute-based decorator/behavior that provides limited 'two-way binding' support.",
+  "description": "be-bound is an attribute-based enhancement that provides limited 'two-way binding' support.",
   "main": "be-bound.js",
   "module": "be-bound.js",
   "exports": {
@@ -15,7 +15,8 @@
     "./be-bound.js": "./be-bound.js"
   },
   "files": [
-    "*.*"
+    "*.js",
+    "types.d.ts"
   ],
   "types": "types.d.ts",
   "scripts": {
@@ -24,14 +25,14 @@
     "safari": "npx playwright wk http://localhost:3030"
   },
   "dependencies": {
-    "be-decorated": "0.0.222",
-    "be-hive": "0.0.79",
-    "trans-render": "0.0.664"
+    "be-enhanced": "0.0.17",
+    "be-hive": "0.0.92",
+    "trans-render": "0.0.680",
+    "xtal-element": "0.0.560"
   },
   "devDependencies": {
-    "may-it-serve": "0.0.4",
-    "@playwright/test": "1.30.0",
-    "@skypack/package-check": "0.2.2"
+    "may-it-serve": "0.0.5",
+    "@playwright/test": "1.33.0"
   },
   "repository": {
     "type": "git",
