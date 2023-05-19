@@ -5,7 +5,8 @@ export class BeBound extends BE {
     static get beConfig() {
         return {
             parse: true,
-            primaryProp: 'propBindings'
+            primaryProp: 'propBindings',
+            primaryPropReq: true
         };
     }
     async onProps(self) {

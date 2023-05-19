@@ -8,7 +8,8 @@ export class BeBound extends BE<AP, Actions> implements Actions{
     static  override get beConfig(){
         return {
             parse: true,
-            primaryProp: 'propBindings'
+            primaryProp: 'propBindings',
+            primaryPropReq: true
         } as BEConfig
     }
 
