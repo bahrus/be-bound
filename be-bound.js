@@ -1,9 +1,18 @@
-import { define } from 'be-decorated/DE.js';
+import { BE, propDefaults, propInfo } from 'be-enhanced/BE.js';
+import { XE } from 'xtal-element/XE.js';
 import { register } from 'be-hive/register.js';
-export class BeBound {
-    async onProps({ propBindings: propBindingOrBindings, proxy, self }) {
+export class BeBound extends BE {
+    static get beConfig() {
+        return {
+            parse: true,
+            primaryProp: 'propBindings',
+            primaryPropReq: true
+        };
+    }
+    async onProps(self) {
+        const { propBindings: propBindingOrBindings, enhancedElement } = self;
         const { getHost } = await import('trans-render/lib/getHost.js');
-        const host = getHost(self, true);
+        const host = getHost(enhancedElement, true);
         if (host === null)
             throw '404';
         const { BoundInstance } = await import('./BoundInstance.js');
@@ -11,29 +20,26 @@ export class BeBound {
         for (const propBindingOrString of propBindings) {
             const propBinding = (typeof propBindingOrString === 'string' ? ['value', propBindingOrString] : propBindingOrString);
             const [childProp, hostProp, options] = propBinding;
-            const bi = new BoundInstance(childProp, hostProp, self, host, options);
+            const bi = new BoundInstance(childProp, hostProp, enhancedElement, host, options);
         }
     }
 }
 const tagName = 'be-bound';
 const ifWantsToBe = 'bound';
-export const upgrade = '*';
-define({
+const upgrade = '*';
+const xe = new XE({
     config: {
         tagName,
         propDefaults: {
-            upgrade,
-            ifWantsToBe,
-            primaryProp: 'propBindings',
-            primaryPropReq: true,
-            virtualProps: ['propBindings']
+            ...propDefaults
+        },
+        propInfo: {
+            ...propInfo
         },
         actions: {
             onProps: 'propBindings'
         }
     },
-    complexPropDefaults: {
-        controller: BeBound,
-    }
+    superclass: BeBound
 });
 register(ifWantsToBe, upgrade, tagName);

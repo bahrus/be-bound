@@ -1,47 +1,54 @@
-import {BeDecoratedProps, define} from 'be-decorated/DE.js';
-import {Actions, ProxyProps, VirtualProps, PP, BindingTuplet} from './types';
+import {BE, propDefaults, propInfo} from 'be-enhanced/BE.js';
+import {BEConfig} from 'be-enhanced/types';
+import {XE} from 'xtal-element/XE.js';
+import {Actions, AllProps, AP, PAP, ProPAP, POA, BindingTuplet} from './types';
 import {register} from 'be-hive/register.js';
 
+export class BeBound extends BE<AP, Actions> implements Actions{
+    static  override get beConfig(){
+        return {
+            parse: true,
+            primaryProp: 'propBindings',
+            primaryPropReq: true
+        } as BEConfig
+    }
 
-export class BeBound implements Actions{
-    async onProps({propBindings: propBindingOrBindings, proxy, self}: PP) {
+    async onProps(self: this){
+        const {propBindings: propBindingOrBindings, enhancedElement} = self;
         const {getHost} = await import('trans-render/lib/getHost.js');
-        const host = getHost(self, true);
+        const host = getHost(enhancedElement, true);
         if(host === null) throw '404';
         const {BoundInstance} = await import('./BoundInstance.js');
         const propBindings = Array.isArray(propBindingOrBindings) ? propBindingOrBindings : [propBindingOrBindings];
         for(const propBindingOrString of propBindings!){
             const propBinding = (typeof propBindingOrString === 'string' ? ['value', propBindingOrString] : propBindingOrString) as BindingTuplet;
             const [childProp, hostProp, options] = propBinding;
-            const bi = new BoundInstance(childProp, hostProp, self, host, options);
+            const bi = new BoundInstance(childProp, hostProp, enhancedElement, host, options);
             
         }
-        
     }
 }
 
+export interface BeBound extends AllProps{}
+
 const tagName = 'be-bound';
-
 const ifWantsToBe = 'bound';
+const upgrade = '*';
 
-export const upgrade = '*';
-
-define<ProxyProps & BeDecoratedProps<ProxyProps, Actions>, Actions>({
-    config:{
+const xe = new XE<AP, Actions>({
+    config: {
         tagName,
-        propDefaults:{
-            upgrade,
-            ifWantsToBe,
-            primaryProp: 'propBindings',
-            primaryPropReq: true,
-            virtualProps:['propBindings']
+        propDefaults: {
+            ...propDefaults
+        },
+        propInfo: {
+            ...propInfo
         },
         actions:{
             onProps: 'propBindings'
         }
     },
-    complexPropDefaults:{
-        controller: BeBound,
-    }
+    superclass: BeBound
 });
+
 register(ifWantsToBe, upgrade, tagName);
