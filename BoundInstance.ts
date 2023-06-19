@@ -34,7 +34,8 @@ export class BoundInstance{
             requestIdleCallback(() => {
                 this.init(self);
                 return;
-            })
+            });
+            return;
         }
         if(options === undefined || !options.localValueTrumps){
             if((host as any)[hostProp]){

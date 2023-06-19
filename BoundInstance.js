@@ -40,6 +40,7 @@ export class BoundInstance {
                 this.init(self);
                 return;
             });
+            return;
         }
         if (options === undefined || !options.localValueTrumps) {
             if (host[hostProp]) {
