@@ -6,14 +6,11 @@
 		"experimentalDecorators": false,
 		"newLine": "LF",
 		"strict": true,
-		"watch": true
 	},
 	"files": [
 		"be-bound.ts"
 	],
 	"exclude":[
-		"build",
-		"bower_components",
 		"node_modules"
 	]
 

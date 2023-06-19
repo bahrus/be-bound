@@ -7,19 +7,20 @@
     <title>Document</title>
 </head>
 <body>
-    <hello-world  be-definitive='{
+    <hello-world  enh-by-be-definitive='{
         "config":{
           "tagName":"hello-world",
           "propDefaults":{
             "place": "Venus",
             "transform":{
               "span": "place"
-            }
+            },
+            "shadowRootMode": "open"
           }
         }
       
       }'>
-        <template shadowroot='open'>
+        <template shadowrootmode='open'>
             <div>Hello, <span>world</span></div>
             <input be-bound='{
                 "propBindings":[
@@ -43,7 +44,7 @@
         }
         </script>
     <script type='module'>
-        import 'https://esm.run/be-definitive@0.0.95';
+        import 'https://esm.run/be-definitive@0.0.97';
         import '../be-bound.js';
     </script>
     <script>
