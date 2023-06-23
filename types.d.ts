@@ -18,7 +18,7 @@ export type POA = [PAP | undefined, ActionOnEventConfigs<PAP, Actions>]
 
 
 export interface Actions {
-    onProps(self: this): Promise<void>;
+    onProps(self: this): ProPAP;
 }
 
 export type BindingTuplet<TChild = any, THost = any> =  [childProp: keyof Partial<TChild> & string, hostProp: keyof Partial<THost> & string, options?: BindingOptions]

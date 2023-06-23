@@ -22,6 +22,9 @@ export class BeBound extends BE {
             const [childProp, hostProp, options] = propBinding;
             const bi = new BoundInstance(childProp, hostProp, enhancedElement, host, options);
         }
+        return {
+            resolved: true,
+        };
     }
 }
 const tagName = 'be-bound';

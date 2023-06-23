@@ -24,8 +24,10 @@ export class BeBound extends BE<AP, Actions> implements Actions{
             const propBinding = (typeof propBindingOrString === 'string' ? ['value', propBindingOrString] : propBindingOrString) as BindingTuplet;
             const [childProp, hostProp, options] = propBinding;
             const bi = new BoundInstance(childProp, hostProp, enhancedElement, host, options);
-            
         }
+        return {
+            resolved: true,
+        } as PAP;
     }
 }
 
