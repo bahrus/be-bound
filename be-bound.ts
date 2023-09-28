@@ -15,8 +15,8 @@ export class BeBound extends BE<AP, Actions> implements Actions{
 
     async onProps(self: this){
         const {propBindings: propBindingOrBindings, enhancedElement} = self;
-        const {getHost} = await import('trans-render/lib/getHost.js');
-        const host = getHost(enhancedElement, true);
+        const {findRealm} = await import('trans-render/lib/findRealm.js');
+        const host = await findRealm(enhancedElement, 'hostish');
         if(host === null) throw '404';
         const {BoundInstance} = await import('./BoundInstance.js');
         const propBindings = Array.isArray(propBindingOrBindings) ? propBindingOrBindings : [propBindingOrBindings];
@@ -40,6 +40,7 @@ const upgrade = '*';
 const xe = new XE<AP, Actions>({
     config: {
         tagName,
+        isEnh: true,
         propDefaults: {
             ...propDefaults
         },

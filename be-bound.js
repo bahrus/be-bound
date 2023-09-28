@@ -11,8 +11,8 @@ export class BeBound extends BE {
     }
     async onProps(self) {
         const { propBindings: propBindingOrBindings, enhancedElement } = self;
-        const { getHost } = await import('trans-render/lib/getHost.js');
-        const host = getHost(enhancedElement, true);
+        const { findRealm } = await import('trans-render/lib/findRealm.js');
+        const host = await findRealm(enhancedElement, 'hostish');
         if (host === null)
             throw '404';
         const { BoundInstance } = await import('./BoundInstance.js');
@@ -33,6 +33,7 @@ const upgrade = '*';
 const xe = new XE({
     config: {
         tagName,
+        isEnh: true,
         propDefaults: {
             ...propDefaults
         },
