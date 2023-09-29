@@ -7,31 +7,13 @@ be-bound is an attribute-based custom enhancement that provides limited "two-way
 <img src="http://img.badgesize.io/https://cdn.jsdelivr.net/npm/be-bound?compression=gzip">
 [![Playwright Tests](https://github.com/bahrus/be-bound/actions/workflows/CI.yml/badge.svg?branch=baseline)](https://github.com/bahrus/be-bound/actions/workflows/CI.yml)
 
-## with JavaScriptObjectNotation
+## Example 1a:
 
 ```html
 <my-host-element>
     #shadow
         ...
-        <my-child-element be-bound='{
-            "propBindings":[
-                ["myChildElementProp", "myHostElementProp"]
-            ]
-        }'>
-            ...
-        </my-child-element>
-</my-host-element>
-```
-
-## Hemingway Notation [TODO]
-
-Same example as above but with [Hemingway Notation](https://bookanalysis.com/ernest-hemingway/writing-style/)
-
-```html
-<my-host-element>
-    #shadow
-        ...
-        <my-child-element be-bound='Equate / my host element prop with my child element prop.'>
+        <my-child-element be-bound='To / host prop on par with my child prop.'>
             ...
         </my-child-element>
 </my-host-element>
@@ -43,7 +25,7 @@ or more compactly:
 <my-host-element>
     #shadow
         ...
-        <my-child-element be-bound='To myChildElementProp with /myHostElementProp.'>
+        <my-child-element be-bound='To /hostProp on par with myChildProp.'>
             ...
         </my-child-element>
 </my-host-element>
@@ -56,7 +38,6 @@ In the above example, we saw two special symbols used.  Listing them all:
 
 | Symbol      | Meaning              |
 |-------------|----------------------|
-| $0:prop     |Adorned element.      |
 | /:prop      |"Hostish"             |
 | @:prop      |Name attribute        |
 | $:prop      |Itemprop attribute    |
