@@ -3,6 +3,7 @@ import {IBE} from 'be-enhanced/types';
 
 export interface EndUserProps<TChild = any, THost = any> extends IBE {
     propBindings?: BindingTupletOrString<TChild, THost>[] | BindingTupletOrString<TChild, THost>;
+    Between?: Array<BetweenStatement>;
 }
 
 export interface AllProps extends EndUserProps {}
@@ -15,6 +16,7 @@ export type ProPAP = Promise<PAP>;
 
 export type POA = [PAP | undefined, ActionOnEventConfigs<PAP, Actions>]
 
+export type BetweenStatement = string;
 
 
 export interface Actions {
