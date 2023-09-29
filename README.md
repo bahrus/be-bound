@@ -37,6 +37,31 @@ Same example as above but with [Hemingway Notation](https://bookanalysis.com/ern
 </my-host-element>
 ```
 
+or more compactly:
+
+```html
+<my-host-element>
+    #shadow
+        ...
+        <my-child-element be-bound='Between $0:myChildElementProp and /myHostElementProp.'>
+            ...
+        </my-child-element>
+</my-host-element>
+```
+
+
+## Special Symbols
+
+In the above example, we saw two special symbols used.  Listing them all:
+
+| Symbol | Meaning          |
+|--------|------------------|
+| $0     |Adorned element.  |
+| /      |"Hostish"         |
+| @      |Name attribute    |
+| $      |Itemprop attribute|
+| #      |Id attribute      | 
+
 
 So basically, this keeps the two props in sync. 
 
