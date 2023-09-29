@@ -7,7 +7,7 @@ be-bound is an attribute-based custom enhancement that provides limited "two-way
 <img src="http://img.badgesize.io/https://cdn.jsdelivr.net/npm/be-bound?compression=gzip">
 [![Playwright Tests](https://github.com/bahrus/be-bound/actions/workflows/CI.yml/badge.svg?branch=baseline)](https://github.com/bahrus/be-bound/actions/workflows/CI.yml)
 
-## Lingo
+## with JavaScriptObjectNotation
 
 ```html
 <my-host-element>
@@ -23,6 +23,19 @@ be-bound is an attribute-based custom enhancement that provides limited "two-way
 </my-host-element>
 ```
 
+## Hemingway Notation [TODO]
+
+Same example as above but with [Hemingway Notation](https://bookanalysis.com/ernest-hemingway/writing-style/)
+
+```html
+<my-host-element>
+    #shadow
+        ...
+        <my-child-element be-bound='Between $0 : my child element prop and / my host element prop.'>
+            ...
+        </my-child-element>
+</my-host-element>
+```
 
 
 So basically, this keeps the two props in sync. 
@@ -36,43 +49,7 @@ Limitations:
     1.  input element.
     2.  form element.
 
-The exceptions -- (4.1, 4.2, event handler "input" is used)
 
-Shortcut: 
-
-```html
-<my-host-element>
-    #shadow
-        ...
-        <my-child-element be-bound='[["myChildElementProp", "myHostElementProp"]]'>
-            ...
-        </my-child-element>
-</my-host-element>
-```
-
-If myChildElementProp is "value", just do:
-
-```html
-<my-host-element>
-    #shadow
-        ...
-        <my-child-element be-bound='["myHostElementProp"]'>
-            ...
-        </my-child-element>
-</my-host-element>
-```
-
-If only one binding:
-
-```html
-<my-host-element>
-    #shadow
-        ...
-        <my-child-element be-bound=myHostElementProp>
-            ...
-        </my-child-element>
-</my-host-element>
-```
 
 
 ## Real world examples
