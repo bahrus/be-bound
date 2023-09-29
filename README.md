@@ -31,7 +31,7 @@ Same example as above but with [Hemingway Notation](https://bookanalysis.com/ern
 <my-host-element>
     #shadow
         ...
-        <my-child-element be-bound='To my child element prop with / my host element prop.'>
+        <my-child-element be-bound='Equate / my host element prop with my child element prop.'>
             ...
         </my-child-element>
 </my-host-element>
