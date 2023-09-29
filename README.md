@@ -31,7 +31,7 @@ Same example as above but with [Hemingway Notation](https://bookanalysis.com/ern
 <my-host-element>
     #shadow
         ...
-        <my-child-element be-bound='Between $0 : my child element prop and / my host element prop.'>
+        <my-child-element be-bound='To my child element prop with / my host element prop.'>
             ...
         </my-child-element>
 </my-host-element>
@@ -43,7 +43,7 @@ or more compactly:
 <my-host-element>
     #shadow
         ...
-        <my-child-element be-bound='Between $0:myChildElementProp and /myHostElementProp.'>
+        <my-child-element be-bound='To myChildElementProp with /myHostElementProp.'>
             ...
         </my-child-element>
 </my-host-element>
@@ -54,13 +54,18 @@ or more compactly:
 
 In the above example, we saw two special symbols used.  Listing them all:
 
-| Symbol | Meaning          |
-|--------|------------------|
-| $0     |Adorned element.  |
-| /      |"Hostish"         |
-| @      |Name attribute    |
-| $      |Itemprop attribute|
-| #      |Id attribute      | 
+| Symbol      | Meaning              |
+|-------------|----------------------|
+| $0:prop     |Adorned element.      |
+| /:prop      |"Hostish"             |
+| @:prop      |Name attribute        |
+| $:prop      |Itemprop attribute    |
+| #:prop      |Id attribute          |
+| -           |Marker indicates prop |
+
+## Trumping rules
+
+If at the time of the connection, the two values being bound differ, the following rules governing the [TODO]
 
 
 So basically, this keeps the two props in sync. 

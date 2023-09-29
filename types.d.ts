@@ -1,5 +1,6 @@
 import { ActionOnEventConfigs } from "trans-render/froop/types";
 import {IBE} from 'be-enhanced/types';
+import {Target} from 'trans-render/lib/types';
 
 export interface EndUserProps<TChild = any, THost = any> extends IBE {
     propBindings?: BindingTupletOrString<TChild, THost>[] | BindingTupletOrString<TChild, THost>;
@@ -30,6 +31,10 @@ export type BindingTupletOrString<TChild = any, THost = any> = BindingTuplet<TCh
 export interface BindingOptions{
     localValueTrumps: boolean;
     noClone: boolean;
+}
+
+export interface BoundRemoteTarget {
+    TargetRelativeToAdornedElement: Target
 }
 
 export type HostSubscriptionMap = {[key: string]: HostSubscriptionStatus}
