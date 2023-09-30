@@ -12,26 +12,26 @@ export class BeBound extends BE {
     }
     async noAttrs(self) {
         const { enhancedElement } = self;
-        const { localName } = enhancedElement;
-        let localProp = 'textContent';
-        switch (localName) {
-            case 'input':
-                const { type } = enhancedElement;
-                switch (type) {
-                    case 'number':
-                        localProp = 'valueAsNumber';
-                        break;
-                    case 'checkbox':
-                        localProp = 'checked';
-                        break;
-                    default:
-                        localProp = 'value';
-                }
-                break;
-        }
+        const defltLocal = getDfltLocal(self);
+        // const {localName} = enhancedElement;
+        // let localProp = 'textContent';
+        // switch(localName){
+        //     case 'input':
+        //         const {type} = enhancedElement as HTMLInputElement;
+        //         switch(type){
+        //             case 'number':
+        //                 localProp = 'valueAsNumber';
+        //                 break;
+        //             case 'checkbox':
+        //                 localProp = 'checked';
+        //                 break;
+        //             default:
+        //                 localProp = 'value';
+        //         }
+        //         break;
+        // }
         self.bindingRules = [{
-                localEvent: localName === 'input' || enhancedElement.hasAttribute('contenteditable') ? 'input' : undefined,
-                localProp,
+                ...defltLocal,
                 remoteType: '/',
                 remoteProp: enhancedElement.name || enhancedElement.id,
             }];
@@ -76,6 +76,30 @@ const typeComp = new Map([
     ['string.string', 'tie'],
     ['boolean.undefined', 'local'],
 ]);
+function getDfltLocal(self) {
+    const { enhancedElement } = self;
+    const { localName } = enhancedElement;
+    let localProp = 'textContent';
+    switch (localName) {
+        case 'input':
+            const { type } = enhancedElement;
+            switch (type) {
+                case 'number':
+                    localProp = 'valueAsNumber';
+                    break;
+                case 'checkbox':
+                    localProp = 'checked';
+                    break;
+                default:
+                    localProp = 'value';
+            }
+            break;
+    }
+    return {
+        localEvent: localName === 'input' || enhancedElement.hasAttribute('contenteditable') ? 'input' : undefined,
+        localProp,
+    };
+}
 function compareSpecificity(localVal, remoteVal) {
     if (localVal === remoteVal)
         return {

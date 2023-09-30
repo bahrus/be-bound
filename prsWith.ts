@@ -7,18 +7,19 @@ const strType = String.raw `\$|\#|\@|\/|\-`;
 const reBindingStatement: Array<RegExpOrRegExpExt<BindingRule>> = [
     {
         regExp: new RegExp(String.raw `^(?<remoteType>${strType})(?<remoteProp>[\w]+)`),
-        defaultVals: {}
+        defaultVals: {
+        }
     }
 ];
 
-//TODO: move to be-linked
-const enhancementMap: Map<ElTypes, SignalEnhancement> = new Map();
-enhancementMap.set('')
+// //TODO: move to be-linked
+// const enhancementMap: Map<ElTypes, SignalEnhancement> = new Map();
+// enhancementMap.set('')
 
 export function prsWith(self: AP) : PAP {
-    const {To} = self;
+    const {With} = self;
     const bindingRules: Array<BindingRule> = [];
-    for(const to of To!){
+    for(const to of With!){
         const test = tryParse(to, reBindingStatement) as BindingRule;
         if(test === null) throw 'PE'; //Parse Error
         const {remoteType} = test;

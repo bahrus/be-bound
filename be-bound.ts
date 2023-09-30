@@ -1,7 +1,7 @@
 import {BE, propDefaults, propInfo} from 'be-enhanced/BE.js';
 import {BEConfig} from 'be-enhanced/types';
 import {XE} from 'xtal-element/XE.js';
-import {Actions, AllProps, AP, PAP, ProPAP, POA, TriggerSource, SpecificityResult} from './types';
+import {Actions, AllProps, AP, PAP, ProPAP, POA, TriggerSource, SpecificityResult, BindingRule} from './types';
 import {register} from 'be-hive/register.js';
 import {findRealm} from 'trans-render/lib/findRealm.js';
 import {Actions as BPActions} from 'be-propagating/types';
@@ -19,26 +19,26 @@ export class BeBound extends BE<AP, Actions> implements Actions{
 
     async noAttrs(self: this): ProPAP {
         const {enhancedElement} = self;
-        const {localName} = enhancedElement;
-        let localProp = 'textContent';
-        switch(localName){
-            case 'input':
-                const {type} = enhancedElement as HTMLInputElement;
-                switch(type){
-                    case 'number':
-                        localProp = 'valueAsNumber';
-                        break;
-                    case 'checkbox':
-                        localProp = 'checked';
-                        break;
-                    default:
-                        localProp = 'value';
-                }
-                break;
-        }
+        const defltLocal = getDfltLocal(self);
+        // const {localName} = enhancedElement;
+        // let localProp = 'textContent';
+        // switch(localName){
+        //     case 'input':
+        //         const {type} = enhancedElement as HTMLInputElement;
+        //         switch(type){
+        //             case 'number':
+        //                 localProp = 'valueAsNumber';
+        //                 break;
+        //             case 'checkbox':
+        //                 localProp = 'checked';
+        //                 break;
+        //             default:
+        //                 localProp = 'value';
+        //         }
+        //         break;
+        // }
         self.bindingRules = [{
-            localEvent: localName === 'input' || enhancedElement.hasAttribute('contenteditable') ? 'input' : undefined,
-            localProp,
+            ...defltLocal,
             remoteType: '/',
             remoteProp: (enhancedElement as any).name || enhancedElement.id,
         }];
@@ -84,6 +84,31 @@ const typeComp: Map<string, TriggerSource> = new Map([
     ['string.string', 'tie'],
     ['boolean.undefined', 'local'],
 ]);
+
+function getDfltLocal(self: BeBound){
+    const {enhancedElement} = self;
+    const {localName} = enhancedElement;
+    let localProp = 'textContent';
+    switch(localName){
+        case 'input':
+            const {type} = enhancedElement as HTMLInputElement;
+            switch(type){
+                case 'number':
+                    localProp = 'valueAsNumber';
+                    break;
+                case 'checkbox':
+                    localProp = 'checked';
+                    break;
+                default:
+                    localProp = 'value';
+            }
+            break;
+    }
+    return {
+        localEvent: localName === 'input' || enhancedElement.hasAttribute('contenteditable') ? 'input' : undefined,
+        localProp,
+    } as BindingRule;
+}
 
 function compareSpecificity(localVal: any, remoteVal: any) : SpecificityResult  {
     if(localVal === remoteVal) return {
