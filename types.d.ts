@@ -36,6 +36,7 @@ export type POA = [PAP | undefined, ActionOnEventConfigs<PAP, Actions>];
 
 export interface Actions{
     noAttrs(self: this): ProPAP;
+    hydrate(self: this): ProPAP;
 }
 
 export type WithStatement = string;

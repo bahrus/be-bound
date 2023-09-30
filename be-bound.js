@@ -10,9 +10,43 @@ export class BeBound extends BE {
         };
     }
     async noAttrs(self) {
-        const { With, Between } = self;
-        return {};
+        const { enhancedElement } = self;
+        const { localName } = enhancedElement;
+        let localProp = 'textContent';
+        switch (localName) {
+            case 'input':
+                const { type } = enhancedElement;
+                switch (type) {
+                    case 'number':
+                        localProp = 'valueAsNumber';
+                        break;
+                    case 'checkbox':
+                        localProp = 'checked';
+                        break;
+                    default:
+                        localProp = 'value';
+                }
+                break;
+        }
+        self.bindingRules = [{
+                localEvent: localName === 'input' || enhancedElement.hasAttribute('contenteditable') ? 'input' : undefined,
+                localProp,
+                remoteType: '/',
+                remoteProp: enhancedElement.name || enhancedElement.id,
+            }];
+        return {
+            resolved: true,
+        };
     }
+    async hydrate(self) {
+        evalBindRules(self);
+        return {
+            resolved: true,
+        };
+    }
+}
+function evalBindRules(self) {
+    const { bindingRules } = self;
 }
 const tagName = 'be-bound';
 const ifWantsToBe = 'bound';
@@ -28,7 +62,11 @@ const xe = new XE({
             ...propInfo
         },
         actions: {
-            noAttrs: 'isParsed'
+            noAttrs: {
+                ifAllOf: ['isParsed'],
+                ifNoneOf: ['With', 'Between']
+            },
+            hydrate: 'bindingRules'
         }
     },
     superclass: BeBound

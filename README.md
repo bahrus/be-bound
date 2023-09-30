@@ -22,11 +22,11 @@ Limitations:
 ## Example 1a:
 
 ```html
-<my-host-element>
+<my-custom-element>
     #shadow
         ...
-        <input name=hostProp be-bound>
-</my-host-element>
+        <input name=someStringProp be-bound>
+</my-custom-element>
 ```
 
 ... Two way binds input element's value property to my-host-element's hostProp property.  If type=checkbox, checked is used.  If type=number, valueAsNumber is used.

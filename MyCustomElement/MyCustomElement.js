@@ -12,7 +12,7 @@ export class MyCustomElement extends HTMLElement {
     }
     connectedCallback() {
         this.shadowRoot.innerHTML = String.raw `
-        <input name=someStringProp be-bound>
+        <input name=someStringProp value=hello be-bound>
         <be-hive></be-hive>
     `;
     }
