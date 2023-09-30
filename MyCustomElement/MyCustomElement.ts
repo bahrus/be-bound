@@ -23,15 +23,15 @@ export class MyCustomElement extends HTMLElement{
     constructor(){
         super();
         this.attachShadow({mode: 'open'});
-        this.someStringProp = 'hello2';
+        //this.someStringProp = 'hello2';
     }
 
     connectedCallback(){
         this.shadowRoot!.innerHTML = String.raw `
         <div id=someStringPropVal></div>
         <div id=someBoolPropVal></div>
-        <!-- <input name=someStringProp value=hello be-bound>
-        <input name=someBoolProp type=checkbox be-bound> -->
+        <input name=someStringProp value=hello be-bound>
+        <input name=someBoolProp type=checkbox be-bound>
         <input be-bound='With /someStringProp'>
         <be-hive></be-hive>
     `;
