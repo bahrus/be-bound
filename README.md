@@ -13,7 +13,70 @@ be-bound is an attribute-based custom enhancement that provides limited "two-way
 <my-host-element>
     #shadow
         ...
-        <my-child-element be-bound='To / host prop on par with my child prop.'>
+        <input name=hostProp be-bound>
+</my-host-element>
+```
+
+... Two way binds input element's value property to my-host-element's hostProp property.
+
+"Trumping" is based on "specificity":
+
+Object trumps Number trumps boolean trumps string trumps null trumps undefined.
+
+longer toString() trumps shorter toString().
+
+
+Which is shorthand for:
+
+## Example 1b:
+
+```html
+<my-host-element>
+    #shadow
+        ...
+        <input be-bound='With /hostProp.'>
+</my-host-element>
+```
+
+## Example 1c:
+
+```html
+<my-host-element>
+    #shadow
+        ...
+        <span contenteditable be-bound='With /hostProp.'>i am here</span>
+</my-host-element>
+```
+
+## Example 1d:
+
+```html
+<my-host-element>
+    #shadow
+        <div itemscope>
+            <span contenteditable itemprop=hostProp be-bound>i am here</span>
+        </div>
+</my-host-element>
+```
+
+## Example 1e:
+
+```html
+<my-host-element>
+    #shadow
+        <div itemscope>
+            <meta itemprop=hostProp be-bound>
+        </div>
+</my-host-element>
+```
+
+maybe make be-linked/be sharing simply apply an enhancement?
+
+```html
+<my-host-element>
+    #shadow
+        ...
+        <my-child-element be-bound='On my child prop with /hostProp.'>
             ...
         </my-child-element>
 </my-host-element>
