@@ -29,6 +29,7 @@
     "be-enhanced": "0.0.53",
     "be-hive": "0.0.123",
     "be-linked": "0.0.50",
+    "be-propagating": "0.0.27",
     "trans-render": "0.0.706",
     "xtal-element": "0.0.579"
   },

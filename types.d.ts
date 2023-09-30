@@ -42,3 +42,10 @@ export interface Actions{
 export type WithStatement = string;
 
 export type BetweenStatement = string;
+
+export type TriggerSource = 'local' | 'remote' | 'tie';
+
+export interface SpecificityResult {
+    val?: any,
+    winner?: TriggerSource;
+}

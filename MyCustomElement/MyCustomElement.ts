@@ -5,6 +5,9 @@ export class MyCustomElement extends HTMLElement{
     }
     set someStringProp(nv){
         this.#someStringProp = nv;
+        if(nv === undefined) return;
+        const div = this.shadowRoot?.querySelector('#someStringPropVal');
+        if(div !== null && div !== undefined) div.textContent = nv;
     }
 
     constructor(){
@@ -14,6 +17,7 @@ export class MyCustomElement extends HTMLElement{
 
     connectedCallback(){
         this.shadowRoot!.innerHTML = String.raw `
+        <div id=someStringPropVal></div>
         <input name=someStringProp value=hello be-bound>
         <be-hive></be-hive>
     `;

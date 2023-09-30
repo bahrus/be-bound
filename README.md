@@ -1,4 +1,4 @@
-# be-bound
+# be-bound [TODO]
 
 be-bound is an attribute-based custom enhancement that provides limited "two-way binding" support. 
 
@@ -19,7 +19,7 @@ Limitations:
     4.  Microdata element (meta, link, data)
 
 
-## Example 1a:
+## Example 1a: [TODO]
 
 ```html
 <my-custom-element>

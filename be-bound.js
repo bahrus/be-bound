@@ -1,6 +1,7 @@
 import { BE, propDefaults, propInfo } from 'be-enhanced/BE.js';
 import { XE } from 'xtal-element/XE.js';
 import { register } from 'be-hive/register.js';
+import { findRealm } from 'trans-render/lib/findRealm.js';
 export class BeBound extends BE {
     static get beConfig() {
         return {
@@ -39,14 +40,89 @@ export class BeBound extends BE {
         };
     }
     async hydrate(self) {
-        evalBindRules(self);
+        const { bindingRules, enhancedElement } = self;
+        const { localName } = enhancedElement;
+        for (const bindingRule of bindingRules) {
+            const { localEvent, remoteType, remoteProp } = bindingRule;
+            if (localEvent !== undefined) {
+                bindingRule.localSignal = new WeakRef(enhancedElement);
+                enhancedElement.addEventListener(localEvent, e => {
+                    evalBindRules(self, 'local');
+                });
+            }
+            //similar code as be-pute/be-switched -- share somehow?
+            switch (remoteType) {
+                case '/':
+                    const host = await findRealm(enhancedElement, 'hostish');
+                    if (!host)
+                        throw 404;
+                    import('be-propagating/be-propagating.js');
+                    const bePropagating = await host.beEnhanced.whenResolved('be-propagating');
+                    const signal = await bePropagating.getSignal(remoteProp);
+                    bindingRule.remoteSignal = new WeakRef(signal);
+                    signal.addEventListener('value-changed', e => {
+                        evalBindRules(self, 'remote');
+                    });
+            }
+        }
+        evalBindRules(self, 'tie');
         return {
             resolved: true,
         };
     }
 }
-function evalBindRules(self) {
+const typeComp = new Map([
+    ['string.undefined', 'local'],
+    ['string.string', 'tie']
+]);
+function compareSpecificity(localVal, remoteVal) {
+    if (localVal === remoteVal)
+        return {
+            winner: 'tie',
+            val: localVal
+        };
+    const localType = typeof localVal;
+    const remoteType = typeof remoteVal;
+    const sameType = localType === remoteType;
+    let winner = typeComp.get(`${localType}.${remoteType}`);
+    let val = localVal;
+    if (winner === 'tie') {
+        switch (localType) {
+            case 'string':
+                if (localVal.length > remoteVal.length) {
+                    winner = 'local';
+                }
+        }
+    }
+    else {
+    }
+    return {
+        winner,
+        val
+    };
+}
+function evalBindRules(self, src) {
     const { bindingRules } = self;
+    for (const bindingRule of bindingRules) {
+        const { localProp, remoteProp, localSignal, remoteSignal } = bindingRule;
+        const localSignalDeref = localSignal?.deref();
+        const remoteSignalDeref = remoteSignal?.deref();
+        if (localSignalDeref === undefined)
+            throw 404;
+        if (remoteSignalDeref === undefined)
+            throw 404;
+        const localVal = localSignalDeref.value;
+        const remoteVal = remoteSignalDeref.value;
+        const tbd = compareSpecificity(localVal, remoteVal);
+        const { winner, val } = tbd;
+        if (winner === 'tie')
+            continue;
+        switch (winner) {
+            case 'local':
+                remoteSignalDeref.value = val;
+                break;
+        }
+    }
 }
 const tagName = 'be-bound';
 const ifWantsToBe = 'bound';
