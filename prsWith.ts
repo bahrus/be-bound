@@ -2,6 +2,7 @@ import {AP, ProPAP, PAP, BindingRule, SignalEnhancement} from './types';
 import {ElTypes} from 'be-linked/types';
 import {RegExpOrRegExpExt} from 'be-enhanced/types';
 import {arr, tryParse} from 'be-enhanced/cpu.js';
+import {getDfltLocal} from './be-bound.js';
 
 const strType = String.raw `\$|\#|\@|\/|\-`;
 const reBindingStatement: Array<RegExpOrRegExpExt<BindingRule>> = [
@@ -16,16 +17,19 @@ const reBindingStatement: Array<RegExpOrRegExpExt<BindingRule>> = [
 // const enhancementMap: Map<ElTypes, SignalEnhancement> = new Map();
 // enhancementMap.set('')
 
-export function prsWith(self: AP) : PAP {
+export function prsWith(self: AP) : Array<BindingRule> {
     const {With} = self;
+    
     const bindingRules: Array<BindingRule> = [];
+    const defltLocal = getDfltLocal(self);
     for(const to of With!){
         const test = tryParse(to, reBindingStatement) as BindingRule;
         if(test === null) throw 'PE'; //Parse Error
-        const {remoteType} = test;
-        bindingRules.push(test);
+        
+        bindingRules.push({
+            ...defltLocal,
+            ...test
+        });
     }
-    return {
-        bindingRules
-    }
+    return bindingRules;
 }

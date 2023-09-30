@@ -31,6 +31,7 @@ export class MyCustomElement extends HTMLElement {
         <div id=someBoolPropVal></div>
         <input name=someStringProp value=hello be-bound>
         <input name=someBoolProp type=checkbox be-bound>
+        <input be-bound='With /someStringProp'>
         <be-hive></be-hive>
     `;
     }

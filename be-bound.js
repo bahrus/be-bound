@@ -13,23 +13,6 @@ export class BeBound extends BE {
     async noAttrs(self) {
         const { enhancedElement } = self;
         const defltLocal = getDfltLocal(self);
-        // const {localName} = enhancedElement;
-        // let localProp = 'textContent';
-        // switch(localName){
-        //     case 'input':
-        //         const {type} = enhancedElement as HTMLInputElement;
-        //         switch(type){
-        //             case 'number':
-        //                 localProp = 'valueAsNumber';
-        //                 break;
-        //             case 'checkbox':
-        //                 localProp = 'checked';
-        //                 break;
-        //             default:
-        //                 localProp = 'value';
-        //         }
-        //         break;
-        // }
         self.bindingRules = [{
                 ...defltLocal,
                 remoteType: '/',
@@ -70,13 +53,24 @@ export class BeBound extends BE {
             resolved: true,
         };
     }
+    async onCamelized(self) {
+        const { With, Between } = self;
+        let withBindingRules = [];
+        if (With !== undefined) {
+            const { prsWith } = await import('./prsWith.js');
+            withBindingRules = prsWith(self);
+        }
+        return {
+            bindingRules: [...withBindingRules]
+        };
+    }
 }
 const typeComp = new Map([
     ['string.undefined', 'local'],
     ['string.string', 'tie'],
     ['boolean.undefined', 'local'],
 ]);
-function getDfltLocal(self) {
+export function getDfltLocal(self) {
     const { enhancedElement } = self;
     const { localName } = enhancedElement;
     let localProp = 'textContent';
@@ -220,6 +214,10 @@ const xe = new XE({
             noAttrs: {
                 ifAllOf: ['isParsed'],
                 ifNoneOf: ['With', 'Between']
+            },
+            onCamelized: {
+                ifAllOf: ['isParsed'],
+                ifAtLeastOneOf: ['With', 'Between'],
             },
             hydrate: 'bindingRules'
         }

@@ -9,7 +9,10 @@ export interface EndUserProps extends IBE{
 
 export interface AllProps extends EndUserProps{
     bindingRules?: Array<BindingRule>,
+    //partialBindingRules?: Array<BindingRule>,
     isParsed?: boolean,
+    //parsedWith?: boolean,
+    //parsedBetween?: boolean,
 }
 
 export type SignalEnhancement = 'be-value-added' | 'be-propagating' | undefined;
@@ -36,6 +39,7 @@ export type POA = [PAP | undefined, ActionOnEventConfigs<PAP, Actions>];
 
 export interface Actions{
     noAttrs(self: this): ProPAP;
+    onCamelized(self: this): ProPAP;
     hydrate(self: this): ProPAP;
 }
 
