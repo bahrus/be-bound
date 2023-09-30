@@ -73,7 +73,8 @@ export class BeBound extends BE {
 }
 const typeComp = new Map([
     ['string.undefined', 'local'],
-    ['string.string', 'tie']
+    ['string.string', 'tie'],
+    ['boolean.undefined', 'local'],
 ]);
 function compareSpecificity(localVal, remoteVal) {
     if (localVal === remoteVal)

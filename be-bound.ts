@@ -81,7 +81,8 @@ export class BeBound extends BE<AP, Actions> implements Actions{
 
 const typeComp: Map<string, TriggerSource> = new Map([
     ['string.undefined', 'local'],
-    ['string.string', 'tie']
+    ['string.string', 'tie'],
+    ['boolean.undefined', 'local'],
 ]);
 
 function compareSpecificity(localVal: any, remoteVal: any) : SpecificityResult  {
