@@ -28,7 +28,7 @@ Object type trumps number type which  trumps boolean type which trumps string ty
 If the two types are the same, if the two types aren't of type object, the longer toString() trumps the shorter toString().  for Objects, use JSON.stringify, and compare lengths.
 
 
-Example 1a is shorthand for:
+Example 1a is shorthand / alternative way of expressing:
 
 ## Example 1b:
 
@@ -40,13 +40,13 @@ Example 1a is shorthand for:
 </my-host-element>
 ```
 
-and is also shorthand for:
+which in turn is shorthand for:
 
 ```html
 <my-host-element>
     #shadow
         ...
-        <input be-bound='On input event with /hostProp.'>
+        <input be-bound='Between value property observed on input event and /hostProp.'>
 </my-host-element>
 ```
 
@@ -88,7 +88,7 @@ maybe make be-linked/be sharing simply apply an enhancement?
 <my-host-element>
     #shadow
         ...
-        <my-child-element be-bound='On my child prop with /hostProp.'>
+        <my-child-element be-bound='Between my child prop and / host prop.'>
             ...
         </my-child-element>
 </my-host-element>
@@ -100,7 +100,7 @@ or more compactly:
 <my-host-element>
     #shadow
         ...
-        <my-child-element be-bound='To /hostProp on par with myChildProp.'>
+        <my-child-element be-bound='Between myChildProp and /hostProp.'>
             ...
         </my-child-element>
 </my-host-element>
