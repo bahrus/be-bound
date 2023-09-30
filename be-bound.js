@@ -110,6 +110,11 @@ function compareSpecificity(localVal, remoteVal) {
             case 'string':
                 if (localVal.length > remoteVal.length) {
                     winner = 'local';
+                    val = localVal;
+                }
+                else {
+                    winner = 'remote';
+                    val = remoteVal;
                 }
         }
     }
