@@ -6,7 +6,7 @@ import {arr, tryParse} from 'be-enhanced/cpu.js';
 const strType = String.raw `\$|\#|\@|\/|\-`;
 const reBindingStatement: Array<RegExpOrRegExpExt<BindingRule>> = [
     {
-        regExp: new RegExp(String.raw `^(?<remoteType>${strType})(?<remoteProp>[\w]+)(?<!\\)OnParWith(?<localProp>[\w]+)`),
+        regExp: new RegExp(String.raw `^(?<remoteType>${strType})(?<remoteProp>[\w]+)`),
         defaultVals: {}
     }
 ];
@@ -15,7 +15,7 @@ const reBindingStatement: Array<RegExpOrRegExpExt<BindingRule>> = [
 const enhancementMap: Map<ElTypes, SignalEnhancement> = new Map();
 enhancementMap.set('')
 
-export function prsTo(self: AP) : PAP {
+export function prsWith(self: AP) : PAP {
     const {To} = self;
     const bindingRules: Array<BindingRule> = [];
     for(const to of To!){
