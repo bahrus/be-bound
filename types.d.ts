@@ -14,7 +14,9 @@ export type SignalEnhancement = 'be-value-added' | 'be-propagating' | undefined;
 
 export interface BindingRule {
     localProp?: string,
+    localEvent?: string,
     remoteProp?: string,
+    remoteEvent?: string,
     remoteAttr?: string,
     remoteType?: ElTypes,
     localSignal?: WeakRef<SignalRefType>,
