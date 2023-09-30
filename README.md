@@ -19,7 +19,7 @@ Limitations:
     4.  Microdata element (meta, link, data)
 
 
-## Example 1a: [WIP]
+## Example 1a:
 
 ```html
 <my-custom-element>
