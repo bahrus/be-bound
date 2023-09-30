@@ -19,14 +19,16 @@ be-bound is an attribute-based custom enhancement that provides limited "two-way
 
 ... Two way binds input element's value property to my-host-element's hostProp property.
 
-"Trumping" is based on "specificity":
+During the initial handshake, what if both the input element has a value, and so does my-host-element's hostProp property?  Which property value "trumps"?
 
-Object trumps Number trumps boolean trumps string trumps null trumps undefined.
+We decide this based on "specificity":
 
-longer toString() trumps shorter toString().
+Object type trumps number type which  trumps boolean type which trumps string type which  trumps null type which trumps undefined type.
+
+If the two types are the same, if the two types aren't of type object, the longer toString() trumps the shorter toString().  for Objects, use JSON.stringify, and compare lengths.
 
 
-Which is shorthand for:
+Example 1a is shorthand for:
 
 ## Example 1b:
 
@@ -35,6 +37,16 @@ Which is shorthand for:
     #shadow
         ...
         <input be-bound='With /hostProp.'>
+</my-host-element>
+```
+
+and is also shorthand for:
+
+```html
+<my-host-element>
+    #shadow
+        ...
+        <input be-bound='On input event with /hostProp.'>
 </my-host-element>
 ```
 
