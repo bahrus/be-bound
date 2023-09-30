@@ -31,7 +31,7 @@ Limitations:
 
 ... Two way binds input element's value property to my-host-element's hostProp property.  If type=checkbox, checked is used.  If type=number, valueAsNumber is used.
 
-During the initial handshake, what if both the input element has a value, and so does my-host-element's hostProp property?  Which property value "trumps"?
+During the initial handshake, what if both the input element has a value, and so does my-host-element's hostProp property and they differ?  Which property value "trumps"?
 
 We decide this based on "specificity":
 

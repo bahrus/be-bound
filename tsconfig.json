@@ -8,7 +8,8 @@
 		"strict": true,
 	},
 	"files": [
-		"be-bound.ts"
+		"be-bound.ts",
+		"MyCustomElement/MyCustomElement.ts"
 	],
 	"exclude":[
 		"node_modules"

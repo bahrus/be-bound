@@ -3,11 +3,13 @@ import {IBE} from 'be-enhanced/types';
 import {ElTypes, SignalRefType} from 'be-linked/types';
 
 export interface EndUserProps extends IBE{
-    To?: Array<ToStatement>,
+    With?: Array<WithStatement>,
+    Between?: Array<BetweenStatement>,
 }
 
 export interface AllProps extends EndUserProps{
     bindingRules?: Array<BindingRule>,
+    isParsed?: boolean,
 }
 
 export type SignalEnhancement = 'be-value-added' | 'be-propagating' | undefined;
@@ -33,6 +35,9 @@ export type ProPAP = Promise<PAP>;
 export type POA = [PAP | undefined, ActionOnEventConfigs<PAP, Actions>];
 
 export interface Actions{
+    noAttrs(self: this): ProPAP;
 }
 
-export type ToStatement = string;
+export type WithStatement = string;
+
+export type BetweenStatement = string;

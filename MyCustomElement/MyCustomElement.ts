@@ -1,0 +1,23 @@
+export class MyCustomElement extends HTMLElement{
+    #someStringProp: string | undefined;
+    get someStringProp(){
+        return this.#someStringProp;
+    }
+    set someStringProp(nv){
+        this.#someStringProp = nv;
+    }
+
+    constructor(){
+        super();
+        this.attachShadow({mode: 'open'});
+    }
+
+    connectedCallback(){
+        this.shadowRoot!.innerHTML = String.raw `
+        <input name=someStringProp be-bound>
+        <be-hive></be-hive>
+    `;
+    }
+}
+
+customElements.define('my-custom-element', MyCustomElement);
