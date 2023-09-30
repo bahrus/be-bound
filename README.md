@@ -19,7 +19,7 @@ Limitations:
     4.  Microdata element (meta, link, data)
 
 
-## Example 1a: [TODO]
+## Example 1a:
 
 ```html
 <my-custom-element>
@@ -40,9 +40,9 @@ Object type trumps number type which  trumps boolean type which trumps string ty
 If the two types are the same, if the two types aren't of type object, the longer toString() trumps the shorter toString().  For object types, use JSON.stringify, and compare lengths.
 
 
-Example 1a is shorthand / alternative way of expressing:
+Example 1a is a shorthand / alternative way of expressing:
 
-## Example 1b: [TODO]
+## Example 1c: [TODO]
 
 ```html
 <my-host-element>
