@@ -38,11 +38,11 @@ In the above example, we saw two special symbols used.  Listing them all:
 
 | Symbol      | Meaning              |
 |-------------|----------------------|
-| /:prop      |"Hostish"             |
-| @:prop      |Name attribute        |
-| $:prop      |Itemprop attribute    |
-| #:prop      |Id attribute          |
-| -           |Marker indicates prop |
+| /propName   |"Hostish"             |
+| @propName   |Name attribute        |
+| $propName   |Itemprop attribute    |
+| #propName   |Id attribute          |
+| -prop-name  |Marker indicates prop |
 
 ## Trumping rules
 

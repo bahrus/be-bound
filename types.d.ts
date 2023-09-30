@@ -10,6 +10,8 @@ export interface AllProps extends EndUserProps{
     bindingRules?: Array<BindingRule>,
 }
 
+export type SignalEnhancement = 'be-value-added' | 'be-propagating' | undefined;
+
 export interface BindingRule {
     localProp?: string,
     remoteProp?: string,
@@ -17,6 +19,7 @@ export interface BindingRule {
     remoteType?: ElTypes,
     localSignal?: WeakRef<SignalRefType>,
     remoteSignal?: WeakRef<SignalRefType>,
+    //remoteEnhancement?: SignalEnhancement,
 }
 
 export type AP = AllProps;
