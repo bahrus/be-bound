@@ -7,6 +7,18 @@ be-bound is an attribute-based custom enhancement that provides limited "two-way
 <img src="http://img.badgesize.io/https://cdn.jsdelivr.net/npm/be-bound?compression=gzip">
 [![Playwright Tests](https://github.com/bahrus/be-bound/actions/workflows/CI.yml/badge.svg?branch=baseline)](https://github.com/bahrus/be-bound/actions/workflows/CI.yml)
 
+Limitations:
+
+1.  Binding is 100% equal -- no computed binding, just direct copy of primitives.
+2.  Object support is there also, with special logic to avoid infinite loops.  A guid key is assigned to the object to avoid this calamity.
+3.  If the two values are equal, no action is taken. 
+4.  The two properties must be class properties with setters and getters, either defined explicitly, or dynamically via Object.defineProperty.  Exceptions are if the child is a(n):
+    1.  input element.
+    2.  form element.
+    3.  HTML Element with contentEditable attribute.
+    4.  Microdata element (meta, link, data)
+
+
 ## Example 1a:
 
 ```html
@@ -17,7 +29,7 @@ be-bound is an attribute-based custom enhancement that provides limited "two-way
 </my-host-element>
 ```
 
-... Two way binds input element's value property to my-host-element's hostProp property.
+... Two way binds input element's value property to my-host-element's hostProp property.  If type=checkbox, checked is used.  If type=number, valueAsNumber is used.
 
 During the initial handshake, what if both the input element has a value, and so does my-host-element's hostProp property?  Which property value "trumps"?
 
@@ -25,7 +37,7 @@ We decide this based on "specificity":
 
 Object type trumps number type which  trumps boolean type which trumps string type which  trumps null type which trumps undefined type.
 
-If the two types are the same, if the two types aren't of type object, the longer toString() trumps the shorter toString().  for Objects, use JSON.stringify, and compare lengths.
+If the two types are the same, if the two types aren't of type object, the longer toString() trumps the shorter toString().  For object types, use JSON.stringify, and compare lengths.
 
 
 Example 1a is shorthand / alternative way of expressing:
@@ -82,7 +94,7 @@ which in turn is shorthand for:
 </my-host-element>
 ```
 
-maybe make be-linked/be sharing simply apply an enhancement?
+<!-- maybe make be-linked/be sharing simply apply an enhancement? -->
 
 ```html
 <my-host-element>
@@ -119,24 +131,10 @@ In the above example, we saw two special symbols used.  Listing them all:
 | #propName   |Id attribute          |
 | -prop-name  |Marker indicates prop |
 
-## Trumping rules
+"Hostish" means:
 
-If at the time of the connection, the two values being bound differ, the following rules governing the [TODO]
-
-
-So basically, this keeps the two props in sync. 
-
-Limitations:
-
-1.  Binding is 100% equal -- no computed binding, just direct copy of primitives.
-2.  Object support is there also, with special logic to avoid infinite loops.  A guid key is assigned to the object to avoid this calamity.
-3.  If the two values are equal, no action is taken. 
-4.  The two properties must be class properties with setters and getters, either defined explicitly, or dynamically via Object.defineProperty.  Exceptions are if the child is a(n):
-    1.  input element.
-    2.  form element.
-
-
-
+1.  First, do a "closest" for an element with attribute itemscope, where the tag name has a dash in it.  Do that search recursively.  
+2.  If no match found, use getRootNode().host.
 
 ## Real world examples
 
