@@ -59,7 +59,7 @@ If the two types are the same, if the two types aren't of type object, the longe
 
 Example 1a is a shorthand / alternative way of expressing:
 
-## Example 1c: [TODO]
+## Example 1c:
 
 ```html
 <my-host-element>
