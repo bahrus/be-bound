@@ -1,4 +1,4 @@
-# be-bound [TODO]
+# be-bound [WIP]
 
 be-bound is an attribute-based custom enhancement that provides limited "two-way binding" support. 
 
@@ -42,7 +42,7 @@ If the two types are the same, if the two types aren't of type object, the longe
 
 Example 1a is shorthand / alternative way of expressing:
 
-## Example 1b:
+## Example 1b: [TODO]
 
 ```html
 <my-host-element>
@@ -62,7 +62,7 @@ which in turn is shorthand for:
 </my-host-element>
 ```
 
-## Example 1c:
+## Example 1c: [TODO]
 
 ```html
 <my-host-element>
@@ -83,7 +83,7 @@ which in turn is shorthand for:
 </my-host-element>
 ```
 
-## Example 1e:
+## Example 1e: [TODO]
 
 ```html
 <my-host-element>
