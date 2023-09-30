@@ -19,7 +19,7 @@ Limitations:
     4.  Microdata element (meta, link, data)
 
 
-## Example 1a:
+## Example 1a: [WIP]
 
 ```html
 <my-custom-element>
@@ -29,7 +29,24 @@ Limitations:
 </my-custom-element>
 ```
 
-... Two way binds input element's value property to my-host-element's hostProp property.  If type=checkbox, checked is used.  If type=number, valueAsNumber is used.
+... Two way binds input element's value property to my-host-element's hostProp property. 
+
+## Example 1b:
+
+```html
+<my-custom-element>
+    #shadow
+        ...
+        <input type=checkbox name=someBoolProp be-bound>
+</my-custom-element>
+```
+
+
+ If type=checkbox, checked is used. 
+ 
+ 
+ 
+  If type=number, valueAsNumber is used.
 
 During the initial handshake, what if both the input element has a value, and so does my-host-element's hostProp property and they differ?  Which property value "trumps"?
 

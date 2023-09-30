@@ -5,6 +5,8 @@ import {Actions, AllProps, AP, PAP, ProPAP, POA, TriggerSource, SpecificityResul
 import {register} from 'be-hive/register.js';
 import {findRealm} from 'trans-render/lib/findRealm.js';
 import {Actions as BPActions} from 'be-propagating/types';
+//import {getSignalVal} from 'be-linked/getSignalVal.js'
+import {SignalRefType} from 'be-linked/types';
 
 export class BeBound extends BE<AP, Actions> implements Actions{
     static override get beConfig(){
@@ -109,6 +111,51 @@ function compareSpecificity(localVal: any, remoteVal: any) : SpecificityResult  
 
 }
 
+//TODO:  replace be-linked with this one
+
+export function getSignalVal(obj: SignalRefType){
+    if(obj instanceof Element){
+        if('checked' in obj){
+            if(obj instanceof HTMLInputElement && obj.type === 'checkbox'){
+                return obj.checked;
+            }
+        }
+        if(obj.hasAttribute('aria-checked')){
+            return obj.getAttribute('aria-checked') === 'true';
+        }
+        if('value' in obj){
+            return obj.value;
+        }
+        //TODO:  hyperlinks
+        return obj.textContent;
+    }else{
+        return obj.value;
+    }
+}
+
+//TODO:  move this to be-linked.
+function setSignalVal(obj: SignalRefType, val: any){
+    if(obj instanceof Element){
+        const typeOfVal = typeof val;
+        if('checked' in obj && typeOfVal === 'boolean'){
+            obj.checked = val;
+            return;
+        }
+        //TODO:  aria-checked?
+        // if(obj.hasAttribute('aria-checked')){
+        //     return obj.setAttribute('aria-checked' === 'true';
+        // }
+        if('value' in obj && typeOfVal === 'string'){
+            obj.value = val;
+            return;
+        }
+        //TODO:  hyperlinks
+        obj.textContent = val.toString();
+    }else{
+        obj.value = val;
+    }
+}
+
 function evalBindRules(self: BeBound, src: TriggerSource){
     const {bindingRules} = self;
     for(const bindingRule of bindingRules!){
@@ -117,14 +164,25 @@ function evalBindRules(self: BeBound, src: TriggerSource){
         const remoteSignalDeref = remoteSignal?.deref() as any;
         if(localSignalDeref === undefined) throw 404;
         if(remoteSignalDeref === undefined) throw 404;
-        const localVal = localSignalDeref.value;
-        const remoteVal = remoteSignalDeref.value;
-        const tbd = compareSpecificity(localVal, remoteVal);
-        const {winner, val} = tbd;
-        if(winner === 'tie') continue;
+        const localVal = getSignalVal(localSignalDeref);
+        const remoteVal = getSignalVal(remoteSignalDeref);
+        if(localVal === remoteVal) continue; //TODO:  what if they are objects?
+        let winner = src;
+        let tieBrakerVal: any = undefined;
+        if(winner === 'tie'){
+            const tieBreaker = compareSpecificity(localVal, remoteVal);
+            winner = tieBreaker.winner!;
+            if(winner === 'tie') continue;
+            tieBrakerVal = tieBreaker.val;
+            
+        }
+        
         switch(winner){
             case 'local':
-                remoteSignalDeref.value = val;
+                setSignalVal(remoteSignalDeref, tieBrakerVal || localVal);
+                break;
+            case 'remote':
+                setSignalVal(localSignalDeref, tieBrakerVal || remoteVal);
                 break;
         }
     }
