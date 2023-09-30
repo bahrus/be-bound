@@ -10,6 +10,16 @@ export class MyCustomElement extends HTMLElement{
         if(div !== null && div !== undefined) div.textContent = nv;
     }
 
+    #someBoolProp: boolean | undefined;
+    get someBoolProp(){
+        return this.#someBoolProp;
+    }
+    set someBoolProp(nv){
+        this.#someBoolProp = nv;
+        const div = this.shadowRoot?.querySelector('#someBoolPropVal');
+        if(div !== null && div !== undefined) div.textContent = '' + nv;
+    }
+
     constructor(){
         super();
         this.attachShadow({mode: 'open'});
@@ -18,7 +28,9 @@ export class MyCustomElement extends HTMLElement{
     connectedCallback(){
         this.shadowRoot!.innerHTML = String.raw `
         <div id=someStringPropVal></div>
+        <div id=someBoolPropVal></div>
         <input name=someStringProp value=hello be-bound>
+        <input name=someBoolProp type=checkbox>
         <be-hive></be-hive>
     `;
     }
