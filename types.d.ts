@@ -14,6 +14,7 @@ export interface BindingRule {
     localProp?: string,
     remoteProp?: string,
     remoteAttr?: string,
+    remoteType?: ElTypes,
     localSignal?: WeakRef<SignalRefType>,
     remoteSignal?: WeakRef<SignalRefType>,
 }
