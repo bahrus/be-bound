@@ -29,12 +29,15 @@ export class MyCustomElement extends HTMLElement {
     }
     connectedCallback() {
         this.shadowRoot.innerHTML = String.raw `
-        <div id=someStringPropVal></div>
-        <div id=someBoolPropVal></div>
-        <input name=someStringProp value=hello be-bound>
-        <input name=someBoolProp type=checkbox be-bound>
-        <input be-bound='With /someStringProp.'>
-        <span contenteditable be-bound='With /someStringProp.'></span>
+        <div itemscope>
+            <div id=someStringPropVal></div>
+            <div id=someBoolPropVal></div>
+            <input name=someStringProp value=hello be-bound>
+            <input name=someBoolProp type=checkbox be-bound>
+            <input be-bound='With /someStringProp.'>
+            <span contenteditable be-bound='With /someStringProp.'></span>
+            <span contenteditable itemprop=someStringProp be-bound></span>
+        </div>
         <be-hive></be-hive>
     `;
     }

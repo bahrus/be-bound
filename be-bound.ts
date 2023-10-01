@@ -23,7 +23,7 @@ export class BeBound extends BE<AP, Actions> implements Actions{
         self.bindingRules = [{
             ...defltLocal,
             remoteType: '/',
-            remoteProp: (enhancedElement as any).name || enhancedElement.id,
+            remoteProp: enhancedElement.getAttribute('itemprop') || (enhancedElement as any).name || enhancedElement.id,
         }];
         return {
             resolved: true,
@@ -89,7 +89,7 @@ const typeComp: Map<string, TriggerSource> = new Map([
 export function getDfltLocal(self: AP){
     const {enhancedElement} = self;
     const {localName} = enhancedElement;
-    let localProp = 'textContent';
+    let localProp: string | null = 'textContent';
     switch(localName){
         case 'input':
             const {type} = enhancedElement as HTMLInputElement;
@@ -104,6 +104,9 @@ export function getDfltLocal(self: AP){
                     localProp = 'value';
             }
             break;
+        // default:
+        //     localProp = enhancedElement.getAttribute('itemprop');
+        //     if(localProp === null) throw 'itemprop not specified';
     }
     return {
         localEvent: localName === 'input' || enhancedElement.hasAttribute('contenteditable') ? 'input' : undefined,

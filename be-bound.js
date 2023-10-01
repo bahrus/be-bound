@@ -16,7 +16,7 @@ export class BeBound extends BE {
         self.bindingRules = [{
                 ...defltLocal,
                 remoteType: '/',
-                remoteProp: enhancedElement.name || enhancedElement.id,
+                remoteProp: enhancedElement.getAttribute('itemprop') || enhancedElement.name || enhancedElement.id,
             }];
         return {
             resolved: true,
@@ -91,6 +91,9 @@ export function getDfltLocal(self) {
                     localProp = 'value';
             }
             break;
+        // default:
+        //     localProp = enhancedElement.getAttribute('itemprop');
+        //     if(localProp === null) throw 'itemprop not specified';
     }
     return {
         localEvent: localName === 'input' || enhancedElement.hasAttribute('contenteditable') ? 'input' : undefined,

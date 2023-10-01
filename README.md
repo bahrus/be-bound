@@ -89,7 +89,7 @@ which in turn is shorthand for: [TODO]
 </my-host-element>
 ```
 
-## Example 1d:
+## Example 1e:
 
 ```html
 <my-host-element>
@@ -100,7 +100,7 @@ which in turn is shorthand for: [TODO]
 </my-host-element>
 ```
 
-## Example 1e: [TODO]
+## Example 1f: [TODO]
 
 ```html
 <my-host-element>
