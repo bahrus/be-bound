@@ -100,7 +100,7 @@ which in turn is shorthand for: [TODO]
 </my-host-element>
 ```
 
-## Example 1f: [TODO]
+## Example 1f:
 
 ```html
 <my-host-element>

@@ -27,7 +27,7 @@ export class BeBound extends BE<AP, Actions> implements Actions{
             remoteProp: enhancedElement.getAttribute('itemprop') || (enhancedElement as any).name || enhancedElement.id,
         }];
         return {
-            resolved: true,
+            //resolved: true,
         };
     }
 
@@ -40,18 +40,29 @@ export class BeBound extends BE<AP, Actions> implements Actions{
             const {localEvent, remoteType, remoteProp} = bindingRule;
             if(localEvent !== undefined){
                 bindingRule.localSignal = new WeakRef(enhancedElement);
-                enhancedElement.addEventListener(localEvent, e => {
-                    evalBindRules(self, 'local');
+                enhancedElement.addEventListener(localEvent, async e => {
+                    if(this.resolved){
+                        evalBindRules(self, 'local');
+                    }else{
+                        await this.whenResolved();
+                        evalBindRules(self, 'local');
+                    }
+                    
                 });
             }else{
                 switch(localName){
                     case 'meta':{
-                        debugger;
                         import('be-value-added/be-value-added.js');
                         const beValueAdded = await  (<any>enhancedElement).beEnhanced.whenResolved('be-value-added') as BVAAllProps & EventTarget;
                         bindingRule.localSignal = new WeakRef<BVAAllProps>(beValueAdded);
-                        beValueAdded.addEventListener('value-changed', e => {
-                            evalBindRules(self, 'local');
+                        beValueAdded.addEventListener('value-changed', async e => {
+                            //console.log({resolved: this.resolved});
+                            if(this.resolved){
+                                evalBindRules(self, 'local');
+                            }else{
+                                await this.whenResolved();
+                                evalBindRules(self, 'local');
+                            }
                         });
                         break;
                     }
@@ -78,7 +89,9 @@ export class BeBound extends BE<AP, Actions> implements Actions{
                     });
             }
         }
+        //if(localName === 'meta') console.log('eval tie');
         evalBindRules(self, 'tie');
+        //if(localName === 'meta') console.log('resolve');
         return {
             resolved: true,
         }
