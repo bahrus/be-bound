@@ -22,8 +22,8 @@ export function prsWith(self: AP) : Array<BindingRule> {
     
     const bindingRules: Array<BindingRule> = [];
     ///const defltLocal = getDfltLocal(self);
-    for(const to of With!){
-        const test = tryParse(to, reWithBindingStatement) as BindingRule;
+    for(const withStatement of With!){
+        const test = tryParse(withStatement, reWithBindingStatement) as BindingRule;
         if(test === null) throw 'PE'; //Parse Error
         
         bindingRules.push(test);

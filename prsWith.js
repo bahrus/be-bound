@@ -13,8 +13,8 @@ export function prsWith(self) {
     const { With } = self;
     const bindingRules = [];
     ///const defltLocal = getDfltLocal(self);
-    for (const to of With) {
-        const test = tryParse(to, reWithBindingStatement);
+    for (const withStatement of With) {
+        const test = tryParse(withStatement, reWithBindingStatement);
         if (test === null)
             throw 'PE'; //Parse Error
         bindingRules.push(test);
