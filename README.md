@@ -2,7 +2,7 @@
 
 be-bound is an attribute-based custom enhancement that provides limited "two-way binding" support. 
 
-<a href="https://nodei.co/npm/be-bound/"><img src="https://nodei.co/npm/be-bound.png"></a>
+[![NPM version](https://badge.fury.io/js/be-bound.png)](http://badge.fury.io/js/be-bound)
 [![How big is this package in your project?](https://img.shields.io/bundlephobia/minzip/be-bound?style=for-the-badge)](https://bundlephobia.com/result?p=be-bound)
 <img src="http://img.badgesize.io/https://cdn.jsdelivr.net/npm/be-bound?compression=gzip">
 [![Playwright Tests](https://github.com/bahrus/be-bound/actions/workflows/CI.yml/badge.svg?branch=baseline)](https://github.com/bahrus/be-bound/actions/workflows/CI.yml)
