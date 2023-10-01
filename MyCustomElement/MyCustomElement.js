@@ -37,6 +37,7 @@ export class MyCustomElement extends HTMLElement {
             <input be-bound='With /someStringProp.'>
             <span contenteditable be-bound='With /someStringProp.'></span>
             <span contenteditable itemprop=someStringProp be-bound></span>
+            <meta itemprop=someStringProp be-bound>
         </div>
         <be-hive></be-hive>
     `;

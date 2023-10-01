@@ -22,6 +22,7 @@ export class BeBound extends BE {
             resolved: true,
         };
     }
+    //TODO:  abort signals, clean up
     async hydrate(self) {
         const { bindingRules, enhancedElement } = self;
         const { localName } = enhancedElement;
@@ -32,6 +33,22 @@ export class BeBound extends BE {
                 enhancedElement.addEventListener(localEvent, e => {
                     evalBindRules(self, 'local');
                 });
+            }
+            else {
+                switch (localName) {
+                    case 'meta': {
+                        debugger;
+                        import('be-value-added/be-value-added.js');
+                        const beValueAdded = await enhancedElement.beEnhanced.whenResolved('be-value-added');
+                        bindingRule.localSignal = new WeakRef(beValueAdded);
+                        beValueAdded.addEventListener('value-changed', e => {
+                            evalBindRules(self, 'local');
+                        });
+                        break;
+                    }
+                    default:
+                        throw 'NI';
+                }
             }
             //similar code as be-pute/be-switched -- share somehow?
             switch (remoteType) {
@@ -91,6 +108,8 @@ export function getDfltLocal(self) {
                     localProp = 'value';
             }
             break;
+        case 'meta':
+            localProp = 'value';
         // default:
         //     localProp = enhancedElement.getAttribute('itemprop');
         //     if(localProp === null) throw 'itemprop not specified';

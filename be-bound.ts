@@ -7,6 +7,7 @@ import {findRealm} from 'trans-render/lib/findRealm.js';
 import {Actions as BPActions} from 'be-propagating/types';
 //import {getSignalVal} from 'be-linked/getSignalVal.js'
 import {SignalRefType} from 'be-linked/types';
+import {BVAAllProps} from 'be-value-added/types';
 
 export class BeBound extends BE<AP, Actions> implements Actions{
     static override get beConfig(){
@@ -30,9 +31,11 @@ export class BeBound extends BE<AP, Actions> implements Actions{
         };
     }
 
+    //TODO:  abort signals, clean up
     async hydrate(self: this){
         const {bindingRules, enhancedElement} = self;
         const {localName} = enhancedElement;
+
         for(const bindingRule of bindingRules!){
             const {localEvent, remoteType, remoteProp} = bindingRule;
             if(localEvent !== undefined){
@@ -40,6 +43,22 @@ export class BeBound extends BE<AP, Actions> implements Actions{
                 enhancedElement.addEventListener(localEvent, e => {
                     evalBindRules(self, 'local');
                 });
+            }else{
+                switch(localName){
+                    case 'meta':{
+                        debugger;
+                        import('be-value-added/be-value-added.js');
+                        const beValueAdded = await  (<any>enhancedElement).beEnhanced.whenResolved('be-value-added') as BVAAllProps & EventTarget;
+                        bindingRule.localSignal = new WeakRef<BVAAllProps>(beValueAdded);
+                        beValueAdded.addEventListener('value-changed', e => {
+                            evalBindRules(self, 'local');
+                        });
+                        break;
+                    }
+ 
+                    default:
+                        throw 'NI';
+                }
             }
             //similar code as be-pute/be-switched -- share somehow?
             switch(remoteType){
@@ -104,6 +123,8 @@ export function getDfltLocal(self: AP){
                     localProp = 'value';
             }
             break;
+        case 'meta':
+            localProp = 'value';
         // default:
         //     localProp = enhancedElement.getAttribute('itemprop');
         //     if(localProp === null) throw 'itemprop not specified';

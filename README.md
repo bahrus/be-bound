@@ -95,7 +95,7 @@ which in turn is shorthand for: [TODO]
 <my-host-element>
     #shadow
         <div itemscope>
-            <span contenteditable itemprop=hostProp be-bound>i am here</span>
+            <span contenteditable itemprop=someStringProp be-bound>i am here</span>
         </div>
 </my-host-element>
 ```
@@ -106,7 +106,7 @@ which in turn is shorthand for: [TODO]
 <my-host-element>
     #shadow
         <div itemscope>
-            <meta itemprop=hostProp be-bound>
+            <meta itemprop=someStringProp be-bound>
         </div>
 </my-host-element>
 ```
