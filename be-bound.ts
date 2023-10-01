@@ -5,7 +5,8 @@ import {Actions, AllProps, AP, PAP, ProPAP, POA, TriggerSource, SpecificityResul
 import {register} from 'be-hive/register.js';
 import {findRealm} from 'trans-render/lib/findRealm.js';
 import {Actions as BPActions} from 'be-propagating/types';
-//import {getSignalVal} from 'be-linked/getSignalVal.js'
+import {getSignalVal} from 'be-linked/getSignalVal.js';
+import {setSignalVal} from 'be-linked/setSignalVal.js';
 import {SignalRefType} from 'be-linked/types';
 import {BVAAllProps} from 'be-value-added/types';
 
@@ -179,50 +180,6 @@ function compareSpecificity(localVal: any, remoteVal: any) : SpecificityResult  
 
 }
 
-//TODO:  replace be-linked with this one
-
-export function getSignalVal(obj: SignalRefType){
-    if(obj instanceof Element){
-        if('checked' in obj){
-            if(obj instanceof HTMLInputElement && obj.type === 'checkbox'){
-                return obj.checked;
-            }
-        }
-        if(obj.hasAttribute('aria-checked')){
-            return obj.getAttribute('aria-checked') === 'true';
-        }
-        if('value' in obj){
-            return obj.value;
-        }
-        //TODO:  hyperlinks
-        return obj.textContent;
-    }else{
-        return obj.value;
-    }
-}
-
-//TODO:  move this to be-linked.
-function setSignalVal(obj: SignalRefType, val: any){
-    if(obj instanceof Element){
-        const typeOfVal = typeof val;
-        if('checked' in obj && typeOfVal === 'boolean'){
-            obj.checked = val;
-            return;
-        }
-        //TODO:  aria-checked?
-        // if(obj.hasAttribute('aria-checked')){
-        //     return obj.setAttribute('aria-checked' === 'true';
-        // }
-        if('value' in obj && typeOfVal === 'string'){
-            obj.value = val;
-            return;
-        }
-        //TODO:  hyperlinks
-        obj.textContent = val.toString();
-    }else{
-        obj.value = val;
-    }
-}
 
 function evalBindRules(self: BeBound, src: TriggerSource){
     //console.log('evalBindRules', src);

@@ -2,6 +2,8 @@ import { BE, propDefaults, propInfo } from 'be-enhanced/BE.js';
 import { XE } from 'xtal-element/XE.js';
 import { register } from 'be-hive/register.js';
 import { findRealm } from 'trans-render/lib/findRealm.js';
+import { getSignalVal } from 'be-linked/getSignalVal.js';
+import { setSignalVal } from 'be-linked/setSignalVal.js';
 export class BeBound extends BE {
     static get beConfig() {
         return {
@@ -163,50 +165,6 @@ function compareSpecificity(localVal, remoteVal) {
         winner,
         val
     };
-}
-//TODO:  replace be-linked with this one
-export function getSignalVal(obj) {
-    if (obj instanceof Element) {
-        if ('checked' in obj) {
-            if (obj instanceof HTMLInputElement && obj.type === 'checkbox') {
-                return obj.checked;
-            }
-        }
-        if (obj.hasAttribute('aria-checked')) {
-            return obj.getAttribute('aria-checked') === 'true';
-        }
-        if ('value' in obj) {
-            return obj.value;
-        }
-        //TODO:  hyperlinks
-        return obj.textContent;
-    }
-    else {
-        return obj.value;
-    }
-}
-//TODO:  move this to be-linked.
-function setSignalVal(obj, val) {
-    if (obj instanceof Element) {
-        const typeOfVal = typeof val;
-        if ('checked' in obj && typeOfVal === 'boolean') {
-            obj.checked = val;
-            return;
-        }
-        //TODO:  aria-checked?
-        // if(obj.hasAttribute('aria-checked')){
-        //     return obj.setAttribute('aria-checked' === 'true';
-        // }
-        if ('value' in obj && typeOfVal === 'string') {
-            obj.value = val;
-            return;
-        }
-        //TODO:  hyperlinks
-        obj.textContent = val.toString();
-    }
-    else {
-        obj.value = val;
-    }
 }
 function evalBindRules(self, src) {
     //console.log('evalBindRules', src);

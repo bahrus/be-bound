@@ -155,9 +155,9 @@ In the above example, we saw two special symbols used.  Listing them all:
 
 ## Real world examples
 
-[scratch-box](https://github.com/bahrus/scratch-box/blob/baseline/make.ts#L18)
+[scratch-box](https://github.com/bahrus/scratch-box/blob/baseline/root.html#L92)
 
-The child element prop key can also point to a subpath, if it starts with a ".".  This is demonstrated [here](https://github.com/bahrus/co-depends/blob/master/animated-star-rating/make.ts#L50)
+<!-- The child element prop key can also point to a subpath, if it starts with a ".".  This is demonstrated [here](https://github.com/bahrus/co-depends/blob/master/animated-star-rating/make.ts#L50) -->
 
 
 ## Tie Breaking
