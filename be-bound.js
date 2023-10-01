@@ -96,6 +96,9 @@ export class BeBound extends BE {
             const { prsWith } = await import('./prsWith.js');
             withBindingRules = prsWith(self);
         }
+        if (Between !== undefined) {
+            console.log('found between');
+        }
         return {
             bindingRules: [...withBindingRules]
         };

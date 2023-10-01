@@ -62,65 +62,65 @@ Example 1a is a shorthand / alternative way of expressing:
 ## Example 1c:
 
 ```html
-<my-host-element>
+<my-custom-element>
     #shadow
         ...
         <input be-bound='With /someStringProp.'>
-</my-host-element>
+</my-custom-element>
 ```
 
 which in turn is shorthand for: [TODO]
 
 ```html
-<my-host-element>
+<my-custom-element>
     #shadow
         ...
         <input be-bound='Between value property observed on input event and /hostProp.'>
-</my-host-element>
+</my-custom-element>
 ```
 
 ## Example 1d:
 
 ```html
-<my-host-element>
+<my-custom-element>
     #shadow
         ...
         <span contenteditable be-bound='With /someStringProp.'>i am here</span>
-</my-host-element>
+</my-custom-element>
 ```
 
 ## Example 1e:
 
 ```html
-<my-host-element>
+<my-custom-element>
     #shadow
         <div itemscope>
             <span contenteditable itemprop=someStringProp be-bound>i am here</span>
         </div>
-</my-host-element>
+</my-custom-element>
 ```
 
 ## Example 1f:
 
 ```html
-<my-host-element>
+<my-custom-element>
     #shadow
         <div itemscope>
             <meta itemprop=someStringProp be-bound>
         </div>
-</my-host-element>
+</my-custom-element>
 ```
 
 <!-- maybe make be-linked/be sharing simply apply an enhancement? -->
 
-```html
-<my-host-element>
+<!-- ```html
+<my-custom-element>
     #shadow
         ...
         <my-child-element be-bound='Between my child prop and / host prop.'>
             ...
         </my-child-element>
-</my-host-element>
+</my-custom-element>
 ```
 
 or more compactly:
@@ -133,8 +133,32 @@ or more compactly:
             ...
         </my-child-element>
 </my-host-element>
+``` -->
+
+## Example 2a:
+
+```html
+<form>
+<input name=search>
+...
+<my-custom-element be-bound='Between someStringProp and @search'></my-custom-element>
+</form>
 ```
 
+## Example 2b:
+
+```html
+<input name=alternativeRating type=number>
+<form part=rating class="rating" be-bound='Between rating and @alternativeRating.'>
+    <div part=rating-stars class="rating__stars">
+        <input id="rating-1" class="rating__input rating__input-1" type="radio" name="rating" value="1">
+        <input id="rating-2" class="rating__input rating__input-2" type="radio" name="rating" value="2">
+        <input id="rating-3" class="rating__input rating__input-3" type="radio" name="rating" value="3">
+        <input id="rating-4" class="rating__input rating__input-4" type="radio" name="rating" value="4">
+        <input id="rating-5" class="rating__input rating__input-5" type="radio" name="rating" value="5">
+    </div>  
+</form>
+```
 
 ## Special Symbols
 
@@ -160,9 +184,6 @@ In the above example, we saw two special symbols used.  Listing them all:
 <!-- The child element prop key can also point to a subpath, if it starts with a ".".  This is demonstrated [here](https://github.com/bahrus/co-depends/blob/master/animated-star-rating/make.ts#L50) -->
 
 
-## Tie Breaking
-
-In the case that the initial values both exist at point of contact (due for example to differing default values), by default the tie-breaker goes to the host, but the user can swap the tie-breaker.
 
 ## Options
 

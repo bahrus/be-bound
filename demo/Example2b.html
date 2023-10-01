@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input name=alternativeRating type=number>
+    <form part=rating class="rating" be-bound='Between :rating and @alternativeRating.'>
+        <div part=rating-stars class="rating__stars">
+            <input id="rating-1" class="rating__input rating__input-1" type="radio" name="rating" value="1">
+            <input id="rating-2" class="rating__input rating__input-2" type="radio" name="rating" value="2">
+            <input id="rating-3" class="rating__input rating__input-3" type="radio" name="rating" value="3">
+            <input id="rating-4" class="rating__input rating__input-4" type="radio" name="rating" value="4">
+            <input id="rating-5" class="rating__input rating__input-5" type="radio" name="rating" value="5">
+        </div>  
+    </form>
+</body>
+</html>
