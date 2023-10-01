@@ -5,7 +5,7 @@ import {arr, tryParse} from 'be-enhanced/cpu.js';
 import {getDfltLocal} from './be-bound.js';
 
 const strType = String.raw `\$|\#|\@|\/|\-`;
-const reBindingStatement: Array<RegExpOrRegExpExt<BindingRule>> = [
+const reWithBindingStatement: Array<RegExpOrRegExpExt<BindingRule>> = [
     {
         regExp: new RegExp(String.raw `^(?<remoteType>${strType})(?<remoteProp>[\w]+)`),
         defaultVals: {
@@ -23,7 +23,7 @@ export function prsWith(self: AP) : Array<BindingRule> {
     const bindingRules: Array<BindingRule> = [];
     const defltLocal = getDfltLocal(self);
     for(const to of With!){
-        const test = tryParse(to, reBindingStatement) as BindingRule;
+        const test = tryParse(to, reWithBindingStatement) as BindingRule;
         if(test === null) throw 'PE'; //Parse Error
         
         bindingRules.push({
