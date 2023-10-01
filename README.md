@@ -187,3 +187,35 @@ Each binding can have a third element of the array that allows for fine-tuning t
 </tbody>
 </table>
 
+## Viewing Demos Locally
+
+Any web server that can serve static files will do, but...
+
+1.  Install git.
+2.  Fork/clone this repo.
+3.  Install node.js.
+4.  Open command window to folder where you cloned this repo.
+5.  > npm install
+6.  > npm run serve
+7.  Open http://localhost:3030/demo/ in a modern browser.
+
+## Running Tests
+
+```
+> npm run test
+```
+
+## Using from ESM Module:
+
+```JavaScript
+import 'be-bound/be-bound.js';
+```
+
+## Using from CDN:
+
+```html
+<script type=module crossorigin=anonymous>
+    import 'https://esm.run/be-bound';
+</script>
+```
+
