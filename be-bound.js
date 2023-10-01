@@ -101,8 +101,12 @@ export class BeBound extends BE {
             const { prsBetween } = await import('./prsBetween.js');
             betweenBindingRules = prsBetween(self);
         }
+        const dflt = getDfltLocal(self);
         return {
-            bindingRules: [...withBindingRules, ...betweenBindingRules],
+            bindingRules: [
+                ...withBindingRules.map(x => ({ ...dflt, ...x })),
+                ...betweenBindingRules.map(x => ({ ...dflt, ...x }))
+            ],
         };
     }
 }
@@ -111,6 +115,7 @@ const typeComp = new Map([
     ['string.string', 'tie'],
     ['boolean.undefined', 'local'],
 ]);
+export const strType = String.raw `\$|\#|\@|\/|\-`;
 export function getDfltLocal(self) {
     const { enhancedElement } = self;
     const { localName } = enhancedElement;

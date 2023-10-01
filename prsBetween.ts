@@ -2,11 +2,11 @@ import {AP, ProPAP, PAP, BindingRule, SignalEnhancement} from './types';
 import {ElTypes} from 'be-linked/types';
 import {RegExpOrRegExpExt} from 'be-enhanced/types';
 import {arr, tryParse} from 'be-enhanced/cpu.js';
-import {getDfltLocal} from './be-bound.js';
+import {getDfltLocal, strType} from './be-bound.js';
 
 const reBetweenBindingStatement: Array<RegExpOrRegExpExt<BindingRule>> = [
     {
-        regExp: new RegExp(String.raw ``),
+        regExp: new RegExp(String.raw `^(?<localProp>[\w]+)(?<!\\)And(?<remoteType>${strType})(?<remoteProp>[\w]+)`),
         defaultVals: {}
     }
 ];
