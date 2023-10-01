@@ -26,7 +26,7 @@
     "update": "ncu -u && npm install"
   },
   "dependencies": {
-    "be-enhanced": "0.0.54",
+    "be-enhanced": "0.0.55",
     "be-hive": "0.0.123",
     "be-linked": "0.0.50",
     "be-propagating": "0.0.28",
