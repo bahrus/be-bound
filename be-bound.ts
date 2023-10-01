@@ -44,12 +44,16 @@ export class BeBound extends BE<AP, Actions> implements Actions{
             //similar code as be-pute/be-switched -- share somehow?
             switch(remoteType){
                 case '/':
+                    
                     const host = await findRealm(enhancedElement, 'hostish');
                     if(!host) throw 404;
                     import('be-propagating/be-propagating.js');
+                    //console.log('begin attaching be-propagating');
                     const bePropagating = await (<any>host).beEnhanced.whenResolved('be-propagating') as BPActions;
+                    //console.log('end attaching be-propagating');
                     const signal = await bePropagating.getSignal(remoteProp!);
                     bindingRule.remoteSignal = new WeakRef(signal);
+                    //console.log('end remote hydrate');
                     signal.addEventListener('value-changed', e => {
                         evalBindRules(self, 'remote');
                     });
@@ -184,6 +188,7 @@ function setSignalVal(obj: SignalRefType, val: any){
 }
 
 function evalBindRules(self: BeBound, src: TriggerSource){
+    //console.log('evalBindRules', src);
     const {bindingRules} = self;
     for(const bindingRule of bindingRules!){
         const {localProp, remoteProp, localSignal, remoteSignal} = bindingRule;
@@ -199,6 +204,7 @@ function evalBindRules(self: BeBound, src: TriggerSource){
         if(winner === 'tie'){
             const tieBreaker = compareSpecificity(localVal, remoteVal);
             winner = tieBreaker.winner!;
+            //console.log({winner, tieBreaker, localProp, remoteProp, localVal, remoteVal});
             if(winner === 'tie') continue;
             tieBrakerVal = tieBreaker.val;
             

@@ -40,9 +40,12 @@ export class BeBound extends BE {
                     if (!host)
                         throw 404;
                     import('be-propagating/be-propagating.js');
+                    //console.log('begin attaching be-propagating');
                     const bePropagating = await host.beEnhanced.whenResolved('be-propagating');
+                    //console.log('end attaching be-propagating');
                     const signal = await bePropagating.getSignal(remoteProp);
                     bindingRule.remoteSignal = new WeakRef(signal);
+                    //console.log('end remote hydrate');
                     signal.addEventListener('value-changed', e => {
                         evalBindRules(self, 'remote');
                     });
@@ -170,6 +173,7 @@ function setSignalVal(obj, val) {
     }
 }
 function evalBindRules(self, src) {
+    //console.log('evalBindRules', src);
     const { bindingRules } = self;
     for (const bindingRule of bindingRules) {
         const { localProp, remoteProp, localSignal, remoteSignal } = bindingRule;
@@ -188,6 +192,7 @@ function evalBindRules(self, src) {
         if (winner === 'tie') {
             const tieBreaker = compareSpecificity(localVal, remoteVal);
             winner = tieBreaker.winner;
+            //console.log({winner, tieBreaker, localProp, remoteProp, localVal, remoteVal});
             if (winner === 'tie')
                 continue;
             tieBrakerVal = tieBreaker.val;

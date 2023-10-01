@@ -4,6 +4,7 @@ export class MyCustomElement extends HTMLElement{
         return this.#someStringProp;
     }
     set someStringProp(nv){
+        //console.log('set someStringProp = ' + nv);
         this.#someStringProp = nv;
         if(nv === undefined) return;
         const div = this.shadowRoot?.querySelector('#someStringPropVal');
@@ -32,7 +33,8 @@ export class MyCustomElement extends HTMLElement{
         <div id=someBoolPropVal></div>
         <input name=someStringProp value=hello be-bound>
         <input name=someBoolProp type=checkbox be-bound>
-        <input be-bound='With /someStringProp'>
+        <input be-bound='With /someStringProp.'>
+        <span contenteditable be-bound='With /someStringProp.'></span>
         <be-hive></be-hive>
     `;
     }

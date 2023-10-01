@@ -65,7 +65,7 @@ Example 1a is a shorthand / alternative way of expressing:
 <my-host-element>
     #shadow
         ...
-        <input be-bound='With /hostProp.'>
+        <input be-bound='With /someStringProp.'>
 </my-host-element>
 ```
 
@@ -79,13 +79,13 @@ which in turn is shorthand for: [TODO]
 </my-host-element>
 ```
 
-## Example 1d: [TODO]
+## Example 1d:
 
 ```html
 <my-host-element>
     #shadow
         ...
-        <span contenteditable be-bound='With /hostProp.'>i am here</span>
+        <span contenteditable be-bound='With /someStringProp.'>i am here</span>
 </my-host-element>
 ```
 
