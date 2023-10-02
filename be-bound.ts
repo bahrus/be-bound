@@ -67,27 +67,44 @@ export class BeBound extends BE<AP, Actions> implements Actions{
                         });
                         break;
                     }
- 
                     default:
-                        throw 'NI';
+                        const {localProp} = bindingRule;
+                        import('be-propagating/be-propagating.js');
+                        const bePropagating = await (<any>enhancedElement).beEnhanced.whenResolved('be-propagating') as BPActions;
+                        const signal = await bePropagating.getSignal(localProp!);
+                        bindingRule.localSignal = new WeakRef(signal);
+                        signal.addEventListener('value-changed', e => {
+                            evalBindRules(self, 'local');
+                        });
                 }
             }
             //similar code as be-pute/be-switched -- share somehow?
             switch(remoteType){
-                case '/':
-                    
+                case '/':{
                     const host = await findRealm(enhancedElement, 'hostish');
                     if(!host) throw 404;
                     import('be-propagating/be-propagating.js');
-                    //console.log('begin attaching be-propagating');
                     const bePropagating = await (<any>host).beEnhanced.whenResolved('be-propagating') as BPActions;
-                    //console.log('end attaching be-propagating');
                     const signal = await bePropagating.getSignal(remoteProp!);
                     bindingRule.remoteSignal = new WeakRef(signal);
-                    //console.log('end remote hydrate');
                     signal.addEventListener('value-changed', e => {
                         evalBindRules(self, 'remote');
                     });
+                    break;
+                }
+                case '@':{
+                    const inputEl = await findRealm(enhancedElement, ['wf', remoteProp!]) as HTMLInputElement;
+                    if(!inputEl) throw 404;
+                    bindingRule.remoteSignal = new WeakRef(inputEl);
+                    inputEl.addEventListener('input', e => {
+                        evalBindRules(self, 'remote');
+                    });
+                    break;
+                }
+                default:{
+                    throw 'NI'
+                }
+                    
             }
         }
         //if(localName === 'meta') console.log('eval tie');
