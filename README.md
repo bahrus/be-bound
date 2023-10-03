@@ -10,7 +10,7 @@ be-bound is an attribute-based custom enhancement that provides limited "two-way
 Limitations:
 
 1.  Binding is 100% equal -- no computed binding, just direct copy of primitives.
-2.  Object support is there also, with special logic to avoid infinite loops.  A guid key is assigned to the object to avoid this calamity.
+2.  Object support is there also, with special logic to avoid infinite loops.  A guid key is assigned to the object to avoid this calamity. [TODO]
 3.  If the two values are equal, no action is taken. 
 4.  The two properties must be class properties with setters and getters, either defined explicitly, or dynamically via Object.defineProperty.  Exceptions are if the child is a(n):
     1.  input element.
@@ -29,7 +29,7 @@ Limitations:
 </my-custom-element>
 ```
 
-... Two way binds input element's value property to my-host-element's hostProp property. 
+... Two way binds input element's value property to my-custom-element's someStringProp property. 
 
 ## Example 1b:
 
@@ -41,12 +41,9 @@ Limitations:
 </my-custom-element>
 ```
 
+If type=checkbox, property "checked" is used in the two way binding. 
 
- If type=checkbox, checked is used. 
- 
- 
- 
-  If type=number, valueAsNumber is used.
+If type=number, valueAsNumber is used.
 
 During the initial handshake, what if both the input element has a value, and so does my-host-element's hostProp property and they differ?  Which property value "trumps"?
 
@@ -111,6 +108,38 @@ which in turn is shorthand for: [TODO]
 </my-custom-element>
 ```
 
+## Example 1g:
+
+```html
+<my-custom-element>
+    #shadow
+        <input name=search>
+
+        ...
+
+        <span contenteditable be-bound='With @search.'>
+</my-custom-element>
+```
+
+In this case, the span's textContent property is kept in synch with the value of the search input element.
+
+## Special Symbols
+
+In the above examples, we've seen special symbols used in order to keep the statements small.  Listing them all:
+
+| Symbol      | Meaning              |
+|-------------|----------------------|
+| /propName   |"Hostish"             |
+| @propName   |Name attribute        |
+| $propName   |Itemprop attribute    |
+| #propName   |Id attribute          |
+| -prop-name  |Marker indicates prop |
+
+"Hostish" means:
+
+1.  First, do a "closest" for an element with attribute itemscope, where the tag name has a dash in it.  Do that search recursively.  
+2.  If no match found, use getRootNode().host.
+
 <!-- maybe make be-linked/be sharing simply apply an enhancement? -->
 
 <!-- ```html
@@ -135,17 +164,23 @@ or more compactly:
 </my-host-element>
 ``` -->
 
+# More complex scenarios
+
+What happens if out local element we are adorning isn't a built-in element, where we can inform with minimal hints what we want to happen? To support this, we need to switch from "With" statements, like we've seen thus far with "Between" statements, as demonstrated below:
+
 ## Example 2a:
 
 ```html
 <form>
 <input name=search>
 ...
-<my-custom-element be-bound='Between someStringProp and @search'></my-custom-element>
+<my-custom-element be-bound='Between someStringProp and @search.'></my-custom-element>
 </form>
 ```
 
-## Example 2b:
+So, when the attribute starts with the word "Between" as opposed to "With", it means we are specifying, first, the name of the local property name of the adorned element that we want to "sync up" with an "upstream" element.  In this case, with the input element based on the name attribute.  (But we can also synchronize with host properties if we use the / "sigil" as we've seen previously). 
+
+## Example 2b: [TODO]
 
 ```html
 <input name=alternativeRating type=number>
@@ -160,22 +195,7 @@ or more compactly:
 </form>
 ```
 
-## Special Symbols
 
-In the above example, we saw two special symbols used.  Listing them all:
-
-| Symbol      | Meaning              |
-|-------------|----------------------|
-| /propName   |"Hostish"             |
-| @propName   |Name attribute        |
-| $propName   |Itemprop attribute    |
-| #propName   |Id attribute          |
-| -prop-name  |Marker indicates prop |
-
-"Hostish" means:
-
-1.  First, do a "closest" for an element with attribute itemscope, where the tag name has a dash in it.  Do that search recursively.  
-2.  If no match found, use getRootNode().host.
 
 ## Real world examples
 
