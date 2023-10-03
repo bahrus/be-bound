@@ -116,14 +116,14 @@ export class BeBound extends BE<AP, Actions> implements Actions{
     }
 
     async onCamelized(self: this): ProPAP {
-        const {With, Between} = self;
+        const {With, Between, with: w, between} = self;
         let withBindingRules: Array<BindingRule> = [];
         let betweenBindingRules: Array<BindingRule> = [];
-        if(With !== undefined){
+        if(With !== undefined || w !== undefined){
             const {prsWith} = await import('./prsWith.js');
             withBindingRules = prsWith(self);
         }
-        if(Between !== undefined){
+        if(Between !== undefined || between !== undefined){
             const {prsBetween} = await import('./prsBetween.js');
             betweenBindingRules = prsBetween(self);
         }

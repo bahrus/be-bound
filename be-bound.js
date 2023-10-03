@@ -109,14 +109,14 @@ export class BeBound extends BE {
         };
     }
     async onCamelized(self) {
-        const { With, Between } = self;
+        const { With, Between, with: w, between } = self;
         let withBindingRules = [];
         let betweenBindingRules = [];
-        if (With !== undefined) {
+        if (With !== undefined || w !== undefined) {
             const { prsWith } = await import('./prsWith.js');
             withBindingRules = prsWith(self);
         }
-        if (Between !== undefined) {
+        if (Between !== undefined || between !== undefined) {
             const { prsBetween } = await import('./prsBetween.js');
             betweenBindingRules = prsBetween(self);
         }
