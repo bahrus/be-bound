@@ -41,7 +41,7 @@ export class MyCustomElement extends HTMLElement{
 
             <input name=search value=12345>
             ...
-            <span contenteditable be-bound='With @search.'>
+            <span contenteditable be-bound='With @search.'></span>
         </div>
         <be-hive></be-hive>
     `;
