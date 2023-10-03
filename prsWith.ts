@@ -10,6 +10,12 @@ const reWithBindingStatement: Array<RegExpOrRegExpExt<BindingRule>> = [
         regExp: new RegExp(String.raw `^(?<remoteType>${strType})(?<remoteProp>[\w]+)`),
         defaultVals: {
         }
+    },
+    {
+        regExp: new RegExp(String.raw `^(?<remoteProp>[\w]+)`),
+        defaultVals: {
+            remoteType: '/'
+        }
     }
 ];
 

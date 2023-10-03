@@ -29,7 +29,7 @@ Limitations:
 </my-custom-element>
 ```
 
-... Two way binds the input element's value property to my-custom-element's someStringProp property.  Here, be-bound is "piggy-backing" on the name of the input element, in the common use case that the name matches the property name from the host that we are binding to.  Scroll down to see how the syntax changes a bit to support scenarios where we can't rely on the name of the field matching the host's property.
+... two-way binds the input element's value property to my-custom-element's someStringProp property.  Here, be-bound is "piggy-backing" on the name of the input element, in the common use case that the name matches the property name from the host that we are binding to.  Scroll down to see how the syntax changes a bit to support scenarios where we can't rely on the name of the input field matching the host's property.
 
 ## Example 1b:
 
@@ -57,8 +57,7 @@ As mentioned, we can't alway rely on using the name attribute to specify the hos
 
 So now we start adding some information into the be-bound attribute.  
 
-For that, we use what I call "Hemingway notation" within the attribute, where the text of the attribute is meant to from a complete sentence.  Strictly speaking, the sentence sounds more complete if the "be-bound" attribute name is considered part of the sentence.  So please apply a little bit of generous literary leniency to the principle we are trying to follow.
-
+For that, we use what I call "Hemingway notation" within the attribute, where the text of the attribute is meant to from a complete, grammatically correct sentence, ideally.  Strictly speaking, the sentence sounds more complete if the "be-bound" attribute name is considered part of the sentence.  So please apply a little bit of generous artistic license to the principle we are trying to follow here, dear reader.
 
 So Example 1a can be alternatively defined this way way:
 
@@ -88,7 +87,7 @@ The slash (/) is a special symbol we use to indicate that someStringProp comes f
 
 We don't have to two-way bind with a property from the host.  We can also two way bind with peer elements within the HTML markup of the web component, based on other [single character symbols](https://github.com/bahrus/be-bound#special-symbols), which indicates what we are binding to.
 
-However, because we anticipate this element enhancement would be used most typically to two-way bind to a property coming from the host, we assume that if no symbol is provided, making the syntax a little more readable / Hemingway like:
+However, because we anticipate this element enhancement would be used most typically to two-way bind to a property coming from the host, we assume that that is the intention if no symbol is provided, making the syntax a little more readable / Hemingway like:
 
 ## Example 1c-take-two [TODO]
 
