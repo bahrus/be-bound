@@ -107,7 +107,7 @@ The syntax above is shorthand for: [TODO]
 <my-custom-element>
     #shadow
         ...
-        <input be-bound='Between value property observed on input event and some string prop.'>
+        <input be-bound='between value property observed on input event and some string prop.'>
 </my-custom-element>
 ```
 
@@ -214,7 +214,7 @@ What happens if our local element we are adorning isn't a built-in element, wher
 </form>
 ```
 
-So, when the attribute starts with the word "Between" or "between",  as opposed to "With" or "with", it means we are specifying, first, the name of the local property name of the adorned element that we want to "sync up" with an "upstream" element.  In this case, with the input element based on the name attribute.  (But we can also synchronize with host properties if we use the / "sigil" as we've seen previously, or no sigil at all). 
+So, when the attribute starts with the word "Between" or "between",  as opposed to "With" or "with", it means we are specifying, first, the name of the local property name of the adorned element that we want to "sync up" with an "upstream" element.  In this case, with the input element based on the name attribute.  (But we can also synchronize with host properties if we use the "/" "sigil" as we've seen previously, or no sigil at all). 
 
 ## Example 2b: [TODO]
 
