@@ -203,7 +203,7 @@ or more compactly:
 
 What happens if our local element we are adorning isn't a built-in element, where we can infer, with minimal hints, what we want to happen? To support this, we need to switch from "With" statements, like we've seen thus far with "Between" statements, as demonstrated below:
 
-## Example 2a: [WIP]
+## Example 2a:
 
 ```html
 <form>
