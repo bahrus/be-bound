@@ -89,7 +89,7 @@ We don't have to two-way bind with a property from the host.  We can also two wa
 
 However, because we anticipate this element enhancement would be used most typically to two-way bind to a property coming from the host, we assume that that is the intention if no symbol is provided, making the syntax a little more readable / Hemingway like:
 
-## Example 1c-take-two [TODO]
+## Example 1c-take-two
 
 ```html
 <my-custom-element>
