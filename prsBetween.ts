@@ -12,10 +12,10 @@ const reBetweenBindingStatement: Array<RegExpOrRegExpExt<BindingRule>> = [
 ];
 
 export function prsBetween(self: AP) : Array<BindingRule>{
-    const {Between} = self;
-
+    const {Between, between} = self;
+    const both = [...(Between || []), ...(between || [])];
     const bindingRules: Array<BindingRule> = [];
-    for(const betweenStatement of Between!){
+    for(const betweenStatement of both){
         const test = tryParse(betweenStatement, reBetweenBindingStatement) as BindingRule;
         if(test === null) throw 'PE';  //Parse Error
         bindingRules.push(test);

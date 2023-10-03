@@ -262,11 +262,11 @@ const xe = new XE<AP, Actions>({
         actions:{
             noAttrs: {
                 ifAllOf: ['isParsed'],
-                ifNoneOf: ['With', 'Between']
+                ifNoneOf: ['With', 'Between', 'with', 'between']
             },
             onCamelized:{
                 ifAllOf: ['isParsed'],
-                ifAtLeastOneOf: ['With', 'Between'],
+                ifAtLeastOneOf: ['With', 'Between', 'with', 'between'],
             },
             hydrate: 'bindingRules'
         }

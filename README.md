@@ -117,7 +117,7 @@ The syntax above is shorthand for: [TODO]
 <my-custom-element>
     #shadow
         ...
-        <span contenteditable be-bound='With /someStringProp.'>i am here</span>
+        <span contenteditable be-bound='with /someStringProp.'>i am here</span>
 </my-custom-element>
 ```
 
@@ -203,17 +203,17 @@ or more compactly:
 
 What happens if our local element we are adorning isn't a built-in element, where we can infer, with minimal hints, what we want to happen? To support this, we need to switch from "With" statements, like we've seen thus far with "Between" statements, as demonstrated below:
 
-## Example 2a:
+## Example 2a: [WIP]
 
 ```html
 <form>
 <input name=search>
 ...
-<my-custom-element be-bound='Between someStringProp and @search.'></my-custom-element>
+<my-custom-element be-bound='between someStringProp and @search.'></my-custom-element>
 </form>
 ```
 
-So, when the attribute starts with the word "Between" as opposed to "With", it means we are specifying, first, the name of the local property name of the adorned element that we want to "sync up" with an "upstream" element.  In this case, with the input element based on the name attribute.  (But we can also synchronize with host properties if we use the / "sigil" as we've seen previously, or no sigil at all). 
+So, when the attribute starts with the word "Between" or "between",  as opposed to "With" or "with", it means we are specifying, first, the name of the local property name of the adorned element that we want to "sync up" with an "upstream" element.  In this case, with the input element based on the name attribute.  (But we can also synchronize with host properties if we use the / "sigil" as we've seen previously, or no sigil at all). 
 
 ## Example 2b: [TODO]
 

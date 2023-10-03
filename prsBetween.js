@@ -7,9 +7,10 @@ const reBetweenBindingStatement = [
     }
 ];
 export function prsBetween(self) {
-    const { Between } = self;
+    const { Between, between } = self;
+    const both = [...(Between || []), ...(between || [])];
     const bindingRules = [];
-    for (const betweenStatement of Between) {
+    for (const betweenStatement of both) {
         const test = tryParse(betweenStatement, reBetweenBindingStatement);
         if (test === null)
             throw 'PE'; //Parse Error

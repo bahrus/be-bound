@@ -6,6 +6,7 @@ export interface EndUserProps extends IBE{
     With?: Array<WithStatement>,
     Between?: Array<BetweenStatement>,
     with?: Array<WithStatement>,
+    between?: Array<BetweenStatement>,
 }
 
 export interface AllProps extends EndUserProps{
