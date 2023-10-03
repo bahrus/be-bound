@@ -29,7 +29,7 @@ Limitations:
 </my-custom-element>
 ```
 
-... Two way binds input element's value property to my-custom-element's someStringProp property. 
+... Two way binds the input element's value property to my-custom-element's someStringProp property.  Here, be-bound is "piggy-backing" on the name of the input element, in the common use case that the name matches the property name from the host that we are binding to.  Scroll down to see how the syntax changes a bit to support scenarios where we can't rely on the name of the field matching the host's property.
 
 ## Example 1b:
 
@@ -53,8 +53,14 @@ Object type trumps number type which  trumps boolean type which trumps string ty
 
 If the two types are the same, if the two types aren't of type object, the longer toString() trumps the shorter toString().  For object types, use JSON.stringify, and compare lengths.
 
+As mentioned, we can't alway rely on using the name attribute to specify the host property name we want to bind to.
 
-Example 1a is a shorthand / alternative way of expressing:
+So now we start adding some information into the be-bound attribute.  
+
+For that, we use what I call "Hemingway notation" within the attribute, where the text of the attribute is meant to from a complete sentence.  Strictly speaking, the sentence sounds more complete if the "be-bound" attribute name is considered part of the sentence.  So please apply a little bit of generous literary leniency to the principle we are trying to follow.
+
+
+So Example 1a can be alternatively defined this way way:
 
 ## Example 1c:
 
@@ -66,7 +72,36 @@ Example 1a is a shorthand / alternative way of expressing:
 </my-custom-element>
 ```
 
-which in turn is shorthand for: [TODO]
+or, to be more like what I suspect Hemingway would have preferred:
+
+```html
+<my-custom-element>
+    #shadow
+        ...
+        <input be-bound='With / some string prop.'>
+</my-custom-element>
+```
+
+Both will work, so it is a matter of taste which is more readable/easier to type.
+
+The slash (/) is a special symbol we use to indicate that someStringProp comes from the host.
+
+We don't have to two-way bind with a property from the host.  We can also two way bind with peer elements within the HTML markup of the web component, based on other [single character symbols](https://github.com/bahrus/be-bound#special-symbols), which indicates what we are binding to.
+
+However, because we anticipate this element enhancement would be used most typically to two-way bind to a property coming from the host, we assume that if no symbol is provided, making the syntax a little more readable / Hemingway like:
+
+## Example 1c-take-two [TODO]
+
+```html
+<my-custom-element>
+    #shadow
+        ...
+        <input be-bound='With some string prop.'>
+</my-custom-element>
+```
+
+
+The syntax above is shorthand for: [TODO]
 
 ```html
 <my-custom-element>
