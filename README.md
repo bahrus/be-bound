@@ -162,13 +162,14 @@ In this case, the span's textContent property is kept in synch with the value of
 
 In the above examples, we've seen special symbols used in order to keep the statements small.  Listing them all:
 
-| Symbol      | Meaning              |
-|-------------|----------------------|
-| /propName   |"Hostish"             |
-| @propName   |Name attribute        |
-| $propName   |Itemprop attribute    |
-| #propName   |Id attribute          |
-| -prop-name  |Marker indicates prop |
+| Symbol      | Meaning              | Notes   |
+|-------------|----------------------|---------|
+| /propName   |"Hostish"             |         |
+| @propName   |Name attribute        |         |
+| $propName   |Itemprop attribute    | [TODO]  |
+| #propName   |Id attribute          | [TODO]  |
+| -prop-name  |Marker indicates prop | [TODO]  |
+
 
 "Hostish" means:
 
