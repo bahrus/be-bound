@@ -5,6 +5,7 @@ import {ElTypes, SignalRefType} from 'be-linked/types';
 export interface EndUserProps extends IBE{
     With?: Array<WithStatement>,
     Between?: Array<BetweenStatement>,
+    with?: Array<WithStatement>,
 }
 
 export interface AllProps extends EndUserProps{

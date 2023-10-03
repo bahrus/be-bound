@@ -57,9 +57,9 @@ As mentioned, we can't alway rely on using the name attribute to specify the hos
 
 So now we start adding some information into the be-bound attribute.  
 
-For that, we use what I call "Hemingway notation" within the attribute, where the text of the attribute is meant to from a complete, grammatically correct sentence, ideally.  Strictly speaking, the sentence sounds more complete if the "be-bound" attribute name is considered part of the sentence.  So please apply a little bit of generous artistic license to the principle we are trying to follow here, dear reader.
+For that, we use what I call "Hemingway notation" within the attribute, where the text of the attribute is meant to form a complete, grammatically correct sentence, ideally.  Strictly speaking, the sentence sounds more complete if the "be-bound" attribute name is considered part of the sentence.  So please apply a little bit of generous artistic license to the principle we are trying to follow here, dear reader.
 
-So Example 1a can be alternatively defined this way way:
+So Example 1a can be alternatively defined this way:
 
 ## Example 1c:
 
@@ -87,7 +87,7 @@ The slash (/) is a special symbol we use to indicate that someStringProp comes f
 
 We don't have to two-way bind with a property from the host.  We can also two way bind with peer elements within the HTML markup of the web component, based on other [single character symbols](https://github.com/bahrus/be-bound#special-symbols), which indicates what we are binding to.
 
-However, because we anticipate this element enhancement would be used most typically to two-way bind to a property coming from the host, we assume that that is the intention if no symbol is provided, making the syntax a little more readable / Hemingway like:
+However, because we anticipate this element enhancement would *most typically* be used to two-way bind to a property coming from the host, we assume that that is the intention if no symbol is provided, making the syntax a little more readable / Hemingway like:
 
 ## Example 1c-take-two
 
@@ -95,10 +95,11 @@ However, because we anticipate this element enhancement would be used most typic
 <my-custom-element>
     #shadow
         ...
-        <input be-bound='With some string prop.'>
+        <input be-bound='with some string prop.'>
 </my-custom-element>
 ```
 
+Note that the first word can either be capitalized or not capitalized, whichever seems more readable.
 
 The syntax above is shorthand for: [TODO]
 
@@ -106,7 +107,7 @@ The syntax above is shorthand for: [TODO]
 <my-custom-element>
     #shadow
         ...
-        <input be-bound='Between value property observed on input event and /hostProp.'>
+        <input be-bound='Between value property observed on input event and some string prop.'>
 </my-custom-element>
 ```
 
@@ -151,7 +152,7 @@ The syntax above is shorthand for: [TODO]
 
         ...
 
-        <span contenteditable be-bound='With @search.'>
+        <span contenteditable be-bound='with @search.'>
 </my-custom-element>
 ```
 
@@ -200,7 +201,7 @@ or more compactly:
 
 # More complex scenarios
 
-What happens if out local element we are adorning isn't a built-in element, where we can inform with minimal hints what we want to happen? To support this, we need to switch from "With" statements, like we've seen thus far with "Between" statements, as demonstrated below:
+What happens if our local element we are adorning isn't a built-in element, where we can infer, with minimal hints, what we want to happen? To support this, we need to switch from "With" statements, like we've seen thus far with "Between" statements, as demonstrated below:
 
 ## Example 2a:
 
@@ -212,7 +213,7 @@ What happens if out local element we are adorning isn't a built-in element, wher
 </form>
 ```
 
-So, when the attribute starts with the word "Between" as opposed to "With", it means we are specifying, first, the name of the local property name of the adorned element that we want to "sync up" with an "upstream" element.  In this case, with the input element based on the name attribute.  (But we can also synchronize with host properties if we use the / "sigil" as we've seen previously). 
+So, when the attribute starts with the word "Between" as opposed to "With", it means we are specifying, first, the name of the local property name of the adorned element that we want to "sync up" with an "upstream" element.  In this case, with the input element based on the name attribute.  (But we can also synchronize with host properties if we use the / "sigil" as we've seen previously, or no sigil at all). 
 
 ## Example 2b: [TODO]
 
