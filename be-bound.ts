@@ -109,7 +109,12 @@ export class BeBound extends BE<AP, Actions> implements Actions{
                             evalBindRules(self, 'remote');
                         })
                     }else{
-                        throw 'NI';
+                        import('be-value-added/be-value-added.js');
+                        const beValueAdded = await  (<any>itempropEl).beEnhanced.whenResolved('be-value-added') as BVAAllProps & EventTarget;
+                        bindingRule.remoteSignal = new WeakRef<BVAAllProps>(beValueAdded);
+                        beValueAdded.addEventListener('value-changed', e => {
+                            evalBindRules(self, 'remote');
+                        });
                     }
                     break;
                 }

@@ -173,7 +173,7 @@ The syntax above is shorthand for: [TODO]
 
 In this case, the span's textContent property is kept in synch with the value of the search input element.
 
-## Example 1i:
+## Example 1i: [TODO]
 
 ```html
 <my-custom-element>

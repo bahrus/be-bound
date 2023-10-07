@@ -105,7 +105,12 @@ export class BeBound extends BE {
                         });
                     }
                     else {
-                        throw 'NI';
+                        import('be-value-added/be-value-added.js');
+                        const beValueAdded = await itempropEl.beEnhanced.whenResolved('be-value-added');
+                        bindingRule.remoteSignal = new WeakRef(beValueAdded);
+                        beValueAdded.addEventListener('value-changed', e => {
+                            evalBindRules(self, 'remote');
+                        });
                     }
                     break;
                 }
