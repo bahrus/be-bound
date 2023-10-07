@@ -156,7 +156,7 @@ The syntax above is shorthand for: [TODO]
 </my-custom-element>
 ```
 
-## Example 1h: [TODO]
+## Example 1h:
 
 ```html
 <my-custom-element>
@@ -168,13 +168,25 @@ The syntax above is shorthand for: [TODO]
         
         <input be-bound='with $search.'>
     </div>
-        
-
-        
 </my-custom-element>
 ```
 
 In this case, the span's textContent property is kept in synch with the value of the search input element.
+
+## Example 1i:
+
+```html
+<my-custom-element>
+    #shadow
+    <div itemscope>
+        <meta itemprop=searchProp>
+
+        ...
+        
+        <input be-bound='with $ search prop.'>
+    </div>
+</my-custom-element>
+```
 
 ## Special Symbols
 
