@@ -173,7 +173,7 @@ The syntax above is shorthand for: [TODO]
 
 In this case, the span's textContent property is kept in synch with the value of the search input element.
 
-## Example 1i: [TODO]
+## Example 1i:
 
 ```html
 <my-custom-element>
@@ -196,7 +196,7 @@ In the above examples, we've seen special symbols used in order to keep the stat
 |-------------|----------------------|---------|
 | /propName   |"Hostish"             |         |
 | @propName   |Name attribute        |         |
-| $propName   |Itemprop attribute    | [TODO]  |
+| $propName   |Itemprop attribute    |         |
 | #propName   |Id attribute          | [TODO]  |
 | -prop-name  |Marker indicates prop | [TODO]  |
 
