@@ -96,6 +96,19 @@ export class BeBound extends BE {
                     });
                     break;
                 }
+                case '$': {
+                    const itempropEl = await findRealm(enhancedElement, ['wis', remoteProp]);
+                    if (itempropEl.hasAttribute('contenteditable')) {
+                        bindingRule.remoteSignal = new WeakRef(itempropEl);
+                        itempropEl.addEventListener('input', e => {
+                            evalBindRules(self, 'remote');
+                        });
+                    }
+                    else {
+                        throw 'NI';
+                    }
+                    break;
+                }
                 default: {
                     throw 'NI';
                 }

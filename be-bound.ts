@@ -101,6 +101,18 @@ export class BeBound extends BE<AP, Actions> implements Actions{
                     });
                     break;
                 }
+                case '$': {
+                    const itempropEl = await findRealm(enhancedElement, ['wis', remoteProp!]) as Element;
+                    if(itempropEl.hasAttribute('contenteditable')){
+                        bindingRule.remoteSignal = new WeakRef(itempropEl);
+                        itempropEl.addEventListener('input', e => {
+                            evalBindRules(self, 'remote');
+                        })
+                    }else{
+                        throw 'NI';
+                    }
+                    break;
+                }
                 default:{
                     throw 'NI'
                 }
