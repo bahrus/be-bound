@@ -156,6 +156,24 @@ The syntax above is shorthand for: [TODO]
 </my-custom-element>
 ```
 
+## Example 1h: [TODO]
+
+```html
+<my-custom-element>
+    #shadow
+    <div itemscope>
+        <span contenteditable itemprop=search>
+
+        ...
+        
+        <input be-bound='with $search.'>
+    </div>
+        
+
+        
+</my-custom-element>
+```
+
 In this case, the span's textContent property is kept in synch with the value of the search input element.
 
 ## Special Symbols
