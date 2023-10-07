@@ -188,16 +188,29 @@ In this case, the span's textContent property is kept in synch with the value of
 </my-custom-element>
 ```
 
+## Example 1j
+
+```html
+<my-custom-element>
+    #shadow
+        <input id=some-id>
+
+        ...
+
+        <span contenteditable be-bound='with # some id.'></span>
+</my-custom-element>
+```
+
 ## Special Symbols
 
 In the above examples, we've seen special symbols used in order to keep the statements small.  Listing them all:
 
-| Symbol      | Meaning              | Notes   |
-|-------------|----------------------|---------|
-| /propName   |"Hostish"             |         |
-| @propName   |Name attribute        |         |
-| $propName   |Itemprop attribute    |         |
-| #propName   |Id attribute          | [TODO]  |
+| Symbol      | Meaning              | Notes                                                                                |
+|-------------|----------------------|--------------------------------------------------------------------------------------|
+| /propName   |"Hostish"             | Attaches listeners to getters/setters.                                               |
+| @propName   |Name attribute        | Listens for input events.                                                            |
+| $propName   |Itemprop attribute    | If contenteditible, listens for input events.  Otherwise, uses be-value-added.       |
+| #propName   |Id attribute          | Listens for input events.                                                            |
 | -prop-name  |Marker indicates prop | [TODO]  |
 
 

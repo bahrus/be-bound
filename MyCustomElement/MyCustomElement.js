@@ -67,6 +67,13 @@ export class MyCustomElement extends HTMLElement {
             <meta itemprop=searchProp>
             ...
             <input be-bound='with $ search prop.'>
+
+            <h3>Example 1j</h3>
+            <input id=someId>
+
+            ...
+
+            <span contenteditable be-bound='with # some id.'></span>
             
         </div>
         <be-hive></be-hive>

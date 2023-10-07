@@ -118,6 +118,15 @@ export class BeBound extends BE<AP, Actions> implements Actions{
                     }
                     break;
                 }
+                case '#': {
+                    const inputEl = await findRealm(enhancedElement, ['wrn', '#' + remoteProp]) as Element;
+                    if(!inputEl) throw 404;
+                    bindingRule.remoteSignal = new WeakRef(inputEl);
+                    inputEl.addEventListener('input', e => {
+                        evalBindRules(self, 'remote');
+                    });
+                    break;
+                }
                 default:{
                     throw 'NI'
                 }
