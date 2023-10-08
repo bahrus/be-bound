@@ -11,6 +11,11 @@ export class AnotherCustomElement extends HTMLElement{
         if(div !== null && div !== undefined) div.textContent = nv;
     }
 
+    constructor(){
+        super();
+        this.attachShadow({mode: 'open'});
+    }
+
     connectedCallback(){
         this.shadowRoot!.innerHTML = String.raw `
         <div itemscope>
@@ -19,3 +24,4 @@ export class AnotherCustomElement extends HTMLElement{
         `;
     }
 }
+customElements.define('another-custom-element', AnotherCustomElement);

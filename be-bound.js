@@ -137,6 +137,22 @@ export class BeBound extends BE {
                     });
                     break;
                 }
+                case '-': {
+                    const customElement = await findRealm(enhancedElement, ['us', `[-${remoteProp}]`]);
+                    const { lispToCamel } = await import('trans-render/lib/lispToCamel.js');
+                    const newRemoteProp = lispToCamel(remoteProp);
+                    bindingRule.remoteProp = newRemoteProp;
+                    if (!customElement)
+                        throw 404;
+                    import('be-propagating/be-propagating.js');
+                    const bePropagating = await customElement.beEnhanced.whenResolved('be-propagating');
+                    const signal = await bePropagating.getSignal(newRemoteProp);
+                    bindingRule.remoteSignal = new WeakRef(signal);
+                    signal.addEventListener('value-changed', e => {
+                        evalBindRules(self, 'remote');
+                    });
+                    break;
+                }
                 default: {
                     throw 'NI';
                 }

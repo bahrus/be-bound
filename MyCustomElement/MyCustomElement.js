@@ -26,7 +26,6 @@ export class MyCustomElement extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
-        //this.someStringProp = 'hello2';
     }
     connectedCallback() {
         this.shadowRoot.innerHTML = String.raw `
