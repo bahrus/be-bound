@@ -98,15 +98,6 @@ export class BeBound extends BE<AP, Actions> implements Actions{
                     if(!host) throw 404;
                     const {doPG} = await import('./doPG.js');
                     await doPG(self, host as Element, bindingRule, remoteProp!, this.#abortControllers, evalBindRules, 'remote');
-                    // import('be-propagating/be-propagating.js');
-                    // const bePropagating = await (<any>host).beEnhanced.whenResolved('be-propagating') as BPActions;
-                    // const signal = await bePropagating.getSignal(remoteProp!);
-                    // bindingRule.remoteSignal = new WeakRef(signal);
-                    // const ab = new AbortController();
-                    // this.#abortControllers.push(ab);
-                    // signal.addEventListener('value-changed', e => {
-                    //     evalBindRules(self, 'remote');
-                    // }, {signal: ab.signal});
                     break;
                 }
                 case '@':{
