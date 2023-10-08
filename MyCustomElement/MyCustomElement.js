@@ -1,3 +1,4 @@
+import '../AnotherCustomElement/AnotherCustomElement.js';
 export class MyCustomElement extends HTMLElement {
     #someStringProp;
     get someStringProp() {
@@ -74,6 +75,13 @@ export class MyCustomElement extends HTMLElement {
             ...
 
             <span contenteditable be-bound='with # some id.'></span>
+
+            <h3>Example 1k</h3>
+            <another-custom-element -some-string-prop></another-custom-element>
+
+            ...
+
+            <span contenteditable be-bound='with -some-string-prop.'>abc</span>
             
         </div>
         <be-hive></be-hive>

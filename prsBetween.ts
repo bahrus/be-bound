@@ -6,7 +6,7 @@ import {getDfltLocal, strType} from './be-bound.js';
 
 const reBetweenBindingStatement: Array<RegExpOrRegExpExt<BindingRule>> = [
     {
-        regExp: new RegExp(String.raw `^(?<localProp>[\w]+)(?<!\\)And(?<remoteType>${strType})(?<remoteProp>[\w]+)`),
+        regExp: new RegExp(String.raw `^(?<localProp>[\w]+)(?<!\\)And(?<remoteType>${strType})(?<remoteProp>[\w\-]+)`),
         defaultVals: {}
     }
 ];

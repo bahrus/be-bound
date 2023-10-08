@@ -218,6 +218,19 @@ In this case, the span's textContent property is kept in synch with the value of
 </my-custom-element>
 ```
 
+## Example 1k [TODO]
+
+```html
+<my-custom-element>
+    #shadow
+        <another-custom-element -some-string-prop></another-custom-element>
+
+        ...
+
+        <span contenteditable be-bound='with -some-string-prop.'>abc</span>
+</my-custom-element>
+```
+
 
 
 <!-- maybe make be-linked/be sharing simply apply an enhancement? -->

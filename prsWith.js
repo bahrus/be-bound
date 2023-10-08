@@ -2,11 +2,11 @@ import { tryParse } from 'be-enhanced/cpu.js';
 import { strType } from './be-bound.js';
 const reWithBindingStatement = [
     {
-        regExp: new RegExp(String.raw `^(?<remoteType>${strType})(?<remoteProp>[\w]+)`),
+        regExp: new RegExp(String.raw `^(?<remoteType>${strType})(?<remoteProp>[\w\-]+)`),
         defaultVals: {}
     },
     {
-        regExp: new RegExp(String.raw `^(?<remoteProp>[\w]+)`),
+        regExp: new RegExp(String.raw `^(?<remoteProp>[\w\-]+)`),
         defaultVals: {
             remoteType: '/'
         }

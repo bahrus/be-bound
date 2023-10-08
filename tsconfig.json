@@ -9,7 +9,8 @@
 	},
 	"files": [
 		"be-bound.ts",
-		"MyCustomElement/MyCustomElement.ts"
+		"MyCustomElement/MyCustomElement.ts",
+		"AnotherCustomElement/AnotherCustomElement.ts"
 	],
 	"exclude":[
 		"node_modules"
