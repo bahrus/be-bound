@@ -44,7 +44,7 @@ export class BeBound extends BE<AP, Actions> implements Actions{
         const {localName} = enhancedElement;
 
         for(const bindingRule of bindingRules!){
-            const {localEvent, remoteType, remoteProp, localProp} = bindingRule;
+            const {localEvent, remoteType, remoteProp} = bindingRule;
             if(localEvent !== undefined){
                 bindingRule.localSignal = new WeakRef(enhancedElement);
                 const ab = new AbortController();
@@ -82,11 +82,17 @@ export class BeBound extends BE<AP, Actions> implements Actions{
                         bindingRule.localSignal = new WeakRef((<any>enhancedElement)[localProp!]);
                         const ab = new AbortController();
                         this.#abortControllers.push(ab);
-                        enhancedElement.addEventListener('input', e => {
+                        enhancedElement.addEventListener('input', async e => {
                             const {target}  = e; 
                             if(target instanceof HTMLElement){
                                 if(target.getAttribute('name') === localProp){
-                                    evalBindRules(self, 'local');
+                                    if(this.resolved){
+                                        evalBindRules(self, 'local')
+                                    }else{
+                                        await this.whenResolved();
+                                        evalBindRules(self, 'local');
+                                    }
+                                    
                                 }
                             }
                         }, {signal: ab.signal});
