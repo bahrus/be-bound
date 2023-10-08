@@ -81,15 +81,6 @@ export class BeBound extends BE {
                     default:
                         const { doPG } = await import('./doPG.js');
                         await doPG(self, enhancedElement, bindingRule, localProp, this.#abortControllers, evalBindRules, 'local');
-                    // import('be-propagating/be-propagating.js');
-                    // const bePropagating = await (<any>enhancedElement).beEnhanced.whenResolved('be-propagating') as BPActions;
-                    // const signal = await bePropagating.getSignal(localProp!);
-                    // bindingRule.localSignal = new WeakRef(signal);
-                    // const ab = new AbortController();
-                    // this.#abortControllers.push(ab);
-                    // signal.addEventListener('value-changed', e => {
-                    //     evalBindRules(self, 'local');
-                    // }, {signal: ab.signal});
                 }
             }
             //similar code as be-pute/be-switched -- share somehow?
@@ -98,15 +89,17 @@ export class BeBound extends BE {
                     const host = await findRealm(enhancedElement, 'hostish');
                     if (!host)
                         throw 404;
-                    import('be-propagating/be-propagating.js');
-                    const bePropagating = await host.beEnhanced.whenResolved('be-propagating');
-                    const signal = await bePropagating.getSignal(remoteProp);
-                    bindingRule.remoteSignal = new WeakRef(signal);
-                    const ab = new AbortController();
-                    this.#abortControllers.push(ab);
-                    signal.addEventListener('value-changed', e => {
-                        evalBindRules(self, 'remote');
-                    }, { signal: ab.signal });
+                    const { doPG } = await import('./doPG.js');
+                    await doPG(self, host, bindingRule, remoteProp, this.#abortControllers, evalBindRules, 'remote');
+                    // import('be-propagating/be-propagating.js');
+                    // const bePropagating = await (<any>host).beEnhanced.whenResolved('be-propagating') as BPActions;
+                    // const signal = await bePropagating.getSignal(remoteProp!);
+                    // bindingRule.remoteSignal = new WeakRef(signal);
+                    // const ab = new AbortController();
+                    // this.#abortControllers.push(ab);
+                    // signal.addEventListener('value-changed', e => {
+                    //     evalBindRules(self, 'remote');
+                    // }, {signal: ab.signal});
                     break;
                 }
                 case '@': {
