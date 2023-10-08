@@ -6,8 +6,8 @@
     <title>Document</title>
 </head>
 <body>
-    <input name=alternativeRating type=number>
-    <form part=rating class="rating" be-bound='Between rating and @alternativeRating.'>
+    <input id=alternativeRating type=number>
+    <form id=test be-bound='between rating and #alternativeRating.'>
         <div part=rating-stars class="rating__stars">
             <input id="rating-1" class="rating__input rating__input-1" type="radio" name="rating" value="1">
             <input id="rating-2" class="rating__input rating__input-2" type="radio" name="rating" value="2">
@@ -16,5 +16,22 @@
             <input id="rating-5" class="rating__input rating__input-5" type="radio" name="rating" value="5">
         </div>  
     </form>
+    <script type=importmap>
+        {
+            "imports": {
+                "be-enhanced/": "../node_modules/be-enhanced/",
+                "be-hive/": "../node_modules/be-hive/",
+                "be-linked/": "../node_modules/be-linked/",
+                "be-propagating/": "../node_modules/be-propagating/",
+                "be-value-added/": "../node_modules/be-value-added/",
+                "trans-render/": "../node_modules/trans-render/",
+                "xtal-element/": "../node_modules/xtal-element/"
+            }
+        }
+    </script>
+    <script type=module>
+        import '../MyCustomElement/MyCustomElement.js';
+        import '../be-bound.js';
+    </script>
 </body>
 </html>

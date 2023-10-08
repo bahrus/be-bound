@@ -29,7 +29,7 @@ export class BeBound extends BE {
         const { bindingRules, enhancedElement } = self;
         const { localName } = enhancedElement;
         for (const bindingRule of bindingRules) {
-            const { localEvent, remoteType, remoteProp } = bindingRule;
+            const { localEvent, remoteType, remoteProp, localProp } = bindingRule;
             if (localEvent !== undefined) {
                 bindingRule.localSignal = new WeakRef(enhancedElement);
                 enhancedElement.addEventListener(localEvent, async (e) => {
@@ -43,6 +43,7 @@ export class BeBound extends BE {
                 });
             }
             else {
+                const { localProp } = bindingRule;
                 switch (localName) {
                     case 'meta': {
                         import('be-value-added/be-value-added.js');
@@ -60,8 +61,19 @@ export class BeBound extends BE {
                         });
                         break;
                     }
+                    case 'form': {
+                        bindingRule.localSignal = new WeakRef(enhancedElement[localProp]);
+                        enhancedElement.addEventListener('input', e => {
+                            const { target } = e;
+                            if (target instanceof HTMLElement) {
+                                if (target.getAttribute('name') === localProp) {
+                                    evalBindRules(self, 'local');
+                                }
+                            }
+                        });
+                        break;
+                    }
                     default:
-                        const { localProp } = bindingRule;
                         import('be-propagating/be-propagating.js');
                         const bePropagating = await enhancedElement.beEnhanced.whenResolved('be-propagating');
                         const signal = await bePropagating.getSignal(localProp);

@@ -260,11 +260,11 @@ What happens if our local element we are adorning isn't a built-in element, wher
 
 So, when the attribute starts with the word "Between" or "between",  as opposed to "With" or "with", it means we are specifying, first, the name of the local property name of the adorned element that we want to "sync up" with an "upstream" element.  In this case, with the input element based on the name attribute.  (But we can also synchronize with host properties if we use the "/" "sigil" as we've seen previously, or no sigil at all). 
 
-## Example 2b: [TODO]
+## Example 2b: Special logic for forms
 
 ```html
-<input name=alternativeRating type=number>
-<form be-bound='Between rating and @alternativeRating.'>
+<input id=alternativeRating type=number>
+<form be-bound='between rating and #alternativeRating.'>
     <div part=rating-stars class="rating__stars">
         <input id="rating-1" class="rating__input rating__input-1" type="radio" name="rating" value="1">
         <input id="rating-2" class="rating__input rating__input-2" type="radio" name="rating" value="2">
