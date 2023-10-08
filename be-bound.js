@@ -79,15 +79,17 @@ export class BeBound extends BE {
                         break;
                     }
                     default:
-                        import('be-propagating/be-propagating.js');
-                        const bePropagating = await enhancedElement.beEnhanced.whenResolved('be-propagating');
-                        const signal = await bePropagating.getSignal(localProp);
-                        bindingRule.localSignal = new WeakRef(signal);
-                        const ab = new AbortController();
-                        this.#abortControllers.push(ab);
-                        signal.addEventListener('value-changed', e => {
-                            evalBindRules(self, 'local');
-                        }, { signal: ab.signal });
+                        const { doPG } = await import('./doPG.js');
+                        await doPG(self, enhancedElement, bindingRule, localProp, this.#abortControllers, evalBindRules, 'local');
+                    // import('be-propagating/be-propagating.js');
+                    // const bePropagating = await (<any>enhancedElement).beEnhanced.whenResolved('be-propagating') as BPActions;
+                    // const signal = await bePropagating.getSignal(localProp!);
+                    // bindingRule.localSignal = new WeakRef(signal);
+                    // const ab = new AbortController();
+                    // this.#abortControllers.push(ab);
+                    // signal.addEventListener('value-changed', e => {
+                    //     evalBindRules(self, 'local');
+                    // }, {signal: ab.signal});
                 }
             }
             //similar code as be-pute/be-switched -- share somehow?
