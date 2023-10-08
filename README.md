@@ -18,6 +18,23 @@ Limitations:
     3.  HTML Element with contentEditable attribute.
     4.  Microdata element (meta, link, data)
 
+## Special Symbols
+
+In the examples below, we will encounter special symbols used in order to keep the statements small:
+
+| Symbol      | Meaning              | Notes                                                                                |
+|-------------|----------------------|--------------------------------------------------------------------------------------|
+| /propName   |"Hostish"             | Attaches listeners to getters/setters.                                               |
+| @propName   |Name attribute        | Listens for input events.                                                            |
+| $propName   |Itemprop attribute    | If contenteditible, listens for input events.  Otherwise, uses be-value-added.       |
+| #propName   |Id attribute          | Listens for input events.                                                            |
+| -prop-name  |Marker indicates prop | [TODO]                                                                               |
+
+
+"Hostish" means:
+
+1.  First, do a "closest" for an element with attribute itemscope, where the tag name has a dash in it.  Do that search recursively.  
+2.  If no match found, use getRootNode().host.
 
 ## Example 1a:
 
@@ -201,23 +218,7 @@ In this case, the span's textContent property is kept in synch with the value of
 </my-custom-element>
 ```
 
-## Special Symbols
 
-In the above examples, we've seen special symbols used in order to keep the statements small.  Listing them all:
-
-| Symbol      | Meaning              | Notes                                                                                |
-|-------------|----------------------|--------------------------------------------------------------------------------------|
-| /propName   |"Hostish"             | Attaches listeners to getters/setters.                                               |
-| @propName   |Name attribute        | Listens for input events.                                                            |
-| $propName   |Itemprop attribute    | If contenteditible, listens for input events.  Otherwise, uses be-value-added.       |
-| #propName   |Id attribute          | Listens for input events.                                                            |
-| -prop-name  |Marker indicates prop | [TODO]  |
-
-
-"Hostish" means:
-
-1.  First, do a "closest" for an element with attribute itemscope, where the tag name has a dash in it.  Do that search recursively.  
-2.  If no match found, use getRootNode().host.
 
 <!-- maybe make be-linked/be sharing simply apply an enhancement? -->
 
@@ -263,7 +264,7 @@ So, when the attribute starts with the word "Between" or "between",  as opposed 
 
 ```html
 <input name=alternativeRating type=number>
-<form part=rating class="rating" be-bound='Between rating and @alternativeRating.'>
+<form be-bound='Between rating and @alternativeRating.'>
     <div part=rating-stars class="rating__stars">
         <input id="rating-1" class="rating__input rating__input-1" type="radio" name="rating" value="1">
         <input id="rating-2" class="rating__input rating__input-2" type="radio" name="rating" value="2">
