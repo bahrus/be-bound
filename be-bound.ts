@@ -62,22 +62,8 @@ export class BeBound extends BE<AP, Actions> implements Actions{
                 const {localProp} = bindingRule;
                 switch(localName){
                     case 'meta':{
-                        // import('be-value-added/be-value-added.js');
-                        // const beValueAdded = await  (<any>enhancedElement).beEnhanced.whenResolved('be-value-added') as BVAAllProps & EventTarget;
-                        // bindingRule.localSignal = new WeakRef<BVAAllProps>(beValueAdded);
-                        // const ab = new AbortController();
-                        // this.#abortControllers.push(ab);
-                        // beValueAdded.addEventListener('value-changed', async e => {
-                        //     //console.log({resolved: this.resolved});
-                        //     if(this.resolved){
-                        //         evalBindRules(self, 'local');
-                        //     }else{
-                        //         await this.whenResolved();
-                        //         evalBindRules(self, 'local');
-                        //     }
-                        // }, {signal: ab.signal});
                         const {doVA} = await import('./doVA.js');
-                        await doVA(self, bindingRule, this.#abortControllers, evalBindRules, 'local');
+                        await doVA(self, enhancedElement, bindingRule, this.#abortControllers, evalBindRules, 'local');
                         break;
                     }
                     case 'form':{
@@ -149,14 +135,9 @@ export class BeBound extends BE<AP, Actions> implements Actions{
                             evalBindRules(self, 'remote');
                         }, {signal: ab.signal})
                     }else{
-                        import('be-value-added/be-value-added.js');
-                        const beValueAdded = await  (<any>itempropEl).beEnhanced.whenResolved('be-value-added') as BVAAllProps & EventTarget;
-                        bindingRule.remoteSignal = new WeakRef<BVAAllProps>(beValueAdded);
-                        const ab = new AbortController();
-                        this.#abortControllers.push(ab);
-                        beValueAdded.addEventListener('value-changed', e => {
-                            evalBindRules(self, 'remote');
-                        }, {signal: ab.signal});
+                        const {doVA} = await import('./doVA.js');
+                        await doVA(self, itempropEl, bindingRule, this.#abortControllers, evalBindRules, 'remote')
+                        
                     }
                     break;
                 }
