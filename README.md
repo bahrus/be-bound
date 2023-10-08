@@ -1,4 +1,4 @@
-# be-bound [WIP]
+# be-bound
 
 be-bound is an attribute-based custom enhancement that provides limited "two-way binding" support. 
 
@@ -118,7 +118,7 @@ However, because we anticipate this element enhancement would *most typically* b
 
 Note that the first word can either be capitalized or not capitalized, whichever seems more readable.
 
-The syntax above is shorthand for: [TODO]
+<!--The syntax above is shorthand for: [TODO]
 
 ```html
 <my-custom-element>
@@ -126,7 +126,7 @@ The syntax above is shorthand for: [TODO]
         ...
         <input be-bound='between value property observed on input event and some string prop.'>
 </my-custom-element>
-```
+``` -->
 
 ## Example 1d:
 
@@ -277,7 +277,7 @@ So, when the attribute starts with the word "Between" or "between",  as opposed 
 
 
 
-## Real world examples
+## Real world examples [TODO:  update to use the current syntax]
 
 [scratch-box](https://github.com/bahrus/scratch-box/blob/baseline/root.html#L92)
 

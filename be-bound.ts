@@ -10,6 +10,8 @@ import {setSignalVal} from 'be-linked/setSignalVal.js';
 import {SignalRefType} from 'be-linked/types';
 import {BVAAllProps} from 'be-value-added/types';
 
+//TODO:  Cleanup event handlers on detach.
+
 export class BeBound extends BE<AP, Actions> implements Actions{
     static override get beConfig(){
         return {

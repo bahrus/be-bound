@@ -4,6 +4,7 @@ import { register } from 'be-hive/register.js';
 import { findRealm } from 'trans-render/lib/findRealm.js';
 import { getSignalVal } from 'be-linked/getSignalVal.js';
 import { setSignalVal } from 'be-linked/setSignalVal.js';
+//TODO:  Cleanup event handlers on detach.
 export class BeBound extends BE {
     static get beConfig() {
         return {
