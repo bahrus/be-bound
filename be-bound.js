@@ -4,8 +4,13 @@ import { register } from 'be-hive/register.js';
 import { findRealm } from 'trans-render/lib/findRealm.js';
 import { getSignalVal } from 'be-linked/getSignalVal.js';
 import { setSignalVal } from 'be-linked/setSignalVal.js';
-//TODO:  Cleanup event handlers on detach.
 export class BeBound extends BE {
+    #abortControllers = [];
+    detach(detachedElement) {
+        for (const ac of this.#abortControllers) {
+            ac.abort();
+        }
+    }
     static get beConfig() {
         return {
             parse: true,
@@ -33,6 +38,8 @@ export class BeBound extends BE {
             const { localEvent, remoteType, remoteProp, localProp } = bindingRule;
             if (localEvent !== undefined) {
                 bindingRule.localSignal = new WeakRef(enhancedElement);
+                const ab = new AbortController();
+                this.#abortControllers.push(ab);
                 enhancedElement.addEventListener(localEvent, async (e) => {
                     if (this.resolved) {
                         evalBindRules(self, 'local');
@@ -41,7 +48,7 @@ export class BeBound extends BE {
                         await this.whenResolved();
                         evalBindRules(self, 'local');
                     }
-                });
+                }, { signal: ab.signal });
             }
             else {
                 const { localProp } = bindingRule;
@@ -50,6 +57,8 @@ export class BeBound extends BE {
                         import('be-value-added/be-value-added.js');
                         const beValueAdded = await enhancedElement.beEnhanced.whenResolved('be-value-added');
                         bindingRule.localSignal = new WeakRef(beValueAdded);
+                        const ab = new AbortController();
+                        this.#abortControllers.push(ab);
                         beValueAdded.addEventListener('value-changed', async (e) => {
                             //console.log({resolved: this.resolved});
                             if (this.resolved) {
@@ -59,11 +68,13 @@ export class BeBound extends BE {
                                 await this.whenResolved();
                                 evalBindRules(self, 'local');
                             }
-                        });
+                        }, { signal: ab.signal });
                         break;
                     }
                     case 'form': {
                         bindingRule.localSignal = new WeakRef(enhancedElement[localProp]);
+                        const ab = new AbortController();
+                        this.#abortControllers.push(ab);
                         enhancedElement.addEventListener('input', e => {
                             const { target } = e;
                             if (target instanceof HTMLElement) {
@@ -71,7 +82,7 @@ export class BeBound extends BE {
                                     evalBindRules(self, 'local');
                                 }
                             }
-                        });
+                        }, { signal: ab.signal });
                         break;
                     }
                     default:
@@ -79,9 +90,11 @@ export class BeBound extends BE {
                         const bePropagating = await enhancedElement.beEnhanced.whenResolved('be-propagating');
                         const signal = await bePropagating.getSignal(localProp);
                         bindingRule.localSignal = new WeakRef(signal);
+                        const ab = new AbortController();
+                        this.#abortControllers.push(ab);
                         signal.addEventListener('value-changed', e => {
                             evalBindRules(self, 'local');
-                        });
+                        }, { signal: ab.signal });
                 }
             }
             //similar code as be-pute/be-switched -- share somehow?
@@ -94,9 +107,11 @@ export class BeBound extends BE {
                     const bePropagating = await host.beEnhanced.whenResolved('be-propagating');
                     const signal = await bePropagating.getSignal(remoteProp);
                     bindingRule.remoteSignal = new WeakRef(signal);
+                    const ab = new AbortController();
+                    this.#abortControllers.push(ab);
                     signal.addEventListener('value-changed', e => {
                         evalBindRules(self, 'remote');
-                    });
+                    }, { signal: ab.signal });
                     break;
                 }
                 case '@': {
@@ -104,26 +119,32 @@ export class BeBound extends BE {
                     if (!inputEl)
                         throw 404;
                     bindingRule.remoteSignal = new WeakRef(inputEl);
+                    const ab = new AbortController();
+                    this.#abortControllers.push(ab);
                     inputEl.addEventListener('input', e => {
                         evalBindRules(self, 'remote');
-                    });
+                    }, { signal: ab.signal });
                     break;
                 }
                 case '$': {
                     const itempropEl = await findRealm(enhancedElement, ['wis', remoteProp]);
                     if (itempropEl.hasAttribute('contenteditable')) {
                         bindingRule.remoteSignal = new WeakRef(itempropEl);
+                        const ab = new AbortController();
+                        this.#abortControllers.push(ab);
                         itempropEl.addEventListener('input', e => {
                             evalBindRules(self, 'remote');
-                        });
+                        }, { signal: ab.signal });
                     }
                     else {
                         import('be-value-added/be-value-added.js');
                         const beValueAdded = await itempropEl.beEnhanced.whenResolved('be-value-added');
                         bindingRule.remoteSignal = new WeakRef(beValueAdded);
+                        const ab = new AbortController();
+                        this.#abortControllers.push(ab);
                         beValueAdded.addEventListener('value-changed', e => {
                             evalBindRules(self, 'remote');
-                        });
+                        }, { signal: ab.signal });
                     }
                     break;
                 }
@@ -132,9 +153,11 @@ export class BeBound extends BE {
                     if (!inputEl)
                         throw 404;
                     bindingRule.remoteSignal = new WeakRef(inputEl);
+                    const ab = new AbortController();
+                    this.#abortControllers.push(ab);
                     inputEl.addEventListener('input', e => {
                         evalBindRules(self, 'remote');
-                    });
+                    }, { signal: ab.signal });
                     break;
                 }
                 case '-': {
@@ -148,9 +171,11 @@ export class BeBound extends BE {
                     const bePropagating = await customElement.beEnhanced.whenResolved('be-propagating');
                     const signal = await bePropagating.getSignal(newRemoteProp);
                     bindingRule.remoteSignal = new WeakRef(signal);
+                    const ab = new AbortController();
+                    this.#abortControllers.push(ab);
                     signal.addEventListener('value-changed', e => {
                         evalBindRules(self, 'remote');
-                    });
+                    }, { signal: ab.signal });
                     break;
                 }
                 default: {
