@@ -28,7 +28,7 @@ In the examples below, we will encounter special symbols used in order to keep t
 | @propName   |Name attribute        | Listens for input events.                                                            |
 | $propName   |Itemprop attribute    | If contenteditible, listens for input events.  Otherwise, uses be-value-added.       |
 | #propName   |Id attribute          | Listens for input events.                                                            |
-| -prop-name  |Marker indicates prop | [TODO]                                                                               |
+| -prop-name  |Marker indicates prop |                                                                                      |
 
 
 "Hostish" means:
@@ -218,7 +218,7 @@ In this case, the span's textContent property is kept in synch with the value of
 </my-custom-element>
 ```
 
-## Example 1k [TODO]
+## Example 1k
 
 ```html
 <my-custom-element>
