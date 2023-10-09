@@ -298,29 +298,6 @@ So, when the attribute starts with the word "Between" or "between",  as opposed 
 
 
 
-## Options
-
-Each binding can have a third element of the array that allows for fine-tuning the binding. 
-
-<table>
-<thead>
-<tr>
-    <th>Name</th>
-    <th>Description</th>
-</tr>
-</thead>
-<tbody>
-    <tr>
-        <td>localValueTrumps</td>
-        <td>If initial values don't match, make the local one trump.</td>
-    </tr>
-    <tr>
-        <td>noClone</td>
-        <td>Just pass the object reference without cloning the objects. [Untested]</td>
-    </tr>
-</tbody>
-</table>
-
 ## Viewing Demos Locally
 
 Any web server that can serve static files will do, but...
