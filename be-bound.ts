@@ -7,7 +7,7 @@ import {findRealm} from 'trans-render/lib/findRealm.js';
 import {Actions as BPActions} from 'be-propagating/types';
 import {getSignalVal} from 'be-linked/getSignalVal.js';
 import {setSignalVal} from 'be-linked/setSignalVal.js';
-
+import {SignalContainer} from 'be-linked/types';
 
 
 export class BeBound extends BE<AP, Actions> implements Actions{
@@ -62,8 +62,8 @@ export class BeBound extends BE<AP, Actions> implements Actions{
                 const {localProp} = bindingRule;
                 switch(localName){
                     case 'meta':{
-                        const {doVA} = await import('./doVA.js');
-                        await doVA(self, enhancedElement, bindingRule, this.#abortControllers, evalBindRules, 'local');
+                        const {doVA} = await import('be-linked/doVA.js');
+                        await doVA(self, enhancedElement, bindingRule as SignalContainer, 'localSignal', this.#abortControllers, evalBindRules as any, 'local');
                         break;
                     }
                     case 'form':{
@@ -87,8 +87,8 @@ export class BeBound extends BE<AP, Actions> implements Actions{
                         break;
                     }
                     default:
-                        const {doPG} = await import('./doPG.js');
-                        await doPG(self, enhancedElement, bindingRule, localProp!, this.#abortControllers, evalBindRules, 'local');
+                        const {doPG} = await import('be-linked/doPG.js');
+                        await doPG(self, enhancedElement, bindingRule as SignalContainer, 'localSignal', localProp!, this.#abortControllers, evalBindRules as any, 'local');
                 }
             }
             //similar code as be-pute/be-switched -- share somehow?
@@ -96,8 +96,8 @@ export class BeBound extends BE<AP, Actions> implements Actions{
                 case '/':{
                     const host = await findRealm(enhancedElement, 'hostish');
                     if(!host) throw 404;
-                    const {doPG} = await import('./doPG.js');
-                    await doPG(self, host as Element, bindingRule, remoteProp!, this.#abortControllers, evalBindRules, 'remote');
+                    const {doPG} = await import('be-linked/doPG.js');
+                    await doPG(self, host as Element, bindingRule as SignalContainer, 'remoteSignal', remoteProp!, this.#abortControllers, evalBindRules as any, 'remote');
                     break;
                 }
                 case '@':{
@@ -121,8 +121,8 @@ export class BeBound extends BE<AP, Actions> implements Actions{
                             evalBindRules(self, 'remote');
                         }, {signal: ab.signal})
                     }else{
-                        const {doVA} = await import('./doVA.js');
-                        await doVA(self, itempropEl, bindingRule, this.#abortControllers, evalBindRules, 'remote')
+                        const {doVA} = await import('be-linked/doVA.js');
+                        await doVA(self, itempropEl, bindingRule as SignalContainer, 'remoteSignal', this.#abortControllers, evalBindRules as any, 'remote');
                         
                     }
                     break;

@@ -10,7 +10,7 @@ export async function doPG(
     evalFn: (self: BeBound, triggerSrc: TriggerSource) => void,
     triggerSrc: TriggerSource
 ){
-    const bePropagating = await (<any>el).beEnhanced.whenResolved('be-propagating') as BPActions;
+    const bePropagating = await (<any>el).beEnhanced.whenResolved('be-propagating');
     const signal = await bePropagating.getSignal(prop);
     const signalProp = triggerSrc === 'local' ? 'localSignal' : 'remoteSignal';
     bindingRule[signalProp] = new WeakRef(signal);

@@ -54,8 +54,8 @@ export class BeBound extends BE {
                 const { localProp } = bindingRule;
                 switch (localName) {
                     case 'meta': {
-                        const { doVA } = await import('./doVA.js');
-                        await doVA(self, enhancedElement, bindingRule, this.#abortControllers, evalBindRules, 'local');
+                        const { doVA } = await import('be-linked/doVA.js');
+                        await doVA(self, enhancedElement, bindingRule, 'localSignal', this.#abortControllers, evalBindRules, 'local');
                         break;
                     }
                     case 'form': {
@@ -79,8 +79,8 @@ export class BeBound extends BE {
                         break;
                     }
                     default:
-                        const { doPG } = await import('./doPG.js');
-                        await doPG(self, enhancedElement, bindingRule, localProp, this.#abortControllers, evalBindRules, 'local');
+                        const { doPG } = await import('be-linked/doPG.js');
+                        await doPG(self, enhancedElement, bindingRule, 'localSignal', localProp, this.#abortControllers, evalBindRules, 'local');
                 }
             }
             //similar code as be-pute/be-switched -- share somehow?
@@ -89,8 +89,8 @@ export class BeBound extends BE {
                     const host = await findRealm(enhancedElement, 'hostish');
                     if (!host)
                         throw 404;
-                    const { doPG } = await import('./doPG.js');
-                    await doPG(self, host, bindingRule, remoteProp, this.#abortControllers, evalBindRules, 'remote');
+                    const { doPG } = await import('be-linked/doPG.js');
+                    await doPG(self, host, bindingRule, 'remoteSignal', remoteProp, this.#abortControllers, evalBindRules, 'remote');
                     break;
                 }
                 case '@': {
@@ -116,8 +116,8 @@ export class BeBound extends BE {
                         }, { signal: ab.signal });
                     }
                     else {
-                        const { doVA } = await import('./doVA.js');
-                        await doVA(self, itempropEl, bindingRule, this.#abortControllers, evalBindRules, 'remote');
+                        const { doVA } = await import('be-linked/doVA.js');
+                        await doVA(self, itempropEl, bindingRule, 'remoteSignal', this.#abortControllers, evalBindRules, 'remote');
                     }
                     break;
                 }
