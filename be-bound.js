@@ -138,7 +138,7 @@ export class BeBound extends BE {
             }
         }
         //if(localName === 'meta') console.log('eval tie');
-        evalBindRules(self, 'tie');
+        await evalBindRules(self, 'tie');
         //if(localName === 'meta') console.log('resolve');
         return {
             resolved: true,
@@ -165,11 +165,6 @@ export class BeBound extends BE {
         };
     }
 }
-const typeComp = new Map([
-    ['string.undefined', 'local'],
-    ['string.string', 'tie'],
-    ['boolean.undefined', 'local'],
-]);
 export const strType = String.raw `\$|\#|\@|\/|\-`;
 export function getDfltLocal(self) {
     const { enhancedElement } = self;
@@ -200,38 +195,16 @@ export function getDfltLocal(self) {
         localProp,
     };
 }
-function compareSpecificity(localVal, remoteVal) {
+async function compareSpecificity(localVal, remoteVal) {
     if (localVal === remoteVal)
         return {
             winner: 'tie',
             val: localVal
         };
-    const localType = typeof localVal;
-    const remoteType = typeof remoteVal;
-    const sameType = localType === remoteType;
-    let winner = typeComp.get(`${localType}.${remoteType}`);
-    let val = localVal;
-    if (winner === 'tie') {
-        switch (localType) {
-            case 'string':
-                if (localVal.length > remoteVal.length) {
-                    winner = 'local';
-                    val = localVal;
-                }
-                else {
-                    winner = 'remote';
-                    val = remoteVal;
-                }
-        }
-    }
-    else {
-    }
-    return {
-        winner,
-        val
-    };
+    const { breakTie } = await import('./breakTie.js');
+    return breakTie(localVal, remoteVal);
 }
-function evalBindRules(self, src) {
+async function evalBindRules(self, src) {
     //console.log('evalBindRules', src);
     const { bindingRules } = self;
     for (const bindingRule of bindingRules) {
@@ -249,7 +222,7 @@ function evalBindRules(self, src) {
         let winner = src;
         let tieBrakerVal = undefined;
         if (winner === 'tie') {
-            const tieBreaker = compareSpecificity(localVal, remoteVal);
+            const tieBreaker = await compareSpecificity(localVal, remoteVal);
             winner = tieBreaker.winner;
             //console.log({winner, tieBreaker, localProp, remoteProp, localVal, remoteVal});
             if (winner === 'tie')
