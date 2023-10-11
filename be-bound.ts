@@ -9,7 +9,7 @@ import {Actions as BPActions} from 'be-propagating/types';
 import {getSignalVal} from 'be-linked/getSignalVal.js';
 import {setSignalVal} from 'be-linked/setSignalVal.js';
 import {SignalContainer} from 'be-linked/types';
-
+import {breakTie} from './breakTie.js'; //TODO:  load this on demand without breaking tests
 
 export class BeBound extends BE<AP, Actions> implements Actions{
     #abortControllers: Array<AbortController>  = [];
@@ -52,10 +52,10 @@ export class BeBound extends BE<AP, Actions> implements Actions{
                 this.#abortControllers.push(ab);
                 enhancedElement.addEventListener(localEvent, async e => {
                     if(this.resolved){
-                        evalBindRules(self, 'local');
+                        await evalBindRules(self, 'local');
                     }else{
                         await this.whenResolved();
-                        evalBindRules(self, 'local');
+                        await evalBindRules(self, 'local');
                     }
                     
                 }, {signal: ab.signal});
@@ -76,10 +76,10 @@ export class BeBound extends BE<AP, Actions> implements Actions{
                             if(target instanceof HTMLElement){
                                 if(target.getAttribute('name') === localProp){
                                     if(this.resolved){
-                                        evalBindRules(self, 'local')
+                                        await evalBindRules(self, 'local')
                                     }else{
                                         await this.whenResolved();
-                                        evalBindRules(self, 'local');
+                                        await evalBindRules(self, 'local');
                                     }
                                     
                                 }
@@ -98,8 +98,8 @@ export class BeBound extends BE<AP, Actions> implements Actions{
                 bindingRule.remoteSignal = new WeakRef(el);
                 const ab = new AbortController();
                 this.#abortControllers.push(ab);
-                el.addEventListener('input', e => {
-                    evalBindRules(self, 'remote');
+                el.addEventListener('input', async e => {
+                    await evalBindRules(self, 'remote');
                 }, {signal: ab.signal});
             }
             switch(remoteType){
@@ -136,8 +136,8 @@ export class BeBound extends BE<AP, Actions> implements Actions{
                     bindingRule.remoteSignal = new WeakRef(signal);
                     const ab = new AbortController();
                     this.#abortControllers.push(ab);
-                    signal.addEventListener('value-changed', e => {
-                        evalBindRules(self, 'remote');
+                    signal.addEventListener('value-changed', async e => {
+                        await evalBindRules(self, 'remote');
                     }, {signal: ab.signal});
                     break;
                 }
@@ -213,17 +213,17 @@ export function getDfltLocal(self: AP){
     } as BindingRule;
 }
 
-async function compareSpecificity(localVal: any, remoteVal: any) : Promise<SpecificityResult>  {
+function compareSpecificity(localVal: any, remoteVal: any) {
     if(localVal === remoteVal) return {
         winner: 'tie',
         val: localVal
     };
-    const {breakTie} = await import('./breakTie.js');
+    //const {breakTie} = await import('./breakTie.js');
     return breakTie(localVal, remoteVal);
 }
 
 
-async function evalBindRules(self: BeBound, src: TriggerSource){
+function evalBindRules(self: BeBound, src: TriggerSource){
     //console.log('evalBindRules', src);
     const {bindingRules} = self;
     for(const bindingRule of bindingRules!){
@@ -238,7 +238,7 @@ async function evalBindRules(self: BeBound, src: TriggerSource){
         let winner = src;
         let tieBrakerVal: any = undefined;
         if(winner === 'tie'){
-            const tieBreaker = await compareSpecificity(localVal, remoteVal);
+            const tieBreaker = compareSpecificity(localVal, remoteVal);
             winner = tieBreaker.winner!;
             //console.log({winner, tieBreaker, localProp, remoteProp, localVal, remoteVal});
             if(winner === 'tie') continue;

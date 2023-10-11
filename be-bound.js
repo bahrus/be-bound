@@ -4,6 +4,7 @@ import { register } from 'be-hive/register.js';
 import { getRemoteEl } from 'be-linked/getRemoteEl.js';
 import { getSignalVal } from 'be-linked/getSignalVal.js';
 import { setSignalVal } from 'be-linked/setSignalVal.js';
+import { breakTie } from './breakTie.js'; //TODO:  load this on demand without breaking tests
 export class BeBound extends BE {
     #abortControllers = [];
     detach(detachedElement) {
@@ -42,11 +43,11 @@ export class BeBound extends BE {
                 this.#abortControllers.push(ab);
                 enhancedElement.addEventListener(localEvent, async (e) => {
                     if (this.resolved) {
-                        evalBindRules(self, 'local');
+                        await evalBindRules(self, 'local');
                     }
                     else {
                         await this.whenResolved();
-                        evalBindRules(self, 'local');
+                        await evalBindRules(self, 'local');
                     }
                 }, { signal: ab.signal });
             }
@@ -67,11 +68,11 @@ export class BeBound extends BE {
                             if (target instanceof HTMLElement) {
                                 if (target.getAttribute('name') === localProp) {
                                     if (this.resolved) {
-                                        evalBindRules(self, 'local');
+                                        await evalBindRules(self, 'local');
                                     }
                                     else {
                                         await this.whenResolved();
-                                        evalBindRules(self, 'local');
+                                        await evalBindRules(self, 'local');
                                     }
                                 }
                             }
@@ -89,8 +90,8 @@ export class BeBound extends BE {
                 bindingRule.remoteSignal = new WeakRef(el);
                 const ab = new AbortController();
                 this.#abortControllers.push(ab);
-                el.addEventListener('input', e => {
-                    evalBindRules(self, 'remote');
+                el.addEventListener('input', async (e) => {
+                    await evalBindRules(self, 'remote');
                 }, { signal: ab.signal });
             };
             switch (remoteType) {
@@ -127,8 +128,8 @@ export class BeBound extends BE {
                     bindingRule.remoteSignal = new WeakRef(signal);
                     const ab = new AbortController();
                     this.#abortControllers.push(ab);
-                    signal.addEventListener('value-changed', e => {
-                        evalBindRules(self, 'remote');
+                    signal.addEventListener('value-changed', async (e) => {
+                        await evalBindRules(self, 'remote');
                     }, { signal: ab.signal });
                     break;
                 }
@@ -195,16 +196,16 @@ export function getDfltLocal(self) {
         localProp,
     };
 }
-async function compareSpecificity(localVal, remoteVal) {
+function compareSpecificity(localVal, remoteVal) {
     if (localVal === remoteVal)
         return {
             winner: 'tie',
             val: localVal
         };
-    const { breakTie } = await import('./breakTie.js');
+    //const {breakTie} = await import('./breakTie.js');
     return breakTie(localVal, remoteVal);
 }
-async function evalBindRules(self, src) {
+function evalBindRules(self, src) {
     //console.log('evalBindRules', src);
     const { bindingRules } = self;
     for (const bindingRule of bindingRules) {
@@ -222,7 +223,7 @@ async function evalBindRules(self, src) {
         let winner = src;
         let tieBrakerVal = undefined;
         if (winner === 'tie') {
-            const tieBreaker = await compareSpecificity(localVal, remoteVal);
+            const tieBreaker = compareSpecificity(localVal, remoteVal);
             winner = tieBreaker.winner;
             //console.log({winner, tieBreaker, localProp, remoteProp, localVal, remoteVal});
             if (winner === 'tie')
