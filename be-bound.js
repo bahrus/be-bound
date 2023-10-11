@@ -1,7 +1,7 @@
 import { BE, propDefaults, propInfo } from 'be-enhanced/BE.js';
 import { XE } from 'xtal-element/XE.js';
 import { register } from 'be-hive/register.js';
-import { findRealm } from 'trans-render/lib/findRealm.js';
+import { getRemoteEl } from 'be-linked/getRemoteEl.js';
 import { getSignalVal } from 'be-linked/getSignalVal.js';
 import { setSignalVal } from 'be-linked/setSignalVal.js';
 export class BeBound extends BE {
@@ -84,64 +84,45 @@ export class BeBound extends BE {
                 }
             }
             //similar code as be-pute/be-switched -- share somehow?
+            const el = await getRemoteEl(enhancedElement, remoteType, remoteProp);
+            const stInput = () => {
+                bindingRule.remoteSignal = new WeakRef(el);
+                const ab = new AbortController();
+                this.#abortControllers.push(ab);
+                el.addEventListener('input', e => {
+                    evalBindRules(self, 'remote');
+                }, { signal: ab.signal });
+            };
             switch (remoteType) {
                 case '/': {
-                    const host = await findRealm(enhancedElement, 'hostish');
-                    if (!host)
-                        throw 404;
                     const { doPG } = await import('be-linked/doPG.js');
-                    await doPG(self, host, bindingRule, 'remoteSignal', remoteProp, this.#abortControllers, evalBindRules, 'remote');
+                    await doPG(self, el, bindingRule, 'remoteSignal', remoteProp, this.#abortControllers, evalBindRules, 'remote');
                     break;
                 }
                 case '@': {
-                    const inputEl = await findRealm(enhancedElement, ['wf', remoteProp]);
-                    if (!inputEl)
-                        throw 404;
-                    bindingRule.remoteSignal = new WeakRef(inputEl);
-                    const ab = new AbortController();
-                    this.#abortControllers.push(ab);
-                    inputEl.addEventListener('input', e => {
-                        evalBindRules(self, 'remote');
-                    }, { signal: ab.signal });
+                    stInput();
                     break;
                 }
                 case '$': {
-                    const itempropEl = await findRealm(enhancedElement, ['wis', remoteProp]);
-                    if (itempropEl.hasAttribute('contenteditable')) {
-                        bindingRule.remoteSignal = new WeakRef(itempropEl);
-                        const ab = new AbortController();
-                        this.#abortControllers.push(ab);
-                        itempropEl.addEventListener('input', e => {
-                            evalBindRules(self, 'remote');
-                        }, { signal: ab.signal });
+                    if (el.hasAttribute('contenteditable')) {
+                        stInput();
                     }
                     else {
                         const { doVA } = await import('be-linked/doVA.js');
-                        await doVA(self, itempropEl, bindingRule, 'remoteSignal', this.#abortControllers, evalBindRules, 'remote');
+                        await doVA(self, el, bindingRule, 'remoteSignal', this.#abortControllers, evalBindRules, 'remote');
                     }
                     break;
                 }
                 case '#': {
-                    const inputEl = await findRealm(enhancedElement, ['wrn', '#' + remoteProp]);
-                    if (!inputEl)
-                        throw 404;
-                    bindingRule.remoteSignal = new WeakRef(inputEl);
-                    const ab = new AbortController();
-                    this.#abortControllers.push(ab);
-                    inputEl.addEventListener('input', e => {
-                        evalBindRules(self, 'remote');
-                    }, { signal: ab.signal });
+                    stInput();
                     break;
                 }
                 case '-': {
-                    const customElement = await findRealm(enhancedElement, ['us', `[-${remoteProp}]`]);
                     const { lispToCamel } = await import('trans-render/lib/lispToCamel.js');
                     const newRemoteProp = lispToCamel(remoteProp);
                     bindingRule.remoteProp = newRemoteProp;
-                    if (!customElement)
-                        throw 404;
                     import('be-propagating/be-propagating.js');
-                    const bePropagating = await customElement.beEnhanced.whenResolved('be-propagating');
+                    const bePropagating = await el.beEnhanced.whenResolved('be-propagating');
                     const signal = await bePropagating.getSignal(newRemoteProp);
                     bindingRule.remoteSignal = new WeakRef(signal);
                     const ab = new AbortController();
@@ -167,7 +148,7 @@ export class BeBound extends BE {
         const { With, Between, with: w, between } = self;
         let withBindingRules = [];
         let betweenBindingRules = [];
-        if (With !== undefined || w !== undefined) {
+        if ((With || w) !== undefined) {
             const { prsWith } = await import('./prsWith.js');
             withBindingRules = prsWith(self);
         }

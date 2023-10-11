@@ -4,7 +4,7 @@ import {XE} from 'xtal-element/XE.js';
 import {Actions, AllProps, AP, PAP, ProPAP, POA, TriggerSource, SpecificityResult, BindingRule} from './types';
 import {register} from 'be-hive/register.js';
 import {findRealm} from 'trans-render/lib/findRealm.js';
-import {getRemoteEl} from './getRemoteEl.js';
+import {getRemoteEl} from 'be-linked/getRemoteEl.js';
 import {Actions as BPActions} from 'be-propagating/types';
 import {getSignalVal} from 'be-linked/getSignalVal.js';
 import {setSignalVal} from 'be-linked/setSignalVal.js';
@@ -94,6 +94,14 @@ export class BeBound extends BE<AP, Actions> implements Actions{
             }
             //similar code as be-pute/be-switched -- share somehow?
             const el = await getRemoteEl(enhancedElement, remoteType!, remoteProp!);
+            const stInput = () => {
+                bindingRule.remoteSignal = new WeakRef(el);
+                const ab = new AbortController();
+                this.#abortControllers.push(ab);
+                el.addEventListener('input', e => {
+                    evalBindRules(self, 'remote');
+                }, {signal: ab.signal});
+            }
             switch(remoteType){
                 case '/':{
                     const {doPG} = await import('be-linked/doPG.js');
@@ -101,22 +109,12 @@ export class BeBound extends BE<AP, Actions> implements Actions{
                     break;
                 }
                 case '@':{
-                    bindingRule.remoteSignal = new WeakRef(el);
-                    const ab = new AbortController();
-                    this.#abortControllers.push(ab);
-                    el.addEventListener('input', e => {
-                        evalBindRules(self, 'remote');
-                    }, {signal: ab.signal});
+                    stInput();
                     break;
                 }
                 case '$': {
                     if(el.hasAttribute('contenteditable')){
-                        bindingRule.remoteSignal = new WeakRef(el);
-                        const ab = new AbortController();
-                        this.#abortControllers.push(ab);
-                        el.addEventListener('input', e => {
-                            evalBindRules(self, 'remote');
-                        }, {signal: ab.signal})
+                        stInput();
                     }else{
                         const {doVA} = await import('be-linked/doVA.js');
                         await doVA(self, el, bindingRule as SignalContainer, 'remoteSignal', this.#abortControllers, evalBindRules as any, 'remote');
@@ -125,12 +123,7 @@ export class BeBound extends BE<AP, Actions> implements Actions{
                     break;
                 }
                 case '#': {
-                    bindingRule.remoteSignal = new WeakRef(el);
-                    const ab = new AbortController();
-                    this.#abortControllers.push(ab);
-                    el.addEventListener('input', e => {
-                        evalBindRules(self, 'remote');
-                    }, {signal: ab.signal});
+                    stInput();
                     break;
                 }
                 case '-': {

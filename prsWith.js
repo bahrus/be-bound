@@ -19,7 +19,6 @@ export function prsWith(self) {
     const { With, with: w } = self;
     const both = [...(With || []), ...(w || [])];
     const bindingRules = [];
-    ///const defltLocal = getDfltLocal(self);
     for (const withStatement of both) {
         const test = tryParse(withStatement, reWithBindingStatement);
         if (test === null)
