@@ -3,7 +3,6 @@ import {BEConfig} from 'be-enhanced/types';
 import {XE} from 'xtal-element/XE.js';
 import {Actions, AllProps, AP, PAP, ProPAP, POA, TriggerSource, SpecificityResult, BindingRule} from './types';
 import {register} from 'be-hive/register.js';
-import {findRealm} from 'trans-render/lib/findRealm.js';
 import {getRemoteEl} from 'be-linked/getRemoteEl.js';
 import {Actions as BPActions} from 'be-propagating/types';
 import {getSignalVal} from 'be-linked/getSignalVal.js';
@@ -235,7 +234,7 @@ function evalBindRules(self: BeBound, src: TriggerSource){
         const localVal = getSignalVal(localSignalDeref);
         const remoteVal = getSignalVal(remoteSignalDeref);
         if(localVal === remoteVal) continue; //TODO:  what if they are objects?
-        let winner = src;
+        let winner = src as string;
         let tieBrakerVal: any = undefined;
         if(winner === 'tie'){
             const tieBreaker = compareSpecificity(localVal, remoteVal);

@@ -26,16 +26,16 @@
         import '../MyCustomElement/MyCustomElement.js';
         import '../be-bound.js';
     </script>
-        <script>
-            function runTest(){
-                const mce = document.querySelector('my-custom-element');
-                if(mce.shadowRoot.querySelector('meta').content === 'hello'){
-                    target.setAttribute('mark', 'good');
-                }
+    <script>
+        function runTest(){
+            const mce = document.querySelector('my-custom-element');
+            if(mce.shadowRoot.querySelector('meta').content === 'hello'){
+                target.setAttribute('mark', 'good');
             }
-            setTimeout(() => {
-                runTest();
-            }, 2000);
-        </script>
+        }
+        setTimeout(() => {
+            runTest();
+        }, 2000);
+    </script>
 </body>
 </html>
