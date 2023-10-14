@@ -28,7 +28,7 @@
   "dependencies": {
     "be-enhanced": "0.0.55",
     "be-hive": "0.0.123",
-    "be-linked": "0.0.53",
+    "be-linked": "0.0.57",
     "be-propagating": "0.0.28",
     "trans-render": "0.0.706",
     "xtal-element": "0.0.579"
@@ -36,7 +36,7 @@
   "devDependencies": {
     "be-definitive": "0.0.111",
     "may-it-serve": "0.0.6",
-    "@playwright/test": "1.38.1"
+    "@playwright/test": "1.39.0"
   },
   "repository": {
     "type": "git",

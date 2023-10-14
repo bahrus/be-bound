@@ -31,7 +31,8 @@ export class BeBound extends BE<AP, Actions> implements Actions{
         self.bindingRules = [{
             ...defltLocal,
             remoteType: '/',
-            //TODO:  move this evaluation to be-linked -- shared with be-elevating
+            //TODO:  move this evaluation to be-linked -- shared with be-elevating, be-observant
+            //Also, support for space delimited itemprop
             remoteProp: enhancedElement.getAttribute('itemprop') || (enhancedElement as any).name || enhancedElement.id,
         }];
         return {
@@ -183,6 +184,7 @@ export class BeBound extends BE<AP, Actions> implements Actions{
 
 export const strType = String.raw `\$|\#|\@|\/|\-`;
 
+//TODO  Use getDefltLocalProp from 'be-linked';
 export function getDfltLocal(self: AP){
     const {enhancedElement} = self;
     const {localName} = enhancedElement;
