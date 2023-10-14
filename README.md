@@ -30,8 +30,7 @@ In the examples below, we will encounter special symbols used in order to keep t
 | #propName   |Id attribute          | Listens for input events.                                                            |
 | -prop-name  |Marker indicates prop | Attaches listeners to getters/setters.                                               |
 
-> [!Note]
-> test
+
 
 "Hostish" means:
 
@@ -158,6 +157,18 @@ Note that the first word can either be capitalized or not capitalized, whichever
     #shadow
         <div itemscope>
             <meta itemprop=someStringProp be-bound>
+        </div>
+</my-custom-element>
+```
+
+> [!Note]
+> If using this enhancement with itemprop attributes,  together with [be-sharing](https://github.com/bahrus/be-sharing), it is safest to add attribute "--" to the enhanced element, to let be-sharing know that this enhancement is responsible for the binding, rather than be-sharing:
+
+```html
+<my-custom-element>
+    #shadow
+        <div itemscope>
+            <meta -- itemprop=someStringProp be-bound>
         </div>
 </my-custom-element>
 ```
