@@ -12,7 +12,7 @@ import {breakTie} from './breakTie.js'; //TODO:  load this on demand without bre
 
 export class BeBound extends BE<AP, Actions> implements Actions{
     #abortControllers: Array<AbortController>  = [];
-    detach(detachedElement: Element): void {
+    detach(): void {
         for(const ac of this.#abortControllers){
             ac.abort();
         }
@@ -31,6 +31,7 @@ export class BeBound extends BE<AP, Actions> implements Actions{
         self.bindingRules = [{
             ...defltLocal,
             remoteType: '/',
+            //TODO:  move this evaluation to be-linked -- shared with be-elevating
             remoteProp: enhancedElement.getAttribute('itemprop') || (enhancedElement as any).name || enhancedElement.id,
         }];
         return {

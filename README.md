@@ -30,6 +30,8 @@ In the examples below, we will encounter special symbols used in order to keep t
 | #propName   |Id attribute          | Listens for input events.                                                            |
 | -prop-name  |Marker indicates prop | Attaches listeners to getters/setters.                                               |
 
+> [!Note]
+> test
 
 "Hostish" means:
 
