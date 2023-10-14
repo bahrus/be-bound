@@ -5,9 +5,10 @@ import { getRemoteEl } from 'be-linked/getRemoteEl.js';
 import { getSignalVal } from 'be-linked/getSignalVal.js';
 import { setSignalVal } from 'be-linked/setSignalVal.js';
 import { breakTie } from './breakTie.js'; //TODO:  load this on demand without breaking tests
+import { getLocalProp, getRemoteProp } from 'be-linked/defaults.js';
 export class BeBound extends BE {
     #abortControllers = [];
-    detach(detachedElement) {
+    detach() {
         for (const ac of this.#abortControllers) {
             ac.abort();
         }
@@ -25,7 +26,7 @@ export class BeBound extends BE {
         self.bindingRules = [{
                 ...defltLocal,
                 remoteType: '/',
-                remoteProp: enhancedElement.getAttribute('itemprop') || enhancedElement.name || enhancedElement.id,
+                remoteProp: getRemoteProp(enhancedElement),
             }];
         return {
         //resolved: true,
@@ -167,30 +168,32 @@ export class BeBound extends BE {
     }
 }
 export const strType = String.raw `\$|\#|\@|\/|\-`;
+//TODO  Use getDefltLocalProp from 'be-linked';
 export function getDfltLocal(self) {
     const { enhancedElement } = self;
+    const localProp = getLocalProp(enhancedElement);
     const { localName } = enhancedElement;
-    let localProp = 'textContent';
-    switch (localName) {
-        case 'input':
-            const { type } = enhancedElement;
-            switch (type) {
-                case 'number':
-                    localProp = 'valueAsNumber';
-                    break;
-                case 'checkbox':
-                    localProp = 'checked';
-                    break;
-                default:
-                    localProp = 'value';
-            }
-            break;
-        case 'meta':
-            localProp = 'value';
-        // default:
-        //     localProp = enhancedElement.getAttribute('itemprop');
-        //     if(localProp === null) throw 'itemprop not specified';
-    }
+    // let localProp: string | null = 'textContent';
+    // switch(localName){
+    //     case 'input':
+    //         const {type} = enhancedElement as HTMLInputElement;
+    //         switch(type){
+    //             case 'number':
+    //                 localProp = 'valueAsNumber';
+    //                 break;
+    //             case 'checkbox':
+    //                 localProp = 'checked';
+    //                 break;
+    //             default:
+    //                 localProp = 'value';
+    //         }
+    //         break;
+    //     case 'meta':
+    //         localProp = 'value';
+    //     // default:
+    //     //     localProp = enhancedElement.getAttribute('itemprop');
+    //     //     if(localProp === null) throw 'itemprop not specified';
+    // }
     return {
         localEvent: localName === 'input' || enhancedElement.hasAttribute('contenteditable') ? 'input' : undefined,
         localProp,

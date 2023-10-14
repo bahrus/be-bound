@@ -9,6 +9,7 @@ import {getSignalVal} from 'be-linked/getSignalVal.js';
 import {setSignalVal} from 'be-linked/setSignalVal.js';
 import {SignalContainer} from 'be-linked/types';
 import {breakTie} from './breakTie.js'; //TODO:  load this on demand without breaking tests
+import {getLocalProp, getRemoteProp} from 'be-linked/defaults.js';
 
 export class BeBound extends BE<AP, Actions> implements Actions{
     #abortControllers: Array<AbortController>  = [];
@@ -31,9 +32,7 @@ export class BeBound extends BE<AP, Actions> implements Actions{
         self.bindingRules = [{
             ...defltLocal,
             remoteType: '/',
-            //TODO:  move this evaluation to be-linked -- shared with be-elevating, be-observant
-            //Also, support for space delimited itemprop
-            remoteProp: enhancedElement.getAttribute('itemprop') || (enhancedElement as any).name || enhancedElement.id,
+            remoteProp: getRemoteProp(enhancedElement),
         }];
         return {
             //resolved: true,
@@ -187,28 +186,29 @@ export const strType = String.raw `\$|\#|\@|\/|\-`;
 //TODO  Use getDefltLocalProp from 'be-linked';
 export function getDfltLocal(self: AP){
     const {enhancedElement} = self;
+    const localProp = getLocalProp(enhancedElement);
     const {localName} = enhancedElement;
-    let localProp: string | null = 'textContent';
-    switch(localName){
-        case 'input':
-            const {type} = enhancedElement as HTMLInputElement;
-            switch(type){
-                case 'number':
-                    localProp = 'valueAsNumber';
-                    break;
-                case 'checkbox':
-                    localProp = 'checked';
-                    break;
-                default:
-                    localProp = 'value';
-            }
-            break;
-        case 'meta':
-            localProp = 'value';
-        // default:
-        //     localProp = enhancedElement.getAttribute('itemprop');
-        //     if(localProp === null) throw 'itemprop not specified';
-    }
+    // let localProp: string | null = 'textContent';
+    // switch(localName){
+    //     case 'input':
+    //         const {type} = enhancedElement as HTMLInputElement;
+    //         switch(type){
+    //             case 'number':
+    //                 localProp = 'valueAsNumber';
+    //                 break;
+    //             case 'checkbox':
+    //                 localProp = 'checked';
+    //                 break;
+    //             default:
+    //                 localProp = 'value';
+    //         }
+    //         break;
+    //     case 'meta':
+    //         localProp = 'value';
+    //     // default:
+    //     //     localProp = enhancedElement.getAttribute('itemprop');
+    //     //     if(localProp === null) throw 'itemprop not specified';
+    // }
     return {
         localEvent: localName === 'input' || enhancedElement.hasAttribute('contenteditable') ? 'input' : undefined,
         localProp,
