@@ -9,7 +9,7 @@ import {getSignalVal} from 'be-linked/getSignalVal.js';
 import {setSignalVal} from 'be-linked/setSignalVal.js';
 import {SignalContainer} from 'be-linked/types';
 import {breakTie} from './breakTie.js'; //TODO:  load this on demand without breaking tests
-import {getLocalProp, getRemoteProp} from 'be-linked/defaults.js';
+import {getLocalSignal, getRemoteProp} from 'be-linked/defaults.js';
 
 export class BeBound extends BE<AP, Actions> implements Actions{
     #abortControllers: Array<AbortController>  = [];
@@ -28,7 +28,7 @@ export class BeBound extends BE<AP, Actions> implements Actions{
 
     async noAttrs(self: this): ProPAP {
         const {enhancedElement} = self;
-        const defltLocal = getDfltLocal(self);
+        const defltLocal = await getDfltLocal(self);
         self.bindingRules = [{
             ...defltLocal,
             remoteType: '/',
@@ -167,7 +167,7 @@ export class BeBound extends BE<AP, Actions> implements Actions{
             const {prsBetween} = await import('./prsBetween.js');
             betweenBindingRules = prsBetween(self);
         }
-        const dflt = getDfltLocal(self);
+        const dflt = await getDfltLocal(self);
         return {
             bindingRules: [
                 ...withBindingRules.map(x => ({...dflt, ...x})), 
@@ -184,9 +184,10 @@ export class BeBound extends BE<AP, Actions> implements Actions{
 export const strType = String.raw `\$|\#|\@|\/|\-`;
 
 //TODO  Use getDefltLocalProp from 'be-linked';
-export function getDfltLocal(self: AP){
+export async function getDfltLocal(self: AP){
     const {enhancedElement} = self;
-    const localProp = getLocalProp(enhancedElement);
+    const tbd = await getLocalSignal(enhancedElement);
+    const localProp = tbd.prop;
     const {localName} = enhancedElement;
     return {
         localEvent: localName === 'input' || enhancedElement.hasAttribute('contenteditable') ? 'input' : undefined,
