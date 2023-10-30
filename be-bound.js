@@ -4,7 +4,7 @@ import { register } from 'be-hive/register.js';
 import { getRemoteEl } from 'be-linked/getRemoteEl.js';
 import { getSignalVal } from 'be-linked/getSignalVal.js';
 import { setSignalVal } from 'be-linked/setSignalVal.js';
-import { breakTie } from './breakTie.js'; //TODO:  load this on demand without breaking tests
+import { breakTie } from 'be-linked/breakTie.js'; //TODO:  load this on demand without breaking tests
 import { getLocalSignal, getRemoteProp } from 'be-linked/defaults.js';
 export class BeBound extends BE {
     #abortControllers = [];
@@ -120,6 +120,7 @@ export class BeBound extends BE {
                     break;
                 }
                 case '-': {
+                    //TODO:  share code with similar code in be-observant
                     const { lispToCamel } = await import('trans-render/lib/lispToCamel.js');
                     const newRemoteProp = lispToCamel(remoteProp);
                     bindingRule.remoteProp = newRemoteProp;

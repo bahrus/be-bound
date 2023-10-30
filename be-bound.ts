@@ -8,7 +8,7 @@ import {Actions as BPActions} from 'be-propagating/types';
 import {getSignalVal} from 'be-linked/getSignalVal.js';
 import {setSignalVal} from 'be-linked/setSignalVal.js';
 import {SignalContainer} from 'be-linked/types';
-import {breakTie} from './breakTie.js'; //TODO:  load this on demand without breaking tests
+import {breakTie} from 'be-linked/breakTie.js'; //TODO:  load this on demand without breaking tests
 import {getLocalSignal, getRemoteProp} from 'be-linked/defaults.js';
 
 export class BeBound extends BE<AP, Actions> implements Actions{
