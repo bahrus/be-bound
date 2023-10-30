@@ -127,6 +127,7 @@ export class BeBound extends BE<AP, Actions> implements Actions{
                     break;
                 }
                 case '-': {
+                    //TODO:  share code with similar code in be-observant
                     const {lispToCamel} = await import('trans-render/lib/lispToCamel.js');
                     const newRemoteProp = lispToCamel(remoteProp!);
                     bindingRule.remoteProp = newRemoteProp;
