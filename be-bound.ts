@@ -2,7 +2,6 @@ import {BE, propDefaults, propInfo} from 'be-enhanced/BE.js';
 import {BEConfig} from 'be-enhanced/types';
 import {XE} from 'xtal-element/XE.js';
 import {Actions, AllProps, AP, PAP, ProPAP, POA, TriggerSource, SpecificityResult, BindingRule} from './types';
-import {register} from 'be-hive/register.js';
 import {getRemoteEl} from 'be-linked/getRemoteEl.js';
 import {Actions as BPActions} from 'be-propagating/types';
 import {getSignalVal} from 'be-linked/getSignalVal.js';
@@ -242,9 +241,8 @@ function evalBindRules(self: BeBound, src: TriggerSource){
 
 export interface BeBound extends AllProps{}
 
-const tagName = 'be-bound';
-const ifWantsToBe = 'bound';
-const upgrade = '*';
+export const tagName = 'be-bound';
+
 
 const xe = new XE<AP, Actions>({
     config:{
@@ -271,4 +269,3 @@ const xe = new XE<AP, Actions>({
     superclass: BeBound
 });
 
-register(ifWantsToBe, upgrade, tagName);

@@ -8,7 +8,7 @@
 		"strict": true,
 	},
 	"files": [
-		"be-bound.ts",
+		"behivior.ts",
 		"MyCustomElement/MyCustomElement.ts",
 		"AnotherCustomElement/AnotherCustomElement.ts"
 	],

@@ -1,6 +1,5 @@
 import { BE, propDefaults, propInfo } from 'be-enhanced/BE.js';
 import { XE } from 'xtal-element/XE.js';
-import { register } from 'be-hive/register.js';
 import { getRemoteEl } from 'be-linked/getRemoteEl.js';
 import { getSignalVal } from 'be-linked/getSignalVal.js';
 import { setSignalVal } from 'be-linked/setSignalVal.js';
@@ -224,9 +223,7 @@ function evalBindRules(self, src) {
         }
     }
 }
-const tagName = 'be-bound';
-const ifWantsToBe = 'bound';
-const upgrade = '*';
+export const tagName = 'be-bound';
 const xe = new XE({
     config: {
         tagName,
@@ -251,4 +248,3 @@ const xe = new XE({
     },
     superclass: BeBound
 });
-register(ifWantsToBe, upgrade, tagName);
