@@ -104,7 +104,7 @@ export class BeBound extends BE {
                     stInput();
                     break;
                 }
-                case '$': {
+                case '|': {
                     if (el.hasAttribute('contenteditable')) {
                         stInput();
                     }
@@ -167,7 +167,7 @@ export class BeBound extends BE {
         };
     }
 }
-export const strType = String.raw `\$|\#|\@|\/|\-`;
+export const strType = String.raw `\||\#|\@|\/|\-`;
 //TODO  Use getDefltLocalProp from 'be-linked';
 export async function getDfltLocal(self) {
     const { enhancedElement } = self;

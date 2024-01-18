@@ -196,7 +196,7 @@ Note that the first word can either be capitalized or not capitalized, whichever
 
         ...
         
-        <input be-bound='with $search.'>
+        <input be-bound='with |search.'>
     </div>
 </my-custom-element>
 ```
