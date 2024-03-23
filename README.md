@@ -38,17 +38,47 @@ In the examples below, we will encounter special symbols used in order to keep t
 1.  First, do a "closest" for an element with attribute itemscope, where the tag name has a dash in it.  Do that search recursively.  
 2.  If no match found, use getRootNode().host.
 
+# Part I Full Inference
+
 ## The most quintessential example
 
 ```html
-<my-custom-element>
-    #shadow
-        ...
-        <input name=someStringProp be-bound>
-</my-custom-element>
+<mood-stone>
+    <template shadowrootmode=open>
+        <div itemscope>
+            <span itemprop=currentMood></span>
+        </div>
+        <input 
+            name=currentMood 
+            be-bound
+        >
+        <xtal-element
+            prop-defaults='{
+                "currentMood": "Happy"
+            }'
+            xform='{
+                "| currentMood": 0
+            }'
+        ></xtal-element>
+        <be-hive></be-hive>
+    </template>
+</mood-stone>
 ```
 
-... two-way binds the input element's value property to my-custom-element's someStringProp property.  Here, be-bound is "piggy-backing" on the name of the input element, in the common use case that the name matches the property name from the host that we are binding to.  Scroll down to see how the syntax changes a bit to support scenarios where we can't rely on the name of the input field matching the host's property.
+xtal-element is a declarative custom element solution that takes the live DOM element it belongs to and turns it into a web component for repeated use.  The thing to focus on is:
+
+```html
+<mood-stone>
+    <template shadowrootmode=open>
+        <input 
+            name=currentMood 
+            be-bound
+        >
+    </template>
+</mood-stone>
+```
+
+*be-bound* two-way binds the input element's value property to mood-stone's currentMood property.  Here, be-bound is "piggy-backing" on the name of the input element, in the common use case that the name matches the property name from the host that we are binding to.  Scroll down to see how the syntax changes a bit to support scenarios where we can't rely on the name of the input field matching the host's property.
 
 What value from the adorned element (input) should be two-way bound the host's someStringProp property if it isn't specified?  The rules are as follows:
 
