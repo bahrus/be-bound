@@ -38,7 +38,7 @@ In the examples below, we will encounter special symbols used in order to keep t
 1.  First, do a "closest" for an element with attribute itemscope, where the tag name has a dash in it.  Do that search recursively.  
 2.  If no match found, use getRootNode().host.
 
-## Example 1a:
+## The most quintessential example
 
 ```html
 <my-custom-element>
@@ -50,7 +50,9 @@ In the examples below, we will encounter special symbols used in order to keep t
 
 ... two-way binds the input element's value property to my-custom-element's someStringProp property.  Here, be-bound is "piggy-backing" on the name of the input element, in the common use case that the name matches the property name from the host that we are binding to.  Scroll down to see how the syntax changes a bit to support scenarios where we can't rely on the name of the input field matching the host's property.
 
-## Example 1b:
+What value from the adorned element (input) should be two-way bound the host's someStringProp property if it isn't specified?  The rules are as follows:
+
+## Some type aware inferencing:
 
 ```html
 <my-custom-element>
@@ -76,11 +78,9 @@ As mentioned, we can't alway rely on using the name attribute to specify the hos
 
 So now we start adding some information into the be-bound attribute.  
 
-For that, we use what I call "Hemingway notation" within the attribute, where the text of the attribute is meant to form a complete, grammatically correct sentence, ideally.  Strictly speaking, the sentence sounds more complete if the "be-bound" attribute name is considered part of the sentence.  So please apply a little bit of generous artistic license to the principle we are trying to follow here, dear reader.
+For that, we use what I call "Hemingway notation" within the attribute, where the text of the attribute is meant to form a complete, grammatically correct sentence, ideally.  Strictly speaking, the sentence sounds more complete if the "be-bound" attribute name is considered as part of the sentence.  So please apply a little bit of generous artistic license to the principle we are trying to follow here, dear reader.
 
-So Example 1a can be alternatively defined this way:
-
-## Example 1c:
+## Specifying the host property name.
 
 ```html
 <my-custom-element>
@@ -90,7 +90,9 @@ So Example 1a can be alternatively defined this way:
 </my-custom-element>
 ```
 
-or, to be more like what I suspect Hemingway would have preferred:
+## Using smaller words.
+
+I find this a bit more readable, personally (but it is admittedly subjective).  Anyway, it is supported:
 
 ```html
 <my-custom-element>
@@ -102,13 +104,13 @@ or, to be more like what I suspect Hemingway would have preferred:
 
 Both will work, so it is a matter of taste which is more readable/easier to type.
 
-The slash (/) is a special symbol we use to indicate that someStringProp comes from the host.
+The slash (/) is a special symbol which we use to indicate that someStringProp comes from the host.
 
 We don't have to two-way bind with a property from the host.  We can also two way bind with peer elements within the HTML markup of the web component, based on other [single character symbols](https://github.com/bahrus/be-bound#special-symbols), which indicates what we are binding to.
 
 However, because we anticipate this element enhancement would *most typically* be used to two-way bind to a property coming from the host, we assume that that is the intention if no symbol is provided, making the syntax a little more readable / Hemingway like:
 
-## Example 1c-take-two
+## Least cryptic?
 
 ```html
 <my-custom-element>
@@ -120,17 +122,8 @@ However, because we anticipate this element enhancement would *most typically* b
 
 Note that the first word can either be capitalized or not capitalized, whichever seems more readable.
 
-<!--The syntax above is shorthand for: [TODO]
 
-```html
-<my-custom-element>
-    #shadow
-        ...
-        <input be-bound='between value property observed on input event and some string prop.'>
-</my-custom-element>
-``` -->
-
-## Example 1d:
+## Non form-associated bindings with contentEditable
 
 ```html
 <my-custom-element>
@@ -140,7 +133,7 @@ Note that the first word can either be capitalized or not capitalized, whichever
 </my-custom-element>
 ```
 
-## Example 1e:
+## Use of itemprop microdata attribute
 
 ```html
 <my-custom-element>
