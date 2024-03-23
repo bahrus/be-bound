@@ -144,16 +144,6 @@ Note that the first word can either be capitalized or not capitalized, whichever
 </my-custom-element>
 ```
 
-## Example 1f:
-
-```html
-<my-custom-element>
-    #shadow
-        <div itemscope>
-            <meta itemprop=someStringProp be-bound>
-        </div>
-</my-custom-element>
-```
 
 > [!Note]
 > If using this enhancement with itemprop attributes,  together with [be-sharing](https://github.com/bahrus/be-sharing), it is safest to add attribute "--" to the enhanced element, to let be-sharing know that this enhancement is responsible for the binding, rather than be-sharing:
