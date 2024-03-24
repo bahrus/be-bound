@@ -45,11 +45,11 @@ export class Bind {
         if (this.#remoteSignalAndEvent === undefined)
             throw 'NI';
         {
-            const { eventSuggestion, signal } = this.#remoteSignalAndEvent;
-            const remoteSignal = signal?.deref();
-            if (remoteSignal === undefined || eventSuggestion === undefined)
-                return;
-            remoteSignal.addEventListener(eventSuggestion, e => {
+            const { eventSuggestion, signal, propagator } = this.#remoteSignalAndEvent;
+            //const remoteSignal = signal?.deref();
+            if (eventSuggestion === undefined)
+                throw 'NI';
+            (propagator || signal?.deref())?.addEventListener(eventSuggestion, e => {
                 this.#reconcileValues(self, 'remote');
             }, { signal: this.#remoteAbortControl.signal });
         }
