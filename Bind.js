@@ -140,7 +140,7 @@ export async function setObsVal(ref, elo, val) {
                 ref.textContent = val;
             }
             else {
-                throw 'NI';
+                ref.value = val;
             }
             break;
         default:

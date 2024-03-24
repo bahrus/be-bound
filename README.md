@@ -126,7 +126,7 @@ So now we start adding some information into the be-bound attribute.
 
 For that, we use what I call "Hemingway notation" within the attribute, where the text of the attribute is meant to form a complete, grammatically correct sentence, ideally.  Strictly speaking, the sentence sounds more complete if the "be-bound" attribute name is considered as part of the sentence.  So please apply a little bit of generous artistic license to the principle we are trying to follow here, dear reader.
 
-## Specifying the host property name. [TODO]
+## Specifying the host property name.
 
 ```html
 <mood-stone>
@@ -168,6 +168,7 @@ However, because we anticipate this element enhancement would *most typically* b
 
 Note that the first word can either be capitalized or not capitalized, whichever seems more readable.
 
+In the examples that follow, we will use these forms interchangeably, whatever seems more readable.
 
 ## Non form-associated bindings with contentEditable
 
@@ -231,19 +232,14 @@ To specify to search within a closest perimeter, use the ^ symbol:
 
 In this case, the span's textContent property is kept in synch with the value of the search input element.
 
-## Example 1i:
+The search for the bound element is done, recursively, within itemscope attributed elements, and if not found, within the root node.  Similar perimeterizing can be done done with the ^ qualifier.
+
+## Binding with non visible HTML Signals
 
 ```html
-<my-custom-element>
-    #shadow
-    <div itemscope>
-        <meta itemprop=searchProp>
-
-        ...
-        
-        <input be-bound='with $ search prop.'>
-    </div>
-</my-custom-element>
+<meta itemprop=searchProp>
+...
+<input be-bound='with | search prop.'>
 ```
 
 ## Example 1j
