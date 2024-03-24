@@ -137,6 +137,7 @@ export async function setObsVal(ref: SignalRefType, elo: ElO, val: any){
     //the name "prop" is a bit confusing here -- it used as a locator, e.g. itemprop
     //but when it comes to setting the value, that's not always what we need to use.
     switch(elType){
+        case '#':
         case '@':
             //form associated element, so primary prop is the "value"
             (ref as HTMLInputElement).value = val;

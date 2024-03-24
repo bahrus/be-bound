@@ -242,17 +242,14 @@ The search for the bound element is done, recursively, within itemscope attribut
 <input be-bound='with | search prop.'>
 ```
 
-## Example 1j
+## By id
 
 ```html
-<my-custom-element>
-    #shadow
-        <input id=some-id>
+<input id=search>
 
-        ...
+...
 
-        <span contenteditable be-bound='with # some id.'></span>
-</my-custom-element>
+<span contenteditable be-bound='with # search.'></span>
 ```
 
 ## Example 1k
