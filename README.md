@@ -85,11 +85,27 @@ What value from the adorned element (input) should be two-way bound the host's s
 ## Some type aware inferencing:
 
 ```html
-<my-custom-element>
-    #shadow
-        ...
-        <input type=checkbox name=someBoolProp be-bound>
-</my-custom-element>
+<mood-stone>
+    <template shadowrootmode=open>
+        <div itemscope>
+            <span itemprop=isHappy></span>
+        </div>
+        <input 
+            name=isHappy
+            type=checkbox
+            be-bound
+        >
+        <xtal-element
+            prop-defaults='{
+                "isHappy": true
+            }'
+            xform='{
+                "| isHappy": 0
+            }'
+        ></xtal-element>
+        <be-hive></be-hive>
+    </template>
+</mood-stone>
 ```
 
 If type=checkbox, property "checked" is used in the two way binding. 

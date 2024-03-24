@@ -28,7 +28,7 @@
   "dependencies": {
     "be-enhanced": "0.0.72",
     "be-hive": "0.0.140",
-    "be-linked": "0.0.84",
+    "be-linked": "0.0.86",
     "be-propagating": "0.0.34",
     "trans-render": "0.0.749",
     "xtal-element": "0.0.599"
