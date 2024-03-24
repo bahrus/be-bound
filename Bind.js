@@ -1,4 +1,5 @@
 import { Seeker } from 'be-linked/Seeker.js';
+import { breakTie } from 'be-linked/breakTie.js'; //TODO:  load this on demand without breaking tests
 export class Bind {
     bindingRule;
     constructor(bindingRule) {
@@ -62,6 +63,7 @@ export class Bind {
         const signal = new WeakRef(s);
         const localProp = localSignal.prop;
         const { localName } = enhancedElement;
+        const {} = await import('trans-render/lib/prs/prsElO.js');
         const eventSuggestion = localName === 'input' || enhancedElement.hasAttribute('contenteditable') ? 'input' : undefined;
         this.#localSignalAndEvent = {
             eventSuggestion,
@@ -72,7 +74,7 @@ export class Bind {
     async #reconcileValues(self) {
         if (this.#localSignalAndEvent === undefined || this.#remoteSignalAndEvent === undefined)
             return;
-        const {} = this.#localSignalAndEvent;
+        const { signal: localSignal } = this.#localSignalAndEvent;
         const { eventSuggestion, signal } = this.#remoteSignalAndEvent;
         const { bindingRule } = this;
         const { remoteElO, localEvent } = bindingRule;
@@ -82,7 +84,23 @@ export class Bind {
             throw 404;
         const { enhancedElement } = self;
         const remoteVal = await getObsVal(remoteSignalRef, remoteElO, enhancedElement);
-        console.log({ remoteVal });
+        const { getSignalVal } = await import('be-linked/getSignalVal.js');
+        const { setSignalVal } = await import('be-linked/setSignalVal.js');
+        const localSignalRef = localSignal?.deref();
+        const localVal = getSignalVal(localSignalRef);
+        console.log({ remoteVal, localVal });
+        if (localVal === remoteVal)
+            return; //TODO:  what if they are objects?
+        const tieBreaker = compareSpecificity(localVal, remoteVal);
+        const { winner, val } = tieBreaker;
+        switch (winner) {
+            case 'local':
+                setSignalVal(remoteSignalRef, val || localVal);
+                break;
+            case 'remote':
+                setSignalVal(localSignalRef, val || remoteVal);
+                break;
+        }
         // const {localProp, localSignal} = bindingRule;
         // const localSignalDeref = localSignal?.deref() as any;
         // const remoteSignalDeref = remoteSignal?.deref() as any;
@@ -109,4 +127,13 @@ export class Bind {
         //         break;
         // }
     }
+}
+function compareSpecificity(localVal, remoteVal) {
+    if (localVal === remoteVal)
+        return {
+            winner: 'tie',
+            val: localVal
+        };
+    //const {breakTie} = await import('./breakTie.js');
+    return breakTie(localVal, remoteVal);
 }

@@ -1,6 +1,5 @@
 import { BE, propDefaults, propInfo } from 'be-enhanced/BE.js';
 import { XE } from 'xtal-element/XE.js';
-import { breakTie } from 'be-linked/breakTie.js'; //TODO:  load this on demand without breaking tests
 import { getLocalSignal, getRemoteProp } from 'be-linked/defaults.js';
 export class BeBound extends BE {
     //#abortControllers: Array<AbortController>  = [];
@@ -179,15 +178,6 @@ export async function getDfltLocal(self) {
         localEvent: localName === 'input' || enhancedElement.hasAttribute('contenteditable') ? 'input' : undefined,
         localProp,
     };
-}
-function compareSpecificity(localVal, remoteVal) {
-    if (localVal === remoteVal)
-        return {
-            winner: 'tie',
-            val: localVal
-        };
-    //const {breakTie} = await import('./breakTie.js');
-    return breakTie(localVal, remoteVal);
 }
 export const tagName = 'be-bound';
 const xe = new XE({

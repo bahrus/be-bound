@@ -203,14 +203,7 @@ export async function getDfltLocal(self: AP){
     } as BindingRule;
 }
 
-function compareSpecificity(localVal: any, remoteVal: any) {
-    if(localVal === remoteVal) return {
-        winner: 'tie',
-        val: localVal
-    };
-    //const {breakTie} = await import('./breakTie.js');
-    return breakTie(localVal, remoteVal);
-}
+
 
 
 // async function evalBindRules(self: BeBound, src: TriggerSource){
