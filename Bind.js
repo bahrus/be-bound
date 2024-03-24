@@ -114,31 +114,6 @@ export class Bind {
                 setSignalVal(localSignalRef, remoteVal);
             }
         }
-        // const {localProp, localSignal} = bindingRule;
-        // const localSignalDeref = localSignal?.deref() as any;
-        // const remoteSignalDeref = remoteSignal?.deref() as any;
-        // if(localSignalDeref === undefined) throw 404;
-        // if(remoteSignalDeref === undefined) throw 404;
-        // const localVal = getSignalVal(localSignalDeref);
-        // const remoteVal = getSignalVal(remoteSignalDeref);
-        // if(localVal === remoteVal) continue; //TODO:  what if they are objects?
-        // let winner = src as string;
-        // let tieBrakerVal: any = undefined;
-        // if(winner === 'tie'){
-        //     const tieBreaker = compareSpecificity(localVal, remoteVal);
-        //     winner = tieBreaker.winner!;
-        //     //console.log({winner, tieBreaker, localProp, remoteProp, localVal, remoteVal});
-        //     if(winner === 'tie') continue;
-        //     tieBrakerVal = tieBreaker.val;
-        // }
-        // switch(winner){
-        //     case 'local':
-        //         setSignalVal(remoteSignalDeref, tieBrakerVal || localVal);
-        //         break;
-        //     case 'remote':
-        //         setSignalVal(localSignalDeref, tieBrakerVal || remoteVal);
-        //         break;
-        // }
     }
 }
 function compareSpecificity(localVal, remoteVal) {
@@ -152,6 +127,15 @@ function compareSpecificity(localVal, remoteVal) {
 }
 //TODO: move to be-linked
 export async function setObsVal(ref, elo, val) {
-    const { prop } = elo;
-    ref[prop] = val;
+    const { prop, elType } = elo;
+    //the name "prop" is a bit confusing here -- it used as a locator, e.g. itemprop
+    //but when it comes to setting the value, that's not always what we need to use.
+    switch (elType) {
+        case '@':
+            //form associated element, so primary prop is the "value"
+            ref.value = val;
+            break;
+        default:
+            ref[prop] = val;
+    }
 }

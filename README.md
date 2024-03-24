@@ -172,11 +172,11 @@ Note that the first word can either be capitalized or not capitalized, whichever
 ## Non form-associated bindings with contentEditable
 
 ```html
-<my-custom-element>
+<mood-stone>
     #shadow
         ...
-        <span contenteditable be-bound='with /someStringProp.'>i am here</span>
-</my-custom-element>
+        <span contentEditable be-bound='with current mood.'></span>
+</mood-stone>
 ```
 
 ## Use of itemprop microdata attribute
@@ -191,29 +191,15 @@ Note that the first word can either be capitalized or not capitalized, whichever
 ```
 
 
-> [!Note]
-> If using this enhancement with itemprop attributes,  together with [be-sharing](https://github.com/bahrus/be-sharing), it is safest to add attribute "--" to the enhanced element, to let be-sharing know that this enhancement is responsible for the binding, rather than be-sharing:
+
+## Two way binding with peer elements
 
 ```html
-<my-custom-element>
-    #shadow
-        <div itemscope>
-            <meta -- itemprop=someStringProp be-bound>
-        </div>
-</my-custom-element>
-```
+<input name=search>
 
-## Example 1g:
+...
 
-```html
-<my-custom-element>
-    #shadow
-        <input name=search>
-
-        ...
-
-        <span contenteditable be-bound='with @search.'>
-</my-custom-element>
+<span contenteditable be-bound='with @search.'>
 ```
 
 ## Example 1h:
