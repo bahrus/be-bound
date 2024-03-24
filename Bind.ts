@@ -1,7 +1,8 @@
 import { AP, BindingRule } from './types';
 import {Seeker} from 'be-linked/Seeker.js';
-import {LocalSignal, SignalAndEvent, SignalRefType} from 'be-linked/types';
+import {LocalSignal, SignalAndEvent, SignalRefType, TriggerSource} from 'be-linked/types';
 import {breakTie} from 'be-linked/breakTie.js'; //TODO:  load this on demand without breaking tests
+import { ElO } from '../trans-render/lib/prs/types';
 
 export class Bind{
     constructor(public bindingRule: BindingRule){}
@@ -44,7 +45,7 @@ export class Bind{
             const localSignal = signal?.deref();
             if(localSignal === undefined || eventSuggestion === undefined) return;
             localSignal.addEventListener(eventSuggestion, e => {
-                this.#reconcileValues(self);
+                this.#reconcileValues(self, 'local');
             }, {signal: this.#localAbortControl.signal});
         }
         if(this.#remoteSignalAndEvent === undefined) throw 'NI';
@@ -53,10 +54,10 @@ export class Bind{
             const remoteSignal = signal?.deref();
             if(remoteSignal === undefined || eventSuggestion === undefined) return;
             remoteSignal.addEventListener(eventSuggestion, e => {
-                this.#reconcileValues;
+                this.#reconcileValues(self, 'remote');
             }, {signal: this.#remoteAbortControl.signal})
         }
-        this.#reconcileValues(self);
+        this.#reconcileValues(self, 'tie');
     }
 
     async #getDfltLocal(self: AP){
@@ -68,7 +69,7 @@ export class Bind{
         const localProp = localSignal.prop;
         const {localName} = enhancedElement;
         const {} = await import('trans-render/lib/prs/prsElO.js');
-        const eventSuggestion= localName === 'input' || enhancedElement.hasAttribute('contenteditable') ? 'input' : undefined,
+        const eventSuggestion= localName === 'input' || enhancedElement.hasAttribute('contenteditable') ? 'input' : undefined;
         this.#localSignalAndEvent = {
             eventSuggestion,
             signal,
@@ -76,7 +77,7 @@ export class Bind{
         };
     }
 
-    async #reconcileValues(self: AP){
+    async #reconcileValues(self: AP, source: TriggerSource){
         if(this.#localSignalAndEvent === undefined || this.#remoteSignalAndEvent === undefined) return;
         const {signal: localSignal} = this.#localSignalAndEvent;
         const {eventSuggestion, signal} = this.#remoteSignalAndEvent;
@@ -93,16 +94,31 @@ export class Bind{
         const localVal = getSignalVal(localSignalRef);
         console.log({remoteVal, localVal});
         if(localVal === remoteVal) return; //TODO:  what if they are objects?
-        const tieBreaker = compareSpecificity(localVal, remoteVal);
-        const {winner, val} = tieBreaker;
-        switch(winner){
-            case 'local':
-                setSignalVal(remoteSignalRef, val || localVal);
+        switch(source){
+            case 'tie':
+                {
+                    const tieBreaker = compareSpecificity(localVal, remoteVal);
+                    const {winner, val} = tieBreaker;
+                    switch(winner){
+                        case 'local':
+                            setSignalVal(remoteSignalRef, val || localVal);
+                            break;
+                        case 'remote':
+                            setSignalVal(localSignalRef, val || remoteVal);
+                            break;
+                    }
+                }
                 break;
-            case 'remote':
-                setSignalVal(localSignalRef, val || remoteVal);
+            case 'local':{
+                setObsVal(remoteSignalRef, remoteElO!, localVal);
                 break;
+            }
+            case 'remote': {
+                setSignalVal(localSignalRef, remoteVal);
+            }
         }
+        
+
         // const {localProp, localSignal} = bindingRule;
         // const localSignalDeref = localSignal?.deref() as any;
         // const remoteSignalDeref = remoteSignal?.deref() as any;
@@ -140,4 +156,11 @@ function compareSpecificity(localVal: any, remoteVal: any) {
     };
     //const {breakTie} = await import('./breakTie.js');
     return breakTie(localVal, remoteVal);
+
+     
+}
+//TODO: move to be-linked
+export async function setObsVal(ref: SignalRefType, elo: ElO, val: any){
+    const {prop} = elo;
+    (<any>ref)[prop!] = val;
 }
