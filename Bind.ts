@@ -145,8 +145,10 @@ export async function setObsVal(ref: SignalRefType, elo: ElO, val: any){
         case '|':
             if((ref as HTMLElement).contentEditable === 'true'){
                 (ref as HTMLInputElement).textContent = val;
+            }else if('value' in ref){
+                ref.value = val;
             }else{
-                (<any>ref).value = val;
+                throw 'NI';
             }
             break;
         default:

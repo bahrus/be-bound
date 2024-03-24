@@ -252,17 +252,28 @@ The search for the bound element is done, recursively, within itemscope attribut
 <span contenteditable be-bound='with # search.'></span>
 ```
 
-## Example 1k
+## By marker
 
 ```html
-<my-custom-element>
-    #shadow
-        <another-custom-element -some-string-prop></another-custom-element>
+<mood-stone -current-mood>
+    <template shadowrootmode=open>
+        <div itemscope>
+            <span itemprop=currentMood></span>
+        </div>
+        <!-- This turns mood-stone into a custom element -->
+        <xtal-element
+            prop-defaults='{
+                "currentMood": "Happy"
+            }'
+            xform='{
+                "| currentMood": 0
+            }'
+        ></xtal-element>
+        <be-hive></be-hive>
+    </template>
+</mood-stone>
 
-        ...
-
-        <span contenteditable be-bound='with -some-string-prop.'>abc</span>
-</my-custom-element>
+<input be-bound="with -current-mood">
 ```
 
 

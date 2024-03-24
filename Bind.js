@@ -140,8 +140,11 @@ export async function setObsVal(ref, elo, val) {
             if (ref.contentEditable === 'true') {
                 ref.textContent = val;
             }
-            else {
+            else if ('value' in ref) {
                 ref.value = val;
+            }
+            else {
+                throw 'NI';
             }
             break;
         default:
