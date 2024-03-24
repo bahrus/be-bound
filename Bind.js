@@ -17,9 +17,20 @@ export class Bind {
         this.#remoteSignalAndEvent = await seeker.do(self, undefined, enhancedElement);
         if (localEvent === undefined) {
             const { localName } = enhancedElement;
-            switch (localName) {
-                default:
-                    await this.#getDfltLocal(self);
+            if (localName.includes('-')) {
+                //for now, "cheat" and assume it is an xtal-element
+                const propagator = enhancedElement.xtalState;
+                this.#localSignalAndEvent = {
+                    eventSuggestion: localProp,
+                    signal: new WeakRef(enhancedElement),
+                    propagator
+                };
+            }
+            else {
+                switch (localName) {
+                    default:
+                        await this.#getDfltLocal(self);
+                }
             }
         }
         else {
@@ -77,7 +88,7 @@ export class Bind {
         const { signal: localSignal } = this.#localSignalAndEvent;
         const { eventSuggestion, signal } = this.#remoteSignalAndEvent;
         const { bindingRule } = this;
-        const { remoteElO, localEvent } = bindingRule;
+        const { remoteElO, localEvent, localProp } = bindingRule;
         const { getObsVal } = await import('be-linked/getObsVal.js');
         const remoteSignalRef = signal?.deref();
         if (remoteSignalRef === undefined)
@@ -87,7 +98,7 @@ export class Bind {
         const { getSignalVal } = await import('be-linked/getSignalVal.js');
         const { setSignalVal } = await import('be-linked/setSignalVal.js');
         const localSignalRef = localSignal?.deref();
-        const localVal = getSignalVal(localSignalRef);
+        const localVal = localProp !== undefined ? localSignalRef[localProp] : getSignalVal(localSignalRef);
         console.log({ remoteVal, localVal });
         if (localVal === remoteVal)
             return; //TODO:  what if they are objects?
@@ -101,7 +112,12 @@ export class Bind {
                             setSignalVal(remoteSignalRef, val || localVal);
                             break;
                         case 'remote':
-                            setSignalVal(localSignalRef, val || remoteVal);
+                            if (localProp !== undefined) {
+                                localSignalRef[localProp] = val || remoteVal;
+                            }
+                            else {
+                                setSignalVal(localSignalRef, val || remoteVal);
+                            }
                             break;
                     }
                 }
@@ -111,7 +127,13 @@ export class Bind {
                 break;
             }
             case 'remote': {
-                setSignalVal(localSignalRef, remoteVal);
+                if (localProp !== undefined) {
+                    localSignalRef[localProp] = remoteVal;
+                }
+                else {
+                    setSignalVal(localSignalRef, remoteVal);
+                }
+                break;
             }
         }
     }
