@@ -2,27 +2,7 @@ import {AP, ProPAP, PAP, BindingRule, SignalEnhancement} from './types';
 import {ElTypes} from 'be-linked/types';
 import {RegExpOrRegExpExt} from 'be-enhanced/types';
 import {arr, tryParse} from 'be-enhanced/cpu.js';
-//import {strType} from './be-bound.js';
 import {prsElO} from 'trans-render/lib/prs/prsElO.js';
-
-
-// const reWithBindingStatement: Array<RegExpOrRegExpExt<BindingRule>> = [
-//     {
-//         regExp: new RegExp(String.raw `^(?<remoteType>${strType})(?<remoteProp>[\w\-]+)`),
-//         defaultVals: {
-//         }
-//     },
-//     {
-//         regExp: new RegExp(String.raw `^(?<remoteProp>[\w\-]+)`),
-//         defaultVals: {
-//             remoteType: '/'
-//         }
-//     }
-// ];
-
-// //TODO: move to be-linked
-// const enhancementMap: Map<ElTypes, SignalEnhancement> = new Map();
-// enhancementMap.set('')
 
 export function prsWith(self: AP) : Array<BindingRule> {
     const {With, with: w} = self;
@@ -33,10 +13,6 @@ export function prsWith(self: AP) : Array<BindingRule> {
         bindingRules.push({
             remoteElO
         });
-        // const test = tryParse(withStatement, reWithBindingStatement) as BindingRule;
-        // if(test === null) throw 'PE'; //Parse Error
-        
-        // bindingRules.push(test);
     }
     return bindingRules;
 }

@@ -302,21 +302,30 @@ or more compactly:
 </my-host-element>
 ``` -->
 
-# More complex scenarios
+## Being more explicit
 
-What happens if our local element we are adorning isn't a built-in element, where we can infer, with minimal hints, what we want to happen? To support this, we need to switch from "With" statements, like we've seen thus far with "Between" statements, as demonstrated below:
+In all the examples we've seen so far, the element adorned by this *be-bound* enhancement was a built-in element, where we can usually infer the property we would want to bind to ("value" for input element, "textContent" from other types, for example).
 
-## Example 2a:
+
+What happens if our local element we are adorning isn't a built-in element.  What we need to (or simply want to) be more explicit about what's happening? To support this, we need to switch from "with" statements, like we've seen thus far with "between" statements, as demonstrated below:
+
+## Specifying local property to bind to
 
 ```html
-<form>
-<input name=search>
+<label>
+    <input name=howAmIFeeling>
+</label>
 ...
-<my-custom-element be-bound='between someStringProp and @search.'></my-custom-element>
-</form>
+<mood-stone enh-be-bound='between currentMood and @howAmIFeeling.'></my-custom-element>
+
 ```
 
+
+We add the extra enh- prefix to hopefully avoid "stepping on the toes" of some other custom enhancement, based on the recommended reserved [prefix for this purpose](https://github.com/WICG/webcomponents/issues/1000).
+
 So, when the attribute starts with the word "Between" or "between",  as opposed to "With" or "with", it means we are specifying, first, the name of the local property name of the adorned element that we want to "sync up" with an "upstream" element.  In this case, with the input element based on the name attribute.  (But we can also synchronize with host properties if we use the "/" "sigil" as we've seen previously, or no sigil at all). 
+
+## Specifying remote property to bind to
 
 ## Example 2b: Special logic for forms
 
