@@ -126,14 +126,14 @@ So now we start adding some information into the be-bound attribute.
 
 For that, we use what I call "Hemingway notation" within the attribute, where the text of the attribute is meant to form a complete, grammatically correct sentence, ideally.  Strictly speaking, the sentence sounds more complete if the "be-bound" attribute name is considered as part of the sentence.  So please apply a little bit of generous artistic license to the principle we are trying to follow here, dear reader.
 
-## Specifying the host property name.
+## Specifying the host property name. [TODO]
 
 ```html
-<my-custom-element>
+<mood-stone>
     #shadow
         ...
-        <input be-bound='With /someStringProp.'>
-</my-custom-element>
+        <input be-bound='with /currentMood.'>
+</mood-stone>
 ```
 
 ## Using smaller words.
@@ -141,11 +141,11 @@ For that, we use what I call "Hemingway notation" within the attribute, where th
 I find this a bit more readable, personally (but it is admittedly subjective).  Anyway, it is supported:
 
 ```html
-<my-custom-element>
+<mood-stone>
     #shadow
         ...
-        <input be-bound='With / some string prop.'>
-</my-custom-element>
+        <input be-bound='with / current mood.'>
+</mood-stone>
 ```
 
 Both will work, so it is a matter of taste which is more readable/easier to type.
@@ -159,11 +159,11 @@ However, because we anticipate this element enhancement would *most typically* b
 ## Least cryptic?
 
 ```html
-<my-custom-element>
+<mood-stone>
     #shadow
         ...
-        <input be-bound='with some string prop.'>
-</my-custom-element>
+        <input be-bound='with current mood.'>
+</mood-stone>
 ```
 
 Note that the first word can either be capitalized or not capitalized, whichever seems more readable.
