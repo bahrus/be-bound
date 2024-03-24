@@ -194,27 +194,39 @@ Note that the first word can either be capitalized or not capitalized, whichever
 
 ## Two way binding with peer elements
 
+### By Name
+
 ```html
 <input name=search>
-
 ...
-
 <span contenteditable be-bound='with @search.'>
 ```
 
-## Example 1h:
+### Perimeter support
+
+In the example above, the search for the matching element is done within the nearest form, or within the (shadow)root node.
+
+To specify to search within a closest perimeter, use the ^ symbol:
 
 ```html
-<my-custom-element>
-    #shadow
-    <div itemscope>
-        <span contenteditable itemprop=search>
+<section>
+    Ignore this section
+    <input name=search>
+</section>
+<section>
+    Use this section
+    <input name=search>
+    ...
+    <span contenteditable be-bound='with ^section@search.'>
+</section>
+```
 
-        ...
-        
-        <input be-bound='with |search.'>
-    </div>
-</my-custom-element>
+### By itemprop
+
+```html
+<span contenteditable itemprop=search>
+...
+<input be-bound='with |search.'>
 ```
 
 In this case, the span's textContent property is kept in synch with the value of the search input element.

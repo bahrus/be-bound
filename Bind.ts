@@ -141,6 +141,13 @@ export async function setObsVal(ref: SignalRefType, elo: ElO, val: any){
             //form associated element, so primary prop is the "value"
             (ref as HTMLInputElement).value = val;
             break;
+        case '|':
+            if((ref as HTMLElement).contentEditable === 'true'){
+                (ref as HTMLInputElement).textContent = val;
+            }else{
+                throw 'NI';
+            }
+            break;
         default:
             (<any>ref)[prop!] = val;
     } 

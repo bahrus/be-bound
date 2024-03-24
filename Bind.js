@@ -135,6 +135,14 @@ export async function setObsVal(ref, elo, val) {
             //form associated element, so primary prop is the "value"
             ref.value = val;
             break;
+        case '|':
+            if (ref.contentEditable === 'true') {
+                ref.textContent = val;
+            }
+            else {
+                throw 'NI';
+            }
+            break;
         default:
             ref[prop] = val;
     }
