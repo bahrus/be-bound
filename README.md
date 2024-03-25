@@ -325,9 +325,11 @@ We add the extra enh- prefix to hopefully avoid "stepping on the toes" of some o
 
 So, when the attribute starts with the word "Between" or "between",  as opposed to "With" or "with", it means we are specifying, first, the name of the local property name of the adorned element that we want to "sync up" with an "upstream" element.  In this case, with the input element based on the name attribute.  (But we can also synchronize with host properties if we use the "/" "sigil" as we've seen previously, or no sigil at all). 
 
-## Specifying remote property to bind to
+## Specifying remote property to bind to [TODO]
 
-## Example 2b: Special logic for forms
+
+
+## Special logic for forms
 
 ```html
 <input id=alternativeRating type=number>

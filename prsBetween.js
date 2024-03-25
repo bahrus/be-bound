@@ -16,8 +16,9 @@ export function prsBetween(self) {
             throw 'PE'; //Parse Error
         const { localInfo, remoteInfo } = test;
         const propEvent = localInfo.split('::');
-        const localEvent = propEvent.length > 1 ? propEvent[1] : undefined;
-        const localProp = propEvent[0].replaceAll(':', '.');
+        const [rawLocalProp, localEvent] = propEvent;
+        //const localEvent = propEvent.length > 1 ? propEvent[1] : undefined;
+        const localProp = rawLocalProp.includes(':') ? '.' + propEvent[0].replaceAll(':', '.') : rawLocalProp;
         const remoteElO = prsElO(remoteInfo);
         bindingRules.push({
             localEvent,

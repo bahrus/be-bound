@@ -78,7 +78,7 @@ export class Bind{
         const localProp = localSignal.prop;
         const {localName} = enhancedElement;
         const {} = await import('trans-render/lib/prs/prsElO.js');
-        const eventSuggestion= localName === 'input' || enhancedElement.hasAttribute('contenteditable') ? 'input' : undefined;
+        const eventSuggestion =  type || localName === 'input' || enhancedElement.hasAttribute('contenteditable') ? 'input' : type;
         this.#localSignalAndEvent = {
             eventSuggestion,
             signal,
@@ -100,7 +100,18 @@ export class Bind{
         const {getSignalVal} = await import('be-linked/getSignalVal.js');
         const {setSignalVal} = await import('be-linked/setSignalVal.js');
         const localSignalRef = localSignal?.deref()!;
-        const localVal = localProp !== undefined ? (<any>localSignalRef)[localProp] : getSignalVal(localSignalRef);
+        let localVal: any;
+        if(localProp !== undefined){
+            if(localProp[0] === '.'){
+                const {getVal} = await import('trans-render/lib/getVal.js');
+                localVal = await getVal({host: localSignalRef}, localProp);
+            }else{
+                localVal = (<any>localSignalRef)[localProp];
+            }
+        }else{
+            localVal = getSignalVal(localSignalRef);
+        }
+        //const localVal = localProp !== undefined ? (<any>localSignalRef)[localProp] : getSignalVal(localSignalRef);
         console.log({remoteVal, localVal});
         if(localVal === remoteVal) return; //TODO:  what if they are objects?
         switch(source){
