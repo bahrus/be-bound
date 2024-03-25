@@ -333,7 +333,7 @@ So, when the attribute starts with the word "Between" or "between",  as opposed 
 
 ```html
 <input id=alternativeRating type=number>
-<form be-bound='between rating and #alternativeRating.'>
+<form be-bound='between rating:value::change and #alternativeRating.'>
     <div part=rating-stars class="rating__stars">
         <input id="rating-1" class="rating__input rating__input-1" type="radio" name="rating" value="1">
         <input id="rating-2" class="rating__input rating__input-2" type="radio" name="rating" value="2">
