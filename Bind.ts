@@ -140,7 +140,14 @@ export class Bind{
             }
             case 'remote': {
                 if(localProp !== undefined){
-                    (<any>localSignalRef)[localProp] = remoteVal;
+                    if(localProp[0] === '.'){
+                        //TODO support enhancement?
+                        const {setProp} = await import('trans-render/lib/setProp.js');
+                        setProp(localSignalRef, localProp, remoteVal);
+                    }else{
+                        (<any>localSignalRef)[localProp] = remoteVal;
+                    }
+                    
                 }else{
                     setSignalVal(localSignalRef, remoteVal);
                 }
