@@ -276,7 +276,33 @@ The search for the bound element is done, recursively, within itemscope attribut
 <input be-bound="with -current-mood">
 ```
 
+This can also work with built-in elements.
 
+## By peer custom element [TODO]
+
+This is quite similar to the example above, but doesn't involve adding a non-standard attribute to the peer custom element. It's a less less transparent that there is a two way connection, but it opens up more opportunities for customizations.  Anyway..
+
+```html
+<mood-stone>
+    <template shadowrootmode=open>
+        <div itemscope>
+            <span itemprop=currentMood></span>
+        </div>
+        <!-- This turns mood-stone into a custom element -->
+        <xtal-element
+            prop-defaults='{
+                "currentMood": "Happy"
+            }'
+            xform='{
+                "| currentMood": 0
+            }'
+        ></xtal-element>
+        <be-hive></be-hive>
+    </template>
+</mood-stone>
+
+<input be-bound="with ~MoodStone:currentMode">
+```
 
 <!-- maybe make be-linked/be sharing simply apply an enhancement? -->
 

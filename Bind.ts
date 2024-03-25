@@ -112,7 +112,7 @@ export class Bind{
             localVal = getSignalVal(localSignalRef);
         }
         //const localVal = localProp !== undefined ? (<any>localSignalRef)[localProp] : getSignalVal(localSignalRef);
-        console.log({remoteVal, localVal});
+        //console.log({remoteVal, localVal});
         if(localVal === remoteVal) return; //TODO:  what if they are objects?
         switch(source){
             case 'tie':
