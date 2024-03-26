@@ -34,6 +34,7 @@ export class BeBound extends BE<AP, Actions> implements Actions{
             remoteElO:{
                 elType: '/',
                 prop: getRemoteProp(enhancedElement),
+                scope: ['h', true]
             }
         }];
         return {

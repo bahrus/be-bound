@@ -24,6 +24,7 @@ export class BeBound extends BE {
                 remoteElO: {
                     elType: '/',
                     prop: getRemoteProp(enhancedElement),
+                    scope: ['h', true]
                 }
             }];
         return {
