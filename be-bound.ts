@@ -27,6 +27,11 @@ export class BeBound extends BE<AP, Actions> implements Actions{
             ...defltLocal,
             remoteSpecifier: {
                 s: '/',
+                elS: '*',
+                dss: '^',
+                scopeS: '[itemscope]',
+                rec: true,
+                rnf: true,
                 prop: getRemoteProp(enhancedElement),
                 host: true
             }

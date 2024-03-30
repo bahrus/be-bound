@@ -23,6 +23,11 @@ export class BeBound extends BE {
                 ...defltLocal,
                 remoteSpecifier: {
                     s: '/',
+                    elS: '*',
+                    dss: '^',
+                    scopeS: '[itemscope]',
+                    rec: true,
+                    rnf: true,
                     prop: getRemoteProp(enhancedElement),
                     host: true
                 }
