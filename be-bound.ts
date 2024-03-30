@@ -1,13 +1,7 @@
 import {BE, propDefaults, propInfo} from 'be-enhanced/BE.js';
 import {BEConfig} from 'be-enhanced/types';
 import {XE} from 'xtal-element/XE.js';
-import {Actions, AllProps, AP, PAP, ProPAP, POA, TriggerSource, SpecificityResult, BindingRule} from './types';
-import {getRemoteEl} from 'be-linked/getRemoteEl.js';
-import {Actions as BPActions} from 'be-propagating/types';
-import {getSignalVal} from 'be-linked/getSignalVal.js';
-import {setSignalVal} from 'be-linked/setSignalVal.js';
-import {SignalContainer} from 'be-linked/types';
-import {breakTie} from 'be-linked/breakTie.js'; //TODO:  load this on demand without breaking tests
+import {Actions, AllProps, AP, ProPAP, BindingRule} from './types';
 import {getLocalSignal, getRemoteProp} from 'be-linked/defaults.js';
 
 export class BeBound extends BE<AP, Actions> implements Actions{
@@ -31,11 +25,12 @@ export class BeBound extends BE<AP, Actions> implements Actions{
         const defltLocal = await getDfltLocal(self);
         self.bindingRules = [{
             ...defltLocal,
-            remoteElO:{
-                elType: '/',
+            remoteSpecifier: {
+                s: '/',
                 prop: getRemoteProp(enhancedElement),
-                scope: ['h', true]
+                host: true
             }
+            
         }];
         return {
             //resolved: true,
@@ -64,22 +59,16 @@ export class BeBound extends BE<AP, Actions> implements Actions{
         let betweenBindingRules: Array<BindingRule> = [];
         if((With || w ) !== undefined){
             const {prsWith} = await import('./prsWith.js');
-            withBindingRules = prsWith(self);
+            withBindingRules = await prsWith(self);
         }
         if(Between !== undefined || between !== undefined){
             const {prsBetween} = await import('./prsBetween.js');
-            betweenBindingRules = prsBetween(self);
+            betweenBindingRules = await prsBetween(self);
         }
         return {
             bindingRules: [...withBindingRules, ...betweenBindingRules]
         };
-        // const dflt = await getDfltLocal(self);
-        // return {
-        //     bindingRules: [
-        //         ...withBindingRules.map(x => ({...dflt, ...x})), 
-        //         ...betweenBindingRules.map(x => ({...dflt, ...x}))
-        //     ],
-        // };
+
     }
 
 

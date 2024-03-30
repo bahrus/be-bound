@@ -2,7 +2,7 @@ import { AP, BindingRule } from './types';
 import {Seeker} from 'be-linked/Seeker.js';
 import {LocalSignal, SignalAndEvent, SignalRefType, TriggerSource} from 'be-linked/types';
 import {breakTie} from 'be-linked/breakTie.js'; //TODO:  load this on demand without breaking tests
-import { ElO } from '../trans-render/lib/prs/types';
+import { Specifier } from 'trans-render/dss/types';
 
 export class Bind{
     constructor(public bindingRule: BindingRule){}
@@ -16,8 +16,8 @@ export class Bind{
     async do(self: AP){
         const {enhancedElement} = self;
         const {bindingRule} = this;
-        const {remoteElO, localEvent, localProp} = bindingRule;
-        const seeker = new Seeker<AP, any>(remoteElO!, false);
+        const {remoteSpecifier, localEvent, localProp} = bindingRule;
+        const seeker = new Seeker<AP, any>(remoteSpecifier!, false);
         this.#remoteSignalAndEvent = await seeker.do(self, undefined, enhancedElement);
         
         if(localEvent === undefined){
@@ -91,12 +91,12 @@ export class Bind{
         const {signal: localSignal} = this.#localSignalAndEvent;
         const {eventSuggestion, signal} = this.#remoteSignalAndEvent;
         const {bindingRule} = this;
-        const {remoteElO, localEvent, localProp} = bindingRule;
+        const {remoteSpecifier, localEvent, localProp} = bindingRule;
         const {getObsVal} = await import('be-linked/getObsVal.js');
         const remoteSignalRef = signal?.deref();
         if(remoteSignalRef === undefined) throw 404;
         const {enhancedElement} = self;
-        const remoteVal = await getObsVal(remoteSignalRef, remoteElO!, enhancedElement);
+        const remoteVal = await getObsVal(remoteSignalRef, remoteSpecifier!, enhancedElement);
         const {getSignalVal} = await import('be-linked/getSignalVal.js');
         const {setSignalVal} = await import('be-linked/setSignalVal.js');
         const localSignalRef = localSignal?.deref()!;
@@ -135,7 +135,7 @@ export class Bind{
                 }
                 break;
             case 'local':{
-                setObsVal(remoteSignalRef, remoteElO!, localVal);
+                setObsVal(remoteSignalRef, remoteSpecifier!, localVal);
                 break;
             }
             case 'remote': {
@@ -170,11 +170,11 @@ function compareSpecificity(localVal: any, remoteVal: any) {
      
 }
 //TODO: move to be-linked
-export async function setObsVal(ref: SignalRefType, elo: ElO, val: any){
-    const {prop, elType} = elo;
+export async function setObsVal(ref: SignalRefType, specifier: Specifier, val: any){
+    const {prop, s} = specifier;
     //the name "prop" is a bit confusing here -- it used as a locator, e.g. itemprop
     //but when it comes to setting the value, that's not always what we need to use.
-    switch(elType){
+    switch(s){
         case '#':
         case '@':
             //form associated element, so primary prop is the "value"

@@ -1,9 +1,9 @@
 import {AP, ProPAP, PAP, BindingRule, SignalEnhancement} from './types';
 import {ElTypes} from 'be-linked/types';
 import {RegExpOrRegExpExt} from 'be-enhanced/types';
-import {arr, tryParse} from 'be-enhanced/cpu.js';
-import {getDfltLocal, strType} from './be-bound.js';
-import {prsElO} from 'trans-render/lib/prs/prsElO.js';
+import {arr} from 'trans-render/lib/arr.js';
+import {tryParse} from 'trans-render/lib/prs/tryParse.js'
+import {parse} from 'trans-render/dss/parse.js';
 
 const reBetweenBindingStatement: Array<RegExpOrRegExpExt<BetweenStatement>> = [
     {
@@ -12,7 +12,7 @@ const reBetweenBindingStatement: Array<RegExpOrRegExpExt<BetweenStatement>> = [
     }
 ];
 
-export function prsBetween(self: AP) : Array<BindingRule>{
+export async function prsBetween(self: AP) : Promise<Array<BindingRule>>{
     const {Between, between} = self;
     const both = [...(Between || []), ...(between || [])];
     const bindingRules: Array<BindingRule> = [];
@@ -24,11 +24,11 @@ export function prsBetween(self: AP) : Array<BindingRule>{
         const [rawLocalProp, localEvent] = propEvent;
         //const localEvent = propEvent.length > 1 ? propEvent[1] : undefined;
         const localProp = rawLocalProp.includes(':') ? '.' + propEvent[0].replaceAll(':', '.') : rawLocalProp;
-        const remoteElO = prsElO(remoteInfo);
+        const remoteSpecifier = await parse(remoteInfo);
         bindingRules.push({
             localEvent,
             localProp,
-            remoteElO
+            remoteSpecifier
         });
         //bindingRules.push(test);
     }

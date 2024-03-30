@@ -1,12 +1,12 @@
-import { tryParse } from 'be-enhanced/cpu.js';
-import { prsElO } from 'trans-render/lib/prs/prsElO.js';
+import { tryParse } from 'trans-render/lib/prs/tryParse.js';
+import { parse } from 'trans-render/dss/parse.js';
 const reBetweenBindingStatement = [
     {
         regExp: new RegExp(String.raw `^(?<localInfo>[\w\:]+)(?<!\\)And(?<remoteInfo>.*)`),
         defaultVals: {}
     }
 ];
-export function prsBetween(self) {
+export async function prsBetween(self) {
     const { Between, between } = self;
     const both = [...(Between || []), ...(between || [])];
     const bindingRules = [];
@@ -19,11 +19,11 @@ export function prsBetween(self) {
         const [rawLocalProp, localEvent] = propEvent;
         //const localEvent = propEvent.length > 1 ? propEvent[1] : undefined;
         const localProp = rawLocalProp.includes(':') ? '.' + propEvent[0].replaceAll(':', '.') : rawLocalProp;
-        const remoteElO = prsElO(remoteInfo);
+        const remoteSpecifier = await parse(remoteInfo);
         bindingRules.push({
             localEvent,
             localProp,
-            remoteElO
+            remoteSpecifier
         });
         //bindingRules.push(test);
     }

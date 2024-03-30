@@ -21,10 +21,10 @@ export class BeBound extends BE {
         const defltLocal = await getDfltLocal(self);
         self.bindingRules = [{
                 ...defltLocal,
-                remoteElO: {
-                    elType: '/',
+                remoteSpecifier: {
+                    s: '/',
                     prop: getRemoteProp(enhancedElement),
-                    scope: ['h', true]
+                    host: true
                 }
             }];
         return {
@@ -50,22 +50,15 @@ export class BeBound extends BE {
         let betweenBindingRules = [];
         if ((With || w) !== undefined) {
             const { prsWith } = await import('./prsWith.js');
-            withBindingRules = prsWith(self);
+            withBindingRules = await prsWith(self);
         }
         if (Between !== undefined || between !== undefined) {
             const { prsBetween } = await import('./prsBetween.js');
-            betweenBindingRules = prsBetween(self);
+            betweenBindingRules = await prsBetween(self);
         }
         return {
             bindingRules: [...withBindingRules, ...betweenBindingRules]
         };
-        // const dflt = await getDfltLocal(self);
-        // return {
-        //     bindingRules: [
-        //         ...withBindingRules.map(x => ({...dflt, ...x})), 
-        //         ...betweenBindingRules.map(x => ({...dflt, ...x}))
-        //     ],
-        // };
     }
 }
 export const strType = String.raw `\||\#|\@|\/|\-`;

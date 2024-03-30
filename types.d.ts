@@ -1,7 +1,7 @@
 import { ActionOnEventConfigs } from "trans-render/froop/types";
 import {IBE} from 'be-enhanced/types';
 import {ElTypes, SignalRefType, SignalContainer} from 'be-linked/types';
-import {ElO} from 'trans-render/lib/prs/types';
+import { Specifier } from "trans-render/dss/types";
 
 export interface EndUserProps extends IBE{
     With?: Array<WithStatement>,
@@ -23,13 +23,7 @@ export type SignalEnhancement = 'be-value-added' | 'be-propagating' | undefined;
 export interface BindingRule {
     localProp?: string,
     localEvent?: string,
-    //localSignal?: WeakRef<SignalRefType>,
-    remoteElO?: ElO
-    // remoteProp?: string,
-    // remoteEvent?: string,
-    // remoteAttr?: string,
-    // remoteType?: ElTypes,
-    // remoteSignal?: WeakRef<SignalRefType>,
+    remoteSpecifier?: Specifier
 }
 
 export type AP = AllProps;
