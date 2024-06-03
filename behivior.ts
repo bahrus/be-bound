@@ -1,6 +1,6 @@
 import {register} from 'be-hive/register.js';
-import {tagName } from './be-bound.js';
-import './be-bound.js';
+import {tagName } from './legacy/be-bound.js';
+import './legacy/be-bound.js';
 
 const ifWantsToBe = 'bound';
 const upgrade = '*';

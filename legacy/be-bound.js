@@ -1,49 +1,105 @@
 import { BE, propDefaults, propInfo } from 'be-enhanced/BE.js';
 import { XE } from 'xtal-element/XE.js';
-import { register } from 'be-hive/register.js';
+import { getLocalSignal, getRemoteProp } from 'be-linked/defaults.js';
 export class BeBound extends BE {
+    //#abortControllers: Array<AbortController>  = [];
+    detach() {
+        //TODO:  detach individual binds
+        // for(const ac of this.#abortControllers){
+        //     ac.abort();
+        // }
+    }
     static get beConfig() {
         return {
             parse: true,
-            primaryProp: 'propBindings',
-            primaryPropReq: true
+            parseAndCamelize: true,
+            isParsedProp: 'isParsed'
         };
     }
-    async onProps(self) {
-        const { propBindings: propBindingOrBindings, enhancedElement } = self;
-        const { findRealm } = await import('trans-render/lib/findRealm.js');
-        const host = await findRealm(enhancedElement, 'hostish');
-        if (host === null)
-            throw '404';
-        const { BoundInstance } = await import('./BoundInstance.js');
-        const propBindings = Array.isArray(propBindingOrBindings) ? propBindingOrBindings : [propBindingOrBindings];
-        for (const propBindingOrString of propBindings) {
-            const propBinding = (typeof propBindingOrString === 'string' ? ['value', propBindingOrString] : propBindingOrString);
-            const [childProp, hostProp, options] = propBinding;
-            const bi = new BoundInstance(childProp, hostProp, enhancedElement, host, options);
+    async noAttrs(self) {
+        const { enhancedElement } = self;
+        const defltLocal = await getDfltLocal(self);
+        self.bindingRules = [{
+                ...defltLocal,
+                remoteSpecifier: {
+                    s: '/',
+                    elS: '*',
+                    dss: '^',
+                    scopeS: '[itemscope]',
+                    rec: true,
+                    rnf: true,
+                    prop: getRemoteProp(enhancedElement),
+                    host: true
+                }
+            }];
+        return {
+        //resolved: true,
+        };
+    }
+    //TODO:  abort signals, clean up
+    async hydrate(self) {
+        const { bindingRules } = self;
+        //const {localName} = enhancedElement;
+        const { Bind } = await import('../Bind.js');
+        for (const bindingRule of bindingRules) {
+            const bind = new Bind(bindingRule);
+            await bind.do(self);
         }
         return {
             resolved: true,
         };
     }
+    async onCamelized(self) {
+        const { With, Between, with: w, between } = self;
+        let withBindingRules = [];
+        let betweenBindingRules = [];
+        if ((With || w) !== undefined) {
+            const { prsWith } = await import('../prsWith.js');
+            withBindingRules = await prsWith(self);
+        }
+        if (Between !== undefined || between !== undefined) {
+            const { prsBetween } = await import('../prsBetween.js');
+            betweenBindingRules = await prsBetween(self);
+        }
+        return {
+            bindingRules: [...withBindingRules, ...betweenBindingRules]
+        };
+    }
 }
-const tagName = 'be-bound';
-const ifWantsToBe = 'bound';
-const upgrade = '*';
+export const strType = String.raw `\||\#|\@|\/|\-`;
+//TODO  Use getDefltLocalProp from 'be-linked';
+export async function getDfltLocal(self) {
+    const { enhancedElement } = self;
+    const tbd = await getLocalSignal(enhancedElement);
+    const localProp = tbd.prop;
+    const { localName } = enhancedElement;
+    return {
+        localEvent: localName === 'input' || enhancedElement.hasAttribute('contenteditable') ? 'input' : undefined,
+        localProp,
+    };
+}
+export const tagName = 'be-bound';
 const xe = new XE({
     config: {
         tagName,
         isEnh: true,
         propDefaults: {
-            ...propDefaults
+            ...propDefaults,
         },
         propInfo: {
             ...propInfo
         },
         actions: {
-            onProps: 'propBindings'
+            noAttrs: {
+                ifAllOf: ['isParsed'],
+                ifNoneOf: ['With', 'Between', 'with', 'between']
+            },
+            onCamelized: {
+                ifAllOf: ['isParsed'],
+                ifAtLeastOneOf: ['With', 'Between', 'with', 'between'],
+            },
+            hydrate: 'bindingRules'
         }
     },
     superclass: BeBound
 });
-register(ifWantsToBe, upgrade, tagName);
