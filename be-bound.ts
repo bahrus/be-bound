@@ -5,6 +5,26 @@ import { Positractions, PropInfo } from 'trans-render/froop/types';
 import {IEnhancement,  BEAllProps} from 'trans-render/be/types';
 
 export class BeBound extends BE implements Actions{
+    static override config: BEConfig<AP & BEAllProps, Actions & IEnhancement, any> = {
+        propInfo:{
+            bindingRules: {},
+            rawStatements: {},
+        },
+        actions: {
+            hydrate:{
+                ifAllOf: ['bindingRules']
+            },
+            onRawStatements:{
+                ifAllOf: ['rawStatements']
+            }
+        }
+    }
+    onRawStatements(self: this): void {
+        const {rawStatements} = self;
+        console.error('The following statements could not be parsed.', rawStatements);
+        
+    }
+
     async hydrate(self: this){
         const {bindingRules} = self;
         //const {localName} = enhancedElement;

@@ -16,6 +16,7 @@ export interface AllProps extends EndUserProps{
     isParsed?: boolean,
     //parsedWith?: boolean,
     //parsedBetween?: boolean,
+    rawStatements?: Array<string>
 }
 
 export type SignalEnhancement = 'be-value-added' | 'be-propagating' | undefined;
@@ -38,6 +39,7 @@ export interface Actions{
     //noAttrs(self: this): ProPAP;
     //onCamelized(self: this): ProPAP;
     hydrate(self: this): ProPAP;
+    onRawStatements(self: this): void;
 }
 
 export type WithStatement = string;
