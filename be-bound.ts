@@ -7,6 +7,7 @@ import {IEnhancement,  BEAllProps} from 'trans-render/be/types';
 export class BeBound extends BE implements Actions{
     static override config: BEConfig<AP & BEAllProps, Actions & IEnhancement, any> = {
         propInfo:{
+            ...beCnfg.propInfo,
             bindingRules: {},
             rawStatements: {},
         },
@@ -27,7 +28,7 @@ export class BeBound extends BE implements Actions{
 
     async hydrate(self: this){
         const {bindingRules} = self;
-        //const {localName} = enhancedElement;
+        console.log({bindingRules});
         const {Bind} = await import('./Bind.js');
         for(const bindingRule of bindingRules!){
             const bind = new Bind(bindingRule);

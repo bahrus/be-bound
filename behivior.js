@@ -1,6 +1,6 @@
 import { BeHive } from 'be-hive/be-hive.js';
 import { MountObserver } from 'mount-observer/MountObserver.js';
-const betweenLocalPropAndRemoteProp = String.raw `^between (?<localProp>[\w\:]+)(?<!\\) and (?<remoteSpecifier>.*)`;
+const betweenLocalPropAndRemoteProp = String.raw `^between (?<localProp>[\w\:]+)(?<!\\) and (?<remoteSpecifierString>.*)`;
 const base = 'be-bound';
 export const emc = {
     base,
@@ -13,6 +13,7 @@ export const emc = {
                     {
                         regExp: betweenLocalPropAndRemoteProp,
                         defaultVals: {},
+                        dssKeys: [['remoteSpecifierString', 'remoteSpecifier']]
                     },
                 ]
             }

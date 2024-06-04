@@ -1,7 +1,9 @@
+import { config as beCnfg } from 'be-enhanced/config.js';
 import { BE } from 'be-enhanced/BE.js';
 export class BeBound extends BE {
     static config = {
         propInfo: {
+            ...beCnfg.propInfo,
             bindingRules: {},
             rawStatements: {},
         },
@@ -20,7 +22,7 @@ export class BeBound extends BE {
     }
     async hydrate(self) {
         const { bindingRules } = self;
-        //const {localName} = enhancedElement;
+        console.log({ bindingRules });
         const { Bind } = await import('./Bind.js');
         for (const bindingRule of bindingRules) {
             const bind = new Bind(bindingRule);
