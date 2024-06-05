@@ -37,7 +37,7 @@ export type ProPAP = Promise<PAP>;
 export type POA = [PAP | undefined, ActionOnEventConfigs<PAP, Actions>];
 
 export interface Actions{
-    //noAttrs(self: this): ProPAP;
+    noAttrs(self: this): ProPAP;
     //onCamelized(self: this): ProPAP;
     hydrate(self: this): ProPAP;
     onRawStatements(self: this): void;

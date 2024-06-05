@@ -1,5 +1,7 @@
 import { config as beCnfg } from 'be-enhanced/config.js';
 import { BE } from 'be-enhanced/BE.js';
+import { getLocalSignal, getRemoteProp } from 'be-linked/defaults.js';
+import { parse } from 'trans-render/dss/parse.js';
 export class BeBound extends BE {
     static config = {
         propInfo: {
@@ -13,6 +15,9 @@ export class BeBound extends BE {
             },
             onRawStatements: {
                 ifAllOf: ['rawStatements']
+            },
+            noAttrs: {
+                ifNoneOf: ['bindingRules']
             }
         }
     };
@@ -32,4 +37,28 @@ export class BeBound extends BE {
             resolved: true,
         };
     }
+    async noAttrs(self) {
+        const { enhancedElement } = self;
+        const defltLocal = await getDfltLocal(self);
+        const { localProp } = defltLocal;
+        const remoteProp = await getRemoteProp(enhancedElement);
+        const test = await parse(`/${remoteProp}`);
+        return {
+            bindingRules: [{
+                    ...defltLocal,
+                    remoteSpecifier: test
+                }]
+        };
+    }
+}
+//TODO  Use getDefltLocalProp from 'be-linked';
+export async function getDfltLocal(self) {
+    const { enhancedElement } = self;
+    const tbd = await getLocalSignal(enhancedElement);
+    const localProp = tbd.prop;
+    const { localName } = enhancedElement;
+    return {
+        localEvent: localName === 'input' || enhancedElement.hasAttribute('contenteditable') ? 'input' : undefined,
+        localProp,
+    };
 }
