@@ -1,6 +1,8 @@
 import { BeHive } from 'be-hive/be-hive.js';
 import { MountObserver } from 'mount-observer/MountObserver.js';
-const betweenLocalPropAndRemoteProp = String.raw `^between (?<localProp>[\w\:]+)(?<!\\) and (?<remoteSpecifierString>.*)`;
+const betweenLocalPropAndRemoteSpecifierString = String.raw `^between (?<localProp>[\w\:]+)(?<!\\) and (?<remoteSpecifierString>.*)`;
+const withRemoteSpecifierString = String.raw `^with (?<remoteSpecifierString>.*)`;
+const rssTors = ['remoteSpecifierString', 'remoteSpecifier'];
 const base = 'be-bound';
 export const emc = {
     base,
@@ -11,10 +13,15 @@ export const emc = {
             regExpExts: {
                 bindingRules: [
                     {
-                        regExp: betweenLocalPropAndRemoteProp,
+                        regExp: betweenLocalPropAndRemoteSpecifierString,
                         defaultVals: {},
-                        dssKeys: [['remoteSpecifierString', 'remoteSpecifier']]
+                        dssKeys: [rssTors]
                     },
+                    {
+                        regExp: withRemoteSpecifierString,
+                        defaultVals: {},
+                        dssKeys: [rssTors]
+                    }
                 ]
             }
         }

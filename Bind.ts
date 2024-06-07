@@ -77,7 +77,6 @@ export class Bind{
         const signal = new WeakRef(s);
         const localProp = localSignal.prop;
         const {localName} = enhancedElement;
-        const {} = await import('trans-render/lib/prs/prsElO.js');
         const eventSuggestion =  type || localName === 'input' || enhancedElement.hasAttribute('contenteditable') ? 'input' : type;
         this.#localSignalAndEvent = {
             eventSuggestion,
