@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quintessential Example</title>
+    <title>Peer Element Binding => With Itemprop => From Input</title>
     <script type=importmap>
         {
             "imports": {
@@ -20,14 +20,14 @@
         }
     </script>
     <script type=module>
-        import 'xtal-element/xtal-element.js';
+        import 'xtal-element/index.js';
         import '/behivior.js';
     </script>
 </head>
 <body>
     <meta itemprop=searchProp>
     ...
-    <input be-bound="with | search prop.">
+    <input be-bound="with |searchProp.">
 
 </body>
 </html>
