@@ -35,7 +35,7 @@ export const emc: EMC = {
 };
 
 const mose = document.createElement('script') as MOSE<EMC>;
-mose.id = base;
+mose.id = 'be-hive.' + base;
 mose.synConfig = emc;
 
 MountObserver.synthesize(document, BeHive, mose);
