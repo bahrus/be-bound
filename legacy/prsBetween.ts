@@ -1,4 +1,4 @@
-import {AP, ProPAP, PAP, BindingRule, SignalEnhancement} from './types';
+import {AP, ProPAP, PAP, BindingRule, SignalEnhancement} from '../types';
 import {ElTypes} from 'be-linked/types';
 import {RegExpOrRegExpExt} from 'be-enhanced/types';
 import {arr} from 'trans-render/lib/arr.js';

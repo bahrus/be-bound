@@ -1,4 +1,4 @@
-import {AP, ProPAP, PAP, BindingRule, SignalEnhancement} from './types';
+import {AP, ProPAP, PAP, BindingRule, SignalEnhancement} from '../types';
 import {parse} from 'trans-render/dss/parse.js';
 
 export async function prsWith(self: AP) : Promise<Array<BindingRule>> {
