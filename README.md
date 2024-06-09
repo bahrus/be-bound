@@ -207,7 +207,7 @@ In the examples that follow, we will use these forms interchangeably, whatever s
 
 In the example above, the search for the matching element is done within the nearest form, or within the (shadow)root node.
 
-To specify to search within a closest perimeter, use the ^ symbol:
+To specify to search within a closest perimeter, use the ^{...} pattern:
 
 ```html
 <section>
@@ -218,7 +218,7 @@ To specify to search within a closest perimeter, use the ^ symbol:
     Use this section
     <input name=search>
     ...
-    <span contenteditable be-bound='with ^section@search.'>
+    <span contenteditable be-bound="with ^{section}@search.">
 </section>
 ```
 
@@ -239,7 +239,7 @@ The search for the bound element is done, recursively, within itemscope attribut
 ```html
 <meta itemprop=searchProp>
 ...
-<input be-bound='with | search prop.'>
+<input be-bound='with |searchProp.'>
 ```
 
 ## By id
@@ -249,7 +249,7 @@ The search for the bound element is done, recursively, within itemscope attribut
 
 ...
 
-<span contenteditable be-bound='with # search.'></span>
+<span contenteditable be-bound='with #search.'></span>
 ```
 
 ## By marker

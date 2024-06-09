@@ -1,5 +1,4 @@
-import {BeHive, EMC} from 'be-hive/be-hive.js';
-import {MountObserver, MOSE} from 'mount-observer/MountObserver.js';
+import {BeHive, EMC, MountObserver, seed} from 'be-hive/be-hive.js';
 
 const betweenLocalPropAndRemoteSpecifierString = String.raw `^between (?<localProp>[\w\:]+)(?<!\\) and (?<remoteSpecifierString>.*)`;
 const withRemoteSpecifierString = String.raw `^with (?<remoteSpecifierString>.*)`;
@@ -34,9 +33,7 @@ export const emc: EMC = {
     }
 };
 
-const mose = document.createElement('script') as MOSE<EMC>;
-mose.id = 'be-hive.' + base;
-mose.synConfig = emc;
+const mose = seed(emc);
 
 MountObserver.synthesize(document, BeHive, mose);
 
