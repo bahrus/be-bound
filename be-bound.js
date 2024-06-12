@@ -2,7 +2,7 @@ import { config as beCnfg } from 'be-enhanced/config.js';
 import { BE } from 'be-enhanced/BE.js';
 import { getLocalSignal, getRemoteProp } from 'be-linked/defaults.js';
 import { parse } from 'trans-render/dss/parse.js';
-export class BeBound extends BE {
+class BeBound extends BE {
     static config = {
         propInfo: {
             ...beCnfg.propInfo,
@@ -62,3 +62,5 @@ export async function getDfltLocal(self) {
         localProp,
     };
 }
+await BeBound.bootUp();
+export { BeBound };

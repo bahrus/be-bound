@@ -1,5 +1,4 @@
-import { BeHive } from 'be-hive/be-hive.js';
-import { MountObserver } from 'mount-observer/MountObserver.js';
+import { BeHive, MountObserver, seed } from 'be-hive/be-hive.js';
 const betweenLocalPropAndRemoteSpecifierString = String.raw `^between (?<localProp>[\w\:]+)(?<!\\) and (?<remoteSpecifierString>.*)`;
 const withRemoteSpecifierString = String.raw `^with (?<remoteSpecifierString>.*)`;
 const rssTors = ['remoteSpecifierString', 'remoteSpecifier'];
@@ -28,11 +27,9 @@ export const emc = {
     },
     enhPropKey: 'beBound',
     importEnh: async () => {
-        const { BeBound } = await import('./behance.js');
+        const { BeBound } = await import('./be-bound.js');
         return BeBound;
     }
 };
-const mose = document.createElement('script');
-mose.id = base;
-mose.synConfig = emc;
+const mose = seed(emc);
 MountObserver.synthesize(document, BeHive, mose);

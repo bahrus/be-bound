@@ -28,7 +28,7 @@ export const emc: EMC = {
     },
     enhPropKey: 'beBound',
     importEnh: async () => {
-        const {BeBound} = await import('./behance.js');
+        const {BeBound} = await import('./be-bound.js');
         return BeBound;
     }
 };

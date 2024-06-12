@@ -1,12 +1,11 @@
 import {config as beCnfg} from 'be-enhanced/config.js';
 import {BE, BEConfig} from 'be-enhanced/BE.js';
 import {Actions, AllProps, AP, BindingRule, PAP} from './types';
-import { Positractions, PropInfo } from 'trans-render/froop/types';
 import {IEnhancement,  BEAllProps} from 'trans-render/be/types';
 import {getLocalSignal, getRemoteProp} from 'be-linked/defaults.js';
 import {parse} from 'trans-render/dss/parse.js';
 
-export class BeBound extends BE implements Actions{
+class BeBound extends BE implements Actions{
     static override config: BEConfig<AP & BEAllProps, Actions & IEnhancement, any> = {
         propInfo:{
             ...beCnfg.propInfo,
@@ -62,7 +61,7 @@ export class BeBound extends BE implements Actions{
     }
 }
 
-export interface BeBound extends AP{}
+interface BeBound extends AP{}
 
 //TODO  Use getDefltLocalProp from 'be-linked';
 export async function getDfltLocal(self: AP & BEAllProps){
@@ -75,3 +74,7 @@ export async function getDfltLocal(self: AP & BEAllProps){
         localProp,
     } as BindingRule;
 }
+
+await BeBound.bootUp();
+
+export {BeBound}
