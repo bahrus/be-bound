@@ -65,7 +65,9 @@ In the examples below, we will encounter special symbols used in order to keep t
 </mood-stone>
 ```
 
-xtal-element is a declarative custom element solution that takes the live DOM element it belongs to and turns it into a web component for repeated use.  The thing to focus on is:
+xtal-element is a declarative custom element solution that takes the live DOM element it belongs to and turns it into a web component for repeated use.  The *be-hive* tag is needed to activate the *be-bound* enhancement within the Shadow DOM realm.
+
+The thing to focus on is:
 
 ```html
 <mood-stone>
@@ -80,7 +82,20 @@ xtal-element is a declarative custom element solution that takes the live DOM el
 
 *be-bound* two-way binds the input element's value property to mood-stone's currentMood property.  Here, be-bound is "piggy-backing" on the name of the input element, in the common use case that the name matches the property name from the host that we are binding to.  Scroll down to see how the syntax changes a bit to support scenarios where we can't rely on the name of the input field matching the host's property.
 
-What value from the adorned element (input) should be two-way bound the host's someStringProp property if it isn't specified?  The rules are as follows:
+What value from the adorned element (input) should be two-way bound the host's currentMode property if it isn't specified?  The rules are as follows:
+
+If type=checkbox, property "checked" is used in the two way binding. 
+
+If type=number, valueAsNumber is used.
+
+During the initial handshake, what if both the input element has a value, and so does my-host-element's hostProp property and they differ?  Which property value "trumps"?
+
+We decide this based on "specificity":
+
+Object type trumps number type which  trumps boolean type which trumps string type which  trumps null type which trumps undefined type.
+
+If the two types are the same, if the two types aren't of type object, the longer toString() trumps the shorter toString().  For object types, use JSON.stringify, and compare lengths.
+
 
 ## Some type aware inferencing:
 
@@ -108,19 +123,8 @@ What value from the adorned element (input) should be two-way bound the host's s
 </mood-stone>
 ```
 
-If type=checkbox, property "checked" is used in the two way binding. 
+As mentioned, we can't always rely on using the name attribute to specify the host property name we want to bind to.
 
-If type=number, valueAsNumber is used.
-
-During the initial handshake, what if both the input element has a value, and so does my-host-element's hostProp property and they differ?  Which property value "trumps"?
-
-We decide this based on "specificity":
-
-Object type trumps number type which  trumps boolean type which trumps string type which  trumps null type which trumps undefined type.
-
-If the two types are the same, if the two types aren't of type object, the longer toString() trumps the shorter toString().  For object types, use JSON.stringify, and compare lengths.
-
-As mentioned, we can't alway rely on using the name attribute to specify the host property name we want to bind to.
 
 So now we start adding some information into the be-bound attribute.  
 
@@ -136,23 +140,10 @@ For that, we use what I call "Hemingway notation" within the attribute, where th
 </mood-stone>
 ```
 
-## Using smaller words.
 
-I find this a bit more readable, personally (but it is admittedly subjective).  Anyway, it is supported:
+The slash (/) is a special symbol which we use to indicate that the value of "currentMode" comes from the host web component (*mood-stone* in this case).
 
-```html
-<mood-stone>
-    #shadow
-        ...
-        <input be-bound='with / current mood.'>
-</mood-stone>
-```
-
-Both will work, so it is a matter of taste which is more readable/easier to type.
-
-The slash (/) is a special symbol which we use to indicate that someStringProp comes from the host.
-
-We don't have to two-way bind with a property from the host.  We can also two way bind with peer elements within the HTML markup of the web component, based on other [single character symbols](https://github.com/bahrus/be-bound#special-symbols), which indicates what we are binding to.
+We don't have to two-way bind with a property from the host.  We can also two way bind with peer elements within the HTML markup of the web component, based on other [special notation called DSS](https://github.com/bahrus/trans-render/wiki/VIII.--Directed-Scoped-Specifiers-(DSS)), that provides for a powerful way of finding nearby elements / properties with compact syntax.
 
 However, because we anticipate this element enhancement would *most typically* be used to two-way bind to a property coming from the host, we assume that that is the intention if no symbol is provided, making the syntax a little more readable / Hemingway like:
 
@@ -162,13 +153,11 @@ However, because we anticipate this element enhancement would *most typically* b
 <mood-stone>
     #shadow
         ...
-        <input be-bound='with current mood.'>
+        <input be-bound='with currentMood.'>
 </mood-stone>
 ```
 
 Note that the first word can either be capitalized or not capitalized, whichever seems more readable.
-
-In the examples that follow, we will use these forms interchangeably, whatever seems more readable.
 
 ## Non form-associated bindings with contentEditable
 
@@ -176,7 +165,7 @@ In the examples that follow, we will use these forms interchangeably, whatever s
 <mood-stone>
     #shadow
         ...
-        <span contentEditable be-bound='with current mood.'></span>
+        <span contentEditable be-bound='with currentMood.'></span>
 </mood-stone>
 ```
 
@@ -190,8 +179,6 @@ In the examples that follow, we will use these forms interchangeably, whatever s
         </div>
 </my-custom-element>
 ```
-
-
 
 ## Two way binding with peer elements
 
@@ -230,11 +217,11 @@ To specify to search within a closest perimeter, use the ^{...} pattern:
 <input be-bound='with |search.'>
 ```
 
-In this case, the span's textContent property is kept in synch with the value of the search input element.
+In this case, the span's textContent property is kept in synch with the value of the search input element, and vice versa if the user edits the span's content.
 
 The search for the bound element is done, recursively, within itemscope attributed elements, and if not found, within the root node.  Similar perimeterizing can be done done with the ^ qualifier.
 
-## Binding with non visible HTML Signals
+## Binding with non visible HTML "Signals"
 
 ```html
 <meta itemprop=searchProp>
