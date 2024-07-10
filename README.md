@@ -1,4 +1,4 @@
-# be-bound
+# be-bound (🪢)
 
 be-bound is an attribute-based custom enhancement that provides limited "two-way binding" support. 
 
