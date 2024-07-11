@@ -159,6 +159,20 @@ However, because we anticipate this element enhancement would *most typically* b
 
 Note that the first word can either be capitalized or not capitalized, whichever seems more readable.
 
+Now we suggest an alternative syntax that is shorter than the syntax above, but is a bit more cryptic.
+
+If the name "be-bound" seems rather long to have to type over and over again, you can define your own name.  This package contains one suggestion for a shorter name, as a kind of reference implementation:
+
+```html
+<mood-stone>
+    #shadow
+        ...
+        <input 🪢='with currentMood.'>
+</mood-stone>
+```
+
+
+
 ## Non form-associated bindings with contentEditable
 
 ```html

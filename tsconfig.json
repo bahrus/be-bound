@@ -8,7 +8,7 @@
 		"strict": true,
 	},
 	"files": [
-		"behivior.ts",
+		"🪢.ts",
 		"MyCustomElement/MyCustomElement.ts",
 		"AnotherCustomElement/AnotherCustomElement.ts"
 	],
