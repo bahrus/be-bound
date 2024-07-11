@@ -12,7 +12,7 @@ It follows almost identical patterns to other [be-enhanced](https://github.com/b
 Limitations:
 
 1.  Binding is 100% equal -- no [computed binding](https://github.com/bahrus/be-computed), just direct copy of primitives.
-2.  Object support is there also, with special logic to avoid infinite loops.  A guid key is assigned to the object to avoid this calamity. [TODO, only if strong use case is found].
+2.  [TODO, only if strong use case is found]. Object support could be added also, with special logic to avoid infinite loops.  A guid key is assigned to the object to avoid this calamity. 
 3.  If the two values are equal, no action is taken. 
 4.  The two properties must be class properties with setters and getters, either defined explicitly, or dynamically via Object.defineProperty.  Exceptions are if the child is a(n):
     1.  input element.
