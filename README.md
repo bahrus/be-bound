@@ -161,7 +161,7 @@ Note that the first word can either be capitalized or not capitalized, whichever
 
 Now we suggest an alternative syntax that is shorter than the syntax above, but is a bit more cryptic.
 
-If the name "be-bound" seems rather long to have to type over and over again, you can define your own name.  This package contains one suggestion for a shorter name, as a kind of reference implementation:
+If the name "be-bound" seems rather long to have to type over and over again, you can define your own name.  This package contains one suggestion for a shorter name, as a kind of [reference implementation](https://github.com/bahrus/be-bound/blob/baseline/%F0%9F%AA%A2.ts):
 
 ```html
 <mood-stone>
@@ -179,7 +179,7 @@ If the name "be-bound" seems rather long to have to type over and over again, yo
 <mood-stone>
     #shadow
         ...
-        <span contentEditable be-bound='with currentMood.'></span>
+        <span contentEditable 🪢='with currentMood.'></span>
 </mood-stone>
 ```
 
@@ -189,7 +189,7 @@ If the name "be-bound" seems rather long to have to type over and over again, yo
 <my-custom-element>
     #shadow
         <div itemscope>
-            <span contenteditable itemprop=someStringProp be-bound>i am here</span>
+            <span contenteditable itemprop=someStringProp 🪢>i am here</span>
         </div>
 </my-custom-element>
 ```
@@ -201,7 +201,7 @@ If the name "be-bound" seems rather long to have to type over and over again, yo
 ```html
 <input name=search>
 ...
-<span contenteditable be-bound='with @search.'>
+<span contenteditable 🪢='with @search.'>
 ```
 
 ### Perimeter support
@@ -219,7 +219,7 @@ To specify to search within a closest perimeter, use the ^{...} pattern:
     Use this section
     <input name=search>
     ...
-    <span contenteditable be-bound="with ^{section}@search.">
+    <span contenteditable 🪢="with ^{section}@search.">
 </section>
 ```
 
@@ -228,7 +228,7 @@ To specify to search within a closest perimeter, use the ^{...} pattern:
 ```html
 <span contenteditable itemprop=search>
 ...
-<input be-bound='with |search.'>
+<input 🪢='with |search.'>
 ```
 
 In this case, the span's textContent property is kept in synch with the value of the search input element, and vice versa if the user edits the span's content.
@@ -240,7 +240,7 @@ The search for the bound element is done, recursively, within itemscope attribut
 ```html
 <meta itemprop=searchProp>
 ...
-<input be-bound='with |searchProp.'>
+<input 🪢='with |searchProp.'>
 ```
 
 ## By id
@@ -250,7 +250,7 @@ The search for the bound element is done, recursively, within itemscope attribut
 
 ...
 
-<span contenteditable be-bound='with #search.'></span>
+<span contenteditable 🪢='with #search.'></span>
 ```
 
 ## By marker
@@ -274,7 +274,7 @@ The search for the bound element is done, recursively, within itemscope attribut
     </template>
 </mood-stone>
 
-<input be-bound="with -current-mood">
+<input 🪢="with -current-mood">
 ```
 
 This can also work with built-in elements.
@@ -302,7 +302,7 @@ This is quite similar to the example above, but doesn't involve adding a non-sta
     </template>
 </mood-stone>
 
-<input be-bound="with ~MoodStone:currentMode">
+<input 🪢="with ~MoodStone:currentMode">
 ```
 
 <!-- maybe make be-linked/be sharing simply apply an enhancement? -->
@@ -343,7 +343,7 @@ What happens if our local element we are adorning isn't a built-in element.  Wha
     <input name=howAmIFeeling>
 </label>
 ...
-<mood-stone enh-be-bound='between currentMood and @howAmIFeeling.'></my-custom-element>
+<mood-stone enh-🪢='between currentMood and @howAmIFeeling.'></my-custom-element>
 
 ```
 
