@@ -1,6 +1,6 @@
 import {config as beCnfg} from 'be-enhanced/config.js';
 import {BE, BEConfig} from 'be-enhanced/BE.js';
-import {Actions, AllProps, AP, BindingRule, PAP} from './types';
+import {Actions, AllProps, AP, Binding, BindingRule, PAP} from './types';
 import {IEnhancement,  BEAllProps} from './ts-refs/trans-render/be/types';
 //import {getLocalSignal, getRemoteProp} from 'be-linked/defaults.js';
 import {parse} from 'trans-render/dss/parse.js';
@@ -45,17 +45,23 @@ class BeBound extends BE implements Actions{
 
         const {bindings} = self;
         for(const binding of bindings!){
-            const {localAbsObj, localShareObj, remoteAbsObj, remoteShareObj} = binding;
+            const {localAbsObj, remoteAbsObj} = binding;
             localAbsObj.addEventListener('value', e => {
-                console.log('iah1');
+                this.reconcileValues(binding);
             });
             remoteAbsObj.addEventListener('value', e => {
-                console.log('iah2');
-            })
+                this.reconcileValues(binding);
+            });
+            this.reconcileValues(binding);
+
         }
         return {
             resolved: true,
         } as PAP;
+    }
+
+    async reconcileValues(binding: Binding){
+        const {localAbsObj, localShareObj, remoteAbsObj, remoteShareObj} = binding;
     }
 
     async noAttrs(self: this) {

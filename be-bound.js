@@ -39,17 +39,21 @@ class BeBound extends BE {
         // }
         const { bindings } = self;
         for (const binding of bindings) {
-            const { localAbsObj, localShareObj, remoteAbsObj, remoteShareObj } = binding;
+            const { localAbsObj, remoteAbsObj } = binding;
             localAbsObj.addEventListener('value', e => {
-                console.log('iah1');
+                this.reconcileValues(binding);
             });
             remoteAbsObj.addEventListener('value', e => {
-                console.log('iah2');
+                this.reconcileValues(binding);
             });
+            this.reconcileValues(binding);
         }
         return {
             resolved: true,
         };
+    }
+    async reconcileValues(binding) {
+        const { localAbsObj, localShareObj, remoteAbsObj, remoteShareObj } = binding;
     }
     async noAttrs(self) {
         const { enhancedElement } = self;
