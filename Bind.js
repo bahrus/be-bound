@@ -49,7 +49,7 @@ export class Bind {
             const localSignal = signal?.deref();
             if (localSignal === undefined || eventSuggestion === undefined)
                 return;
-            localSignal.addEventListener(eventSuggestion, e => {
+            localSignal.addEventListener(eventSuggestion, (e) => {
                 this.#reconcileValues(self, 'local');
             }, { signal: this.#localAbortControl.signal });
         }
@@ -60,7 +60,7 @@ export class Bind {
             //const remoteSignal = signal?.deref();
             if (eventSuggestion === undefined)
                 throw 'NI';
-            (propagator || signal?.deref())?.addEventListener(eventSuggestion, e => {
+            (propagator || signal?.deref())?.addEventListener(eventSuggestion, (e) => {
                 this.#reconcileValues(self, 'remote');
             }, { signal: this.#remoteAbortControl.signal });
         }

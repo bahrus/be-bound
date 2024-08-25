@@ -1,7 +1,8 @@
 import { ActionOnEventConfigs } from "trans-render/froop/types";
 import {IBE} from 'be-enhanced/types';
 import {ElTypes, SignalRefType, SignalContainer} from 'be-linked/types';
-import { Specifier } from "trans-render/dss/types";
+import { Specifier } from "./ts-refs/trans-render/dss/types";
+import {AbsorbingObject, SharingObject} from './ts-refs/trans-render/asmr/types';
 
 export interface EndUserProps extends IBE{
     With?: Array<WithStatement>,
@@ -12,6 +13,7 @@ export interface EndUserProps extends IBE{
 
 export interface AllProps extends EndUserProps{
     bindingRules?: Array<BindingRule>,
+    bindings?: Array<Binding>,
     //partialBindingRules?: Array<BindingRule>,
     isParsed?: boolean,
     //parsedWith?: boolean,
@@ -22,10 +24,21 @@ export interface AllProps extends EndUserProps{
 export type SignalEnhancement = 'be-value-added' | 'be-propagating' | undefined;
 
 export interface BindingRule {
+    
     localProp?: string,
     localEvent?: string,
     remoteSpecifierString?: string,
-    remoteSpecifier?: Specifier
+    remoteSpecifier?: Specifier,
+
+
+}
+
+export interface Binding {
+    //new and improved
+    localAbsObj: AbsorbingObject;
+    localShareObj: SharingObject;
+    remoteAbsObj: AbsorbingObject;
+    remoteShareObj: SharingObject;
 }
 
 export type AP = AllProps;

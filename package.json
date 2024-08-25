@@ -30,7 +30,7 @@
     "be-hive": "0.0.203",
     "be-linked": "0.0.111",
     "be-propagating": "0.0.58",
-    "trans-render": "0.0.826"
+    "trans-render": "0.0.828"
   },
   "devDependencies": {
     "may-it-serve": "0.0.8",

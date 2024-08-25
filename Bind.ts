@@ -2,7 +2,8 @@ import { AP, BindingRule } from './types';
 import {Seeker} from 'be-linked/Seeker.js';
 import {LocalSignal, SignalAndEvent, SignalRefType, TriggerSource} from 'be-linked/types';
 import {breakTie} from 'be-linked/breakTie.js'; //TODO:  load this on demand without breaking tests
-import { Specifier } from 'trans-render/dss/types';
+import { Specifier } from './ts-refs/trans-render/dss/types';
+import { BEAllProps } from '../be-enhanced/ts-refs/be-enhanced/types';
 
 export class Bind{
     constructor(public bindingRule: BindingRule){}
@@ -13,7 +14,7 @@ export class Bind{
     #localAbortControl = new AbortController();
     #remoteAbortControl = new AbortController();
 
-    async do(self: AP){
+    async do(self: AP & BEAllProps){
         const {enhancedElement} = self;
         const {bindingRule} = this;
         const {remoteSpecifier, localEvent, localProp} = bindingRule;
@@ -53,7 +54,7 @@ export class Bind{
             const {eventSuggestion, signal} = this.#localSignalAndEvent;
             const localSignal = signal?.deref();
             if(localSignal === undefined || eventSuggestion === undefined) return;
-            localSignal.addEventListener(eventSuggestion, e => {
+            localSignal.addEventListener(eventSuggestion, (e: Event) => {
                 this.#reconcileValues(self, 'local');
             }, {signal: this.#localAbortControl.signal});
         }
@@ -62,14 +63,14 @@ export class Bind{
             const {eventSuggestion, signal, propagator} = this.#remoteSignalAndEvent;
             //const remoteSignal = signal?.deref();
             if(eventSuggestion === undefined) throw 'NI';
-            (propagator || signal?.deref())?.addEventListener(eventSuggestion, e => {
+            (propagator || signal?.deref())?.addEventListener(eventSuggestion, (e: Event) => {
                 this.#reconcileValues(self, 'remote');
             }, {signal: this.#remoteAbortControl.signal})
         }
         this.#reconcileValues(self, 'tie');
     }
 
-    async #getDfltLocal(self: AP){
+    async #getDfltLocal(self: AP & BEAllProps){
         const {getLocalSignal} = await import('be-linked/defaults.js');
         const {enhancedElement} = self;
         const localSignal = await getLocalSignal(enhancedElement);
@@ -85,7 +86,7 @@ export class Bind{
         };
     }
 
-    async #reconcileValues(self: AP, source: TriggerSource){
+    async #reconcileValues(self: AP & BEAllProps, source: TriggerSource){
         if(this.#localSignalAndEvent === undefined || this.#remoteSignalAndEvent === undefined) return;
         const {signal: localSignal} = this.#localSignalAndEvent;
         const {eventSuggestion, signal} = this.#remoteSignalAndEvent;
