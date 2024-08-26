@@ -37,14 +37,20 @@ class BeBound extends BE {
         //     const bind = new Bind(bindingRule);
         //     await bind.do(self);
         // }
-        const { bindings } = self;
+        const { bindings, enhancedElement } = self;
         for (const binding of bindings) {
-            const { localAbsObj, remoteAbsObj } = binding;
-            localAbsObj.addEventListener('value', e => {
-                this.reconcileValues(binding);
+            const { localAbsObj, remoteAbsObj, localShareObj, remoteShareObj, remoteRef } = binding;
+            localAbsObj.addEventListener('value', async (e) => {
+                const remoteEl = remoteRef.deref();
+                if (remoteEl === undefined) {
+                    //TODO:  cancel binding?
+                    //find again?
+                    return;
+                }
+                const val = await localAbsObj.getValue(enhancedElement);
+                remoteShareObj.setValue(remoteEl, val);
             });
             remoteAbsObj.addEventListener('value', e => {
-                this.reconcileValues(binding);
             });
             this.reconcileValues(binding);
         }
@@ -63,6 +69,7 @@ class BeBound extends BE {
         const remoteSpecifier = await parse(`/${remoteProp}`);
         const { find } = await import('trans-render/dss/find.js');
         const remoteEl = await find(enhancedElement, remoteSpecifier);
+        const remoteRef = new WeakRef(remoteEl);
         const remoteShareObj = await ASMR.getSO(remoteEl, {
             valueProp: remoteProp
         });
@@ -77,7 +84,8 @@ class BeBound extends BE {
                     remoteAbsObj,
                     remoteShareObj,
                     localShareObj,
-                    localAbsObj
+                    localAbsObj,
+                    remoteRef
                 }]
         };
     }
