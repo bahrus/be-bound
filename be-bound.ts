@@ -56,8 +56,15 @@ class BeBound extends BE implements Actions{
                 const val = await localAbsObj.getValue(enhancedElement);
                 remoteShareObj.setValue(remoteEl, val);
             });
-            remoteAbsObj.addEventListener('value', e => {
-                
+            remoteAbsObj.addEventListener('value', async e => {
+                const remoteEl = remoteRef.deref();
+                if(remoteEl === undefined) {
+                    //TODO:  cancel binding?
+                    //find again?
+                    return;
+                }
+                const val = await remoteAbsObj.getValue(remoteEl);
+                localShareObj.setValue(enhancedElement, val);
             });
             this.reconcileValues(binding);
 
