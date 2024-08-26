@@ -6,6 +6,7 @@ import {IEnhancement,  BEAllProps} from './ts-refs/trans-render/be/types';
 import {parse} from 'trans-render/dss/parse.js';
 import {getDefaultRemotePropName} from 'trans-render/asmr/getDefaultRemotePropName.js';
 import {ASMR} from 'trans-render/asmr/asmr.js';
+import {find} from 'trans-render/dss/find.js';
 
 class BeBound extends BE implements Actions{
     static override config: BEConfig<AP & BEAllProps, Actions & IEnhancement, any> = {
@@ -37,10 +38,47 @@ class BeBound extends BE implements Actions{
         
     }
     async getBindings(self: this) {
-        const {bindingRules} = self;
+        const {bindingRules, enhancedElement} = self;
         console.log({bindingRules});
-        return {
+        const bindings: Array<Binding> = [];
+        for(const br of bindingRules!){
+            let {localEvent, localProp, remoteSpecifier} = br;
+            let remoteProp: string | undefined;
+            let remoteEvtName: string | undefined;
+            if(remoteSpecifier === undefined){
+                remoteProp = getDefaultRemotePropName(enhancedElement);
+                remoteSpecifier = await parse(`/${remoteProp}`);
+            }else{
+                remoteProp = remoteSpecifier.prop;
+                remoteEvtName = remoteSpecifier.evt;
+            }
+            const remoteEl = await find(enhancedElement, remoteSpecifier);
+            const remoteRef = new WeakRef(remoteEl);
+            const remoteShareObj = await ASMR.getSO(remoteEl, {
+                valueProp: remoteProp,
+            });
+            const remoteAbsObj = await ASMR.getAO(remoteEl, {
+                propToAbsorb: remoteProp,
+                UEEN: remoteEvtName
+            });
+            const localShareObj = await ASMR.getSO(enhancedElement, {
+                valueProp: localProp,
+            });
+            const localAbsObj = await ASMR.getAO(enhancedElement, {
+                propToAbsorb: localProp,
+                UEEN: localEvent,
+            });
+            bindings.push({
+                localAbsObj,
+                localShareObj,
+                remoteAbsObj,
+                remoteRef,
+                remoteShareObj
+            });
 
+        }
+        return {
+            bindings
         } as PAP;
     }
 
@@ -116,7 +154,7 @@ class BeBound extends BE implements Actions{
         // const {localProp} = defltLocal;
         const remoteProp = getDefaultRemotePropName(enhancedElement);
         const remoteSpecifier = await parse(`/${remoteProp}`);
-        const {find} = await import('trans-render/dss/find.js');
+        
         const remoteEl = await find(enhancedElement, remoteSpecifier);
         const remoteRef = new WeakRef(remoteEl);
         const remoteShareObj = await ASMR.getSO(remoteEl, {
