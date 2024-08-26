@@ -13,21 +13,29 @@ class BeBound extends BE {
             bindings: {},
         },
         actions: {
+            getBindings: {
+                ifAllOf: ['bindingRules'],
+            },
             hydrate: {
                 //ifAllOf: ['bindingRules']
-                ifAllOf: ['bindings']
+                ifAllOf: ['bindings'],
             },
             onRawStatements: {
-                ifAllOf: ['rawStatements']
+                ifAllOf: ['rawStatements'],
             },
             noAttrs: {
-                ifNoneOf: ['bindingRules']
+                ifNoneOf: ['bindingRules'],
             }
         }
     };
     onRawStatements(self) {
         const { rawStatements } = self;
         console.error('The following statements could not be parsed.', rawStatements);
+    }
+    async getBindings(self) {
+        const { bindingRules } = self;
+        console.log({ bindingRules });
+        return {};
     }
     async hydrate(self) {
         // const {bindingRules} = self;

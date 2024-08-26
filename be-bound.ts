@@ -1,6 +1,6 @@
 import {config as beCnfg} from 'be-enhanced/config.js';
 import {BE, BEConfig} from 'be-enhanced/BE.js';
-import {Actions, AllProps, AP, Binding, BindingRule, PAP} from './types';
+import {Actions, AllProps, AP, Binding, BindingRule, PAP, ProPAP} from './types';
 import {IEnhancement,  BEAllProps} from './ts-refs/trans-render/be/types';
 //import {getLocalSignal, getRemoteProp} from 'be-linked/defaults.js';
 import {parse} from 'trans-render/dss/parse.js';
@@ -16,15 +16,18 @@ class BeBound extends BE implements Actions{
             bindings: {},
         },
         actions: {
+            getBindings:{
+                ifAllOf: ['bindingRules'],
+            },
             hydrate:{
                 //ifAllOf: ['bindingRules']
-                ifAllOf: ['bindings']
+                ifAllOf: ['bindings'],
             },
             onRawStatements:{
-                ifAllOf: ['rawStatements']
+                ifAllOf: ['rawStatements'],
             },
             noAttrs:{
-                ifNoneOf: ['bindingRules']
+                ifNoneOf: ['bindingRules'],
             }
         }
     }
@@ -32,6 +35,13 @@ class BeBound extends BE implements Actions{
         const {rawStatements} = self;
         console.error('The following statements could not be parsed.', rawStatements);
         
+    }
+    async getBindings(self: this) {
+        const {bindingRules} = self;
+        console.log({bindingRules});
+        return {
+
+        } as PAP;
     }
 
     async hydrate(self: this){
