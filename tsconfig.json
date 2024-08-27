@@ -9,7 +9,6 @@
 		"skipLibCheck": true
 	},
 	"files": [
-		"🪢.void",
 		"MyCustomElement/MyCustomElement.ts",
 		"AnotherCustomElement/AnotherCustomElement.ts"
 	],

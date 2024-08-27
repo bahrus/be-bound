@@ -1,10 +1,17 @@
+// @ts-check
 import { config as beCnfg } from 'be-enhanced/config.js';
 import { BE } from 'be-enhanced/BE.js';
-//import {getLocalSignal, getRemoteProp} from 'be-linked/defaults.js';
 import { parse } from 'trans-render/dss/parse.js';
 import { getDefaultRemotePropName } from 'trans-render/asmr/getDefaultRemotePropName.js';
 import { ASMR } from 'trans-render/asmr/asmr.js';
 import { find } from 'trans-render/dss/find.js';
+/** @import {BEConfig, IEnhancement, BEAllProps} from './ts-refs/be-enhanced/types.d.ts' */
+/** @import {Actions, PAP, AllProps, AP} from './ts-refs/be-bound/types.d.ts' */;
+
+/**
+ * @implements {Actions}
+ * 
+ */
 class BeBound extends BE {
     static config = {
         propInfo: {
