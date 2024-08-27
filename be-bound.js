@@ -4,6 +4,7 @@ import { BE } from 'be-enhanced/BE.js';
 import { parse } from 'trans-render/dss/parse.js';
 import { getDefaultRemotePropName } from 'trans-render/asmr/getDefaultRemotePropName.js';
 import { ASMR } from 'trans-render/asmr/asmr.js';
+import { find } from 'trans-render/dss/find.js';
 class BeBound extends BE {
     static config = {
         propInfo: {
@@ -33,9 +34,52 @@ class BeBound extends BE {
         console.error('The following statements could not be parsed.', rawStatements);
     }
     async getBindings(self) {
-        const { bindingRules } = self;
+        const { bindingRules, enhancedElement } = self;
         console.log({ bindingRules });
-        return {};
+        const bindings = [];
+        for (const br of bindingRules) {
+            let { localEvent, localProp, remoteSpecifier } = br;
+            let remoteProp;
+            let remoteEvtName;
+            if (remoteSpecifier === undefined) {
+                remoteProp = getDefaultRemotePropName(enhancedElement);
+                remoteSpecifier = await parse(`/${remoteProp}`);
+            }
+            else {
+                // if(false){ //in some small cases
+                //     remoteProp = remoteSpecifier.prop;
+                // }else{
+                //     //remoteProp = getDefaultRemotePropName(enhancedElement);
+                // }
+                remoteEvtName = remoteSpecifier.evt;
+            }
+            const remoteEl = await find(enhancedElement, remoteSpecifier);
+            const remoteRef = new WeakRef(remoteEl);
+            const remoteShareObj = await ASMR.getSO(remoteEl, {
+                valueProp: remoteProp,
+            });
+            const remoteAbsObj = await ASMR.getAO(remoteEl, {
+                propToAbsorb: remoteProp,
+                UEEN: remoteEvtName
+            });
+            const localShareObj = await ASMR.getSO(enhancedElement, {
+                valueProp: localProp,
+            });
+            const localAbsObj = await ASMR.getAO(enhancedElement, {
+                propToAbsorb: localProp,
+                UEEN: localEvent,
+            });
+            bindings.push({
+                localAbsObj,
+                localShareObj,
+                remoteAbsObj,
+                remoteRef,
+                remoteShareObj
+            });
+        }
+        return {
+            bindings
+        };
     }
     async hydrate(self) {
         // const {bindingRules} = self;
@@ -101,7 +145,6 @@ class BeBound extends BE {
         // const {localProp} = defltLocal;
         const remoteProp = getDefaultRemotePropName(enhancedElement);
         const remoteSpecifier = await parse(`/${remoteProp}`);
-        const { find } = await import('trans-render/dss/find.js');
         const remoteEl = await find(enhancedElement, remoteSpecifier);
         const remoteRef = new WeakRef(remoteEl);
         const remoteShareObj = await ASMR.getSO(remoteEl, {
