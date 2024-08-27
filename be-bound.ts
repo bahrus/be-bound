@@ -53,7 +53,12 @@ class BeBound extends BE implements Actions{
                 // }else{
                 //     //remoteProp = getDefaultRemotePropName(enhancedElement);
                 // }
-                
+                const {s, prop} = remoteSpecifier;
+                switch(s){
+                    case '-':
+                        remoteProp = prop;
+                        break;
+                }
                 remoteEvtName = remoteSpecifier.evt;
             }
             const remoteEl = await find(enhancedElement, remoteSpecifier);
