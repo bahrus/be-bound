@@ -9,19 +9,16 @@
             "imports": {
                 "be-enhanced/": "/node_modules/be-enhanced/",
                 "be-hive/": "/node_modules/be-hive/",
-                "be-linked/": "/node_modules/be-linked/",
-                "be-propagating/": "/node_modules/be-propagating/",
-                "be-value-added/": "/node_modules/be-value-added/",
                 "blow-dry/": "/node_modules/blow-dry/",
                 "mount-observer/": "/node_modules/mount-observer/",
-                "trans-render/": "/node_modules/trans-render/",
+                "trans-render/": "/trans-render/",
                 "xtal-element/": "/node_modules/xtal-element/"
             }
         }
     </script>
     <script type=module>
-        import 'xtal-element/xtal-element.js';
-        import '/behivior.js';
+        import 'xtal-element/index.js';
+        import '/🪢.js';
     </script>
 </head>
 <body>
@@ -31,7 +28,7 @@
                 <span itemprop=currentMood></span>
             </div>
             <input 
-                be-bound="with /currentMood."
+                🪢="with /currentMood."
             >
             <xtal-element
                 prop-defaults='{
