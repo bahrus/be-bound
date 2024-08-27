@@ -42,6 +42,9 @@ class BeBound extends BE implements Actions{
         const bindings: Array<Binding> = [];
         for(const br of bindingRules!){
             let {localEvent, localProp, remoteSpecifier} = br;
+            if(localProp !== undefined && localProp.includes(':')){
+                localProp = `?.${localProp.replaceAll(':', '?.')}`;
+            }
             let remoteProp: string | undefined;
             let remoteEvtName: string | undefined;
             if(remoteSpecifier === undefined){

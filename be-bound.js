@@ -38,6 +38,9 @@ class BeBound extends BE {
         const bindings = [];
         for (const br of bindingRules) {
             let { localEvent, localProp, remoteSpecifier } = br;
+            if (localProp !== undefined && localProp.includes(':')) {
+                localProp = `?.${localProp.replaceAll(':', '?.')}`;
+            }
             let remoteProp;
             let remoteEvtName;
             if (remoteSpecifier === undefined) {
