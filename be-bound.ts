@@ -39,7 +39,6 @@ class BeBound extends BE implements Actions{
     }
     async getBindings(self: this) {
         const {bindingRules, enhancedElement} = self;
-        console.log({bindingRules});
         const bindings: Array<Binding> = [];
         for(const br of bindingRules!){
             let {localEvent, localProp, remoteSpecifier} = br;

@@ -35,7 +35,6 @@ class BeBound extends BE {
     }
     async getBindings(self) {
         const { bindingRules, enhancedElement } = self;
-        console.log({ bindingRules });
         const bindings = [];
         for (const br of bindingRules) {
             let { localEvent, localProp, remoteSpecifier } = br;
