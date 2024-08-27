@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Specify Host Property > With Slash</title>
+    <script type=importmap>
+        {
+            "imports": {
+                "be-enhanced/": "/node_modules/be-enhanced/",
+                "be-hive/": "/node_modules/be-hive/",
+                "blow-dry/": "/node_modules/blow-dry/",
+                "mount-observer/": "/node_modules/mount-observer/",
+                "trans-render/": "/node_modules/trans-render/",
+                "xtal-element/": "/node_modules/xtal-element/"
+            }
+        }
+    </script>
+    <script type=module>
+        import 'xtal-element/index.js';
+        import '/🪢.js';
+    </script>
+</head>
+<body>
+    <mood-stone>
+        <template shadowrootmode=open>
+            <div itemscope>
+                <span itemprop=currentMood></span>
+            </div>
+            <input 
+                🪢="with /currentMood."
+            >
+            <xtal-element
+                prop-defaults='{
+                    "currentMood": "Happy"
+                }'
+                xform='{
+                    "| currentMood": 0
+                }'
+            ></xtal-element>
+            <be-hive></be-hive>
+        </template>
+    </mood-stone>
+    <div id=target></div>
+    <script>
+        function runTest(){
+            const rn = document.querySelector('mood-stone').shadowRoot;
+            const input = rn.querySelector('input');
+            input.value = 'hello';
+            input.dispatchEvent(new Event('input'));
+            setTimeout(() => {
+                if(rn.querySelector('span').textContent === 'hello'){
+                    target.setAttribute('mark', 'good')
+                }
+            }, 100);
+        }
+        setTimeout(() => {
+            runTest();
+        }, 500);
+    </script>
+</body>
+</html>
