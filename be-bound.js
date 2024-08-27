@@ -52,6 +52,7 @@ class BeBound extends BE {
                 // }
                 const { s, prop } = remoteSpecifier;
                 switch (s) {
+                    case '/':
                     case '-':
                         remoteProp = prop;
                         break;
