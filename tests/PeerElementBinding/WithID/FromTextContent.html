@@ -23,6 +23,21 @@
 
     ...
     
-    <span contenteditable 🪢='with #search.'></span>
+    <span id=span contenteditable 🪢='with #search.'></span>
+    <div id=target></div>
+    <script>
+        function runTest(){
+            span.textContent = 'hello';
+            span.dispatchEvent(new Event('input'));
+            setTimeout(() => {
+                if(search.value === 'hello'){
+                    target.setAttribute('mark', 'good')
+                }
+            }, 100);
+        }
+        setTimeout(() => {
+            runTest();
+        }, 500);
+    </script>
 </body>
 </html>
