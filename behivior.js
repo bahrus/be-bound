@@ -8,6 +8,9 @@ const andRemoteSpecifierString = String.raw `(?<!\\) and (?<remoteSpecifierStrin
 const betweenLocalPropAndRemoteSpecifierString = String.raw `${betweenLocalProp}${andRemoteSpecifierString}`;
 const betweenLocalPropLocalEventAndRemoteSpecifierString = String.raw `${betweenLocalPropLocalEvent}${andRemoteSpecifierString}`;
 const withRemoteSpecifierString = String.raw `^with (?<remoteSpecifierString>.*)`;
+/**
+ * @type {[string, string]}
+ */
 const rssTors = ['remoteSpecifierString', 'remoteSpecifier'];
 const base = 'be-bound';
 /**
