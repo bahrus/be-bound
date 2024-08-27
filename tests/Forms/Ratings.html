@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form rating example</title>
+    <script type=importmap>
+        {
+            "imports": {
+                "be-enhanced/": "/node_modules/be-enhanced/",
+                "be-hive/": "/node_modules/be-hive/",
+                "mount-observer/": "/node_modules/mount-observer/",
+                "trans-render/": "/node_modules/trans-render/"
+            }
+        }
+    </script>
+    <script type=module>
+        import '/🪢.js';
+    </script>
+</head>
+<body>
+    <input id=alternativeRating type=number>
+    <form id=ratingStars 🪢='between rating:value::change and #alternativeRating.'>
+        <div part=rating-stars class="rating__stars">
+            <input id="rating-1" class="rating__input rating__input-1" type="radio" name="rating" value="1">
+            <input id="rating-2" class="rating__input rating__input-2" type="radio" name="rating" value="2">
+            <input id="rating-3" class="rating__input rating__input-3" type="radio" name="rating" value="3">
+            <input id="rating-4" class="rating__input rating__input-4" type="radio" name="rating" value="4">
+            <input id="rating-5" class="rating__input rating__input-5" type="radio" name="rating" value="5">
+        </div>  
+    </form>
+    <div id=target></div>
+    <script>
+        function runTest(){
+            alternativeRating.valueAsNumber = 2;
+            alternativeRating.dispatchEvent(new Event('input'));
+            setTimeout(() => {
+                if(ratingStars.rating.value === '2'){
+                    target.setAttribute('mark', 'good')
+                }
+            }, 100);
+        }
+        setTimeout(() => {
+            runTest();
+        }, 500);
+    </script>
+</body>
+</html>
