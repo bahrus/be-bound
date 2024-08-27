@@ -98,13 +98,6 @@ class BeBound extends BE {
         };
     }
     async hydrate(self) {
-        // const {bindingRules} = self;
-        // console.log({bindingRules});
-        // const {Bind} = await import('./Bind.js');
-        // for(const bindingRule of bindingRules!){
-        //     const bind = new Bind(bindingRule);
-        //     await bind.do(self);
-        // }
         const { bindings, enhancedElement } = self;
         for (const binding of bindings) {
             const { localAbsObj, remoteAbsObj, localShareObj, remoteShareObj, remoteRef } = binding;
@@ -157,8 +150,6 @@ class BeBound extends BE {
     }
     async noAttrs(self) {
         const { enhancedElement } = self;
-        // const defltLocal = await getDfltLocal(self);
-        // const {localProp} = defltLocal;
         const remoteProp = getDefaultRemotePropName(enhancedElement);
         const remoteSpecifier = await parse(`/${remoteProp}`);
         const remoteEl = await find(enhancedElement, remoteSpecifier);
@@ -219,16 +210,6 @@ function breakTie(lhs, rhs) {
     }
     return 'eq';
 }
-//TODO  Use getDefltLocalProp from 'be-linked';
-// export async function getDfltLocal(self: AP & BEAllProps){
-//     const {enhancedElement} = self;
-//     const tbd = await getLocalSignal(enhancedElement);
-//     const localProp = tbd.prop;
-//     const {localName} = enhancedElement;
-//     return {
-//         localEvent: localName === 'input' || enhancedElement.hasAttribute('contenteditable') ? 'input' : undefined,
-//         localProp,
-//     } as BindingRule;
-// }
+
 await BeBound.bootUp();
 export { BeBound };
