@@ -24,16 +24,13 @@ class BeBound extends BE {
             bindings: {},
         },
         compacts: {
-            when_bindingRules_changes_invoke_getBindings: 0
+            when_bindingRules_changes_invoke_getBindings: 0,
+            when_bindings_changes_invoke_hydrate: 0,
         },
         actions: {
-            // getBindings: {
-            //     ifAllOf: ['bindingRules'],
+            // hydrate: {
+            //     ifAllOf: ['bindings'],
             // },
-            hydrate: {
-                //ifAllOf: ['bindingRules']
-                ifAllOf: ['bindings'],
-            },
             onRawStatements: {
                 ifAllOf: ['rawStatements'],
             },
