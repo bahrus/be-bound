@@ -13,6 +13,9 @@ import { find } from 'trans-render/dss/find.js';
  * 
  */
 class BeBound extends BE {
+    /**
+     * @type {BEConfig<AP & BEAllProps, Actions & IEnhancement, any>}
+     */
     static config = {
         propInfo: {
             ...beCnfg.propInfo,
@@ -20,10 +23,13 @@ class BeBound extends BE {
             rawStatements: {},
             bindings: {},
         },
+        compacts: {
+            when_bindingRules_changes_invoke_getBindings: 0
+        },
         actions: {
-            getBindings: {
-                ifAllOf: ['bindingRules'],
-            },
+            // getBindings: {
+            //     ifAllOf: ['bindingRules'],
+            // },
             hydrate: {
                 //ifAllOf: ['bindingRules']
                 ifAllOf: ['bindings'],
