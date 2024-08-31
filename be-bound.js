@@ -6,7 +6,7 @@ import { getDefaultRemotePropName } from 'trans-render/asmr/getDefaultRemoteProp
 import { ASMR } from 'trans-render/asmr/asmr.js';
 import { find } from 'trans-render/dss/find.js';
 /** @import {BEConfig, IEnhancement, BEAllProps} from './ts-refs/be-enhanced/types.d.ts' */
-/** @import {Actions, PAP, AllProps, AP} from './ts-refs/be-bound/types.d.ts' */;
+/** @import {Actions, PAP, AllProps, AP, BAP} from './ts-refs/be-bound/types.d.ts' */;
 
 /**
  * @implements {Actions}
@@ -14,7 +14,7 @@ import { find } from 'trans-render/dss/find.js';
  */
 class BeBound extends BE {
     /**
-     * @type {BEConfig<AP & BEAllProps, Actions & IEnhancement, any>}
+     * @type {BEConfig<BAP, Actions & IEnhancement, any>}
      */
     static config = {
         propInfo: {
@@ -34,10 +34,19 @@ class BeBound extends BE {
             }
         }
     };
+    /**
+     * 
+     * @param {BAP} self 
+     */
     onRawStatements(self) {
         const { rawStatements } = self;
         console.error('The following statements could not be parsed.', rawStatements);
     }
+    /**
+     * 
+     * @param {BAP} self 
+     * @returns 
+     */
     async getBindings(self) {
         const { bindingRules, enhancedElement } = self;
         const bindings = [];
@@ -95,6 +104,11 @@ class BeBound extends BE {
             bindings
         };
     }
+    /**
+     * 
+     * @param {BAP} self 
+     * @returns 
+     */
     async hydrate(self) {
         const { bindings, enhancedElement } = self;
         for (const binding of bindings) {
