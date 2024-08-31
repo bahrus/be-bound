@@ -28,7 +28,7 @@
   "dependencies": {
     "be-enhanced": "0.0.136",
     "be-hive": "0.0.206",
-    "trans-render": "0.0.830"
+    "trans-render": "0.0.831"
   },
   "devDependencies": {
     "may-it-serve": "0.0.8",

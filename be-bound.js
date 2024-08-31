@@ -77,26 +77,25 @@ class BeBound extends BE {
                 remoteEvtName = remoteSpecifier.evt;
             }
             const remoteEl = await find(enhancedElement, remoteSpecifier);
-            const remoteRef = new WeakRef(remoteEl);
+            if(remoteEl === null) throw 404;
             const remoteShareObj = await ASMR.getSO(remoteEl, {
                 valueProp: remoteProp,
             });
             const remoteAbsObj = await ASMR.getAO(remoteEl, {
                 propToAbsorb: remoteProp,
-                UEEN: remoteEvtName
+                evt: remoteEvtName
             });
             const localShareObj = await ASMR.getSO(enhancedElement, {
                 valueProp: localProp,
             });
             const localAbsObj = await ASMR.getAO(enhancedElement, {
                 propToAbsorb: localProp,
-                UEEN: localEvent,
+                evt: localEvent,
             });
             bindings.push({
                 localAbsObj,
                 localShareObj,
                 remoteAbsObj,
-                remoteRef,
                 remoteShareObj
             });
         }
@@ -112,26 +111,15 @@ class BeBound extends BE {
     async hydrate(self) {
         const { bindings, enhancedElement } = self;
         for (const binding of bindings) {
-            const { localAbsObj, remoteAbsObj, localShareObj, remoteShareObj, remoteRef } = binding;
+            const { localAbsObj, remoteAbsObj, localShareObj, remoteShareObj} = binding;
             localAbsObj.addEventListener('value', async (e) => {
-                const remoteEl = remoteRef.deref();
-                if (remoteEl === undefined) {
-                    //TODO:  cancel binding?
-                    //find again?
-                    return;
-                }
-                const val = await localAbsObj.getValue(enhancedElement);
-                remoteShareObj.setValue(remoteEl, val);
+                const val = await localAbsObj.getValue();
+                remoteShareObj.setValue(val);
             });
             remoteAbsObj.addEventListener('value', async (e) => {
-                const remoteEl = remoteRef.deref();
-                if (remoteEl === undefined) {
-                    //TODO:  cancel binding?
-                    //find again?
-                    return;
-                }
-                const val = await remoteAbsObj.getValue(remoteEl);
-                localShareObj.setValue(enhancedElement, val);
+
+                const val = await remoteAbsObj.getValue();
+                localShareObj.setValue(val);
             });
             this.reconcileValues(self, binding);
         }
@@ -165,7 +153,7 @@ class BeBound extends BE {
         const remoteProp = getDefaultRemotePropName(enhancedElement);
         const remoteSpecifier = await parse(`/${remoteProp}`);
         const remoteEl = await find(enhancedElement, remoteSpecifier);
-        const remoteRef = new WeakRef(remoteEl);
+        if(remoteEl === null) throw 404;
         const remoteShareObj = await ASMR.getSO(remoteEl, {
             valueProp: remoteProp
         });
@@ -176,12 +164,10 @@ class BeBound extends BE {
         const localAbsObj = await ASMR.getAO(enhancedElement);
         return {
             bindings: [{
-                    //...defltLocal,
                     remoteAbsObj,
                     remoteShareObj,
                     localShareObj,
                     localAbsObj,
-                    remoteRef
                 }]
         };
     }
