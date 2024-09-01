@@ -6,7 +6,7 @@ import { getDefaultRemotePropName } from 'trans-render/asmr/getDefaultRemoteProp
 import { ASMR } from 'trans-render/asmr/asmr.js';
 import { find } from 'trans-render/dss/find.js';
 /** @import {BEConfig, IEnhancement, BEAllProps} from './ts-refs/be-enhanced/types.d.ts' */
-/** @import {Actions, PAP, AllProps, AP, BAP} from './ts-refs/be-bound/types.d.ts' */;
+/** @import {Actions, PAP, AllProps, AP, BAP, Binding} from './ts-refs/be-bound/types.d.ts' */;
 
 /**
  * @implements {Actions}
@@ -112,11 +112,11 @@ class BeBound extends BE {
         const { bindings, enhancedElement } = self;
         for (const binding of bindings) {
             const { localAbsObj, remoteAbsObj, localShareObj, remoteShareObj} = binding;
-            localAbsObj.addEventListener('value', async (e) => {
+            localAbsObj.addEventListener('.', async (e) => {
                 const val = await localAbsObj.getValue();
                 remoteShareObj.setValue(val);
             });
-            remoteAbsObj.addEventListener('value', async (e) => {
+            remoteAbsObj.addEventListener('.', async (e) => {
 
                 const val = await remoteAbsObj.getValue();
                 localShareObj.setValue(val);
@@ -127,24 +127,24 @@ class BeBound extends BE {
             resolved: true,
         };
     }
+    /**
+     * 
+     * @param {BAP} self 
+     * @param {Binding} binding 
+     * @returns 
+     */
     async reconcileValues(self, binding) {
         const { enhancedElement } = self;
-        const { localAbsObj, localShareObj, remoteAbsObj, remoteShareObj, remoteRef } = binding;
-        const localVal = await localAbsObj.getValue(enhancedElement);
-        const remoteEl = remoteRef.deref();
-        if (remoteEl === undefined) {
-            //TODO:  cancel binding?
-            //find again?
-            return;
-        }
-        const remoteVal = await remoteAbsObj.getValue(remoteEl);
+        const { localAbsObj, localShareObj, remoteAbsObj, remoteShareObj} = binding;
+        const localVal = await localAbsObj.getValue();
+        const remoteVal = await remoteAbsObj.getValue();
         const hs = breakTie(localVal, remoteVal);
         switch (hs) {
             case 'lhs':
-                remoteShareObj.setValue(remoteEl, localVal);
+                remoteShareObj.setValue(localVal);
                 break;
             case 'rhs':
-                localShareObj.setValue(enhancedElement, remoteVal);
+                localShareObj.setValue(remoteVal);
                 break;
         }
     }
