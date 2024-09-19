@@ -14,11 +14,13 @@ Limitations:
 1.  Binding is 100% equal -- no [computed binding](https://github.com/bahrus/be-computed), just direct copy of primitives.
 2.  [TODO, only if strong use case is found]. Object support could be added also, with special logic to avoid infinite loops.  A guid key is assigned to the object to avoid this calamity. 
 3.  If the two values are equal, no action is taken. 
-4.  The two properties must be class properties with setters and getters, either defined explicitly, or dynamically via Object.defineProperty.  Exceptions are if the child is a(n):
+4.  One or both properties can be class properties with setters and getters, either defined explicitly, or dynamically via Object.defineProperty.  Exceptions are if the child is a(n):
     1.  input element.
     2.  form element.
     3.  HTML Element with contentEditable attribute.
     4.  Microdata element (meta, link, data)
+5.  Alternatively, one or both properties can be "source of truth" attributes that reflects the specified property value. [TODO]
+6.  If placed outside any shadowDOM that uses a host property path, it will two-way bind to the url query parameter or hash parameter of the specified name. [TODO]
 
 ## Special Symbols
 
