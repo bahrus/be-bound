@@ -2,7 +2,7 @@
 import { config as beCnfg } from 'be-enhanced/config.js';
 import { BE } from 'be-enhanced/BE.js';
 import { parse } from 'trans-render/dss/parse.js';
-import { getDefaultRemotePropName } from 'trans-render/asmr/getDefaultRemotePropName.js';
+import { stdProp } from 'trans-render/asmr/stdProp.js';
 import { ASMR } from 'trans-render/asmr/asmr.js';
 import { find } from 'trans-render/dss/find.js';
 /** @import {BEConfig, IEnhancement, BEAllProps} from './ts-refs/be-enhanced/types.d.ts' */
@@ -58,14 +58,14 @@ class BeBound extends BE {
             let remoteProp;
             let remoteEvtName;
             if (remoteSpecifier === undefined) {
-                remoteProp = getDefaultRemotePropName(enhancedElement);
+                remoteProp = stdProp(enhancedElement);
                 remoteSpecifier = await parse(`/${remoteProp}`);
             }
             else {
                 // if(false){ //in some small cases
                 //     remoteProp = remoteSpecifier.prop;
                 // }else{
-                //     //remoteProp = getDefaultRemotePropName(enhancedElement);
+                //     //remoteProp = stdProp(enhancedElement);
                 // }
                 const { s, prop } = remoteSpecifier;
                 switch (s) {
@@ -150,7 +150,7 @@ class BeBound extends BE {
     }
     async noAttrs(self) {
         const { enhancedElement } = self;
-        const remoteProp = getDefaultRemotePropName(enhancedElement);
+        const remoteProp = stdProp(enhancedElement);
         const remoteSpecifier = await parse(`/${remoteProp}`);
         const remoteEl = await find(enhancedElement, remoteSpecifier);
         if(remoteEl === null) throw 404;
