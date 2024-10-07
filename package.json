@@ -28,12 +28,13 @@
   "dependencies": {
     "be-enhanced": "0.0.146",
     "be-hive": "0.0.222",
+    "mount-observer": "0.0.38",
     "trans-render": "0.0.847"
   },
   "devDependencies": {
     "may-it-serve": "0.0.8",
     "@playwright/test": "1.47.2",
-    "xtal-element": "0.0.617"
+    "xtal-element": "0.0.618"
   },
   "repository": {
     "type": "git",
