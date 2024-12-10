@@ -67,7 +67,7 @@ In the examples below, we will encounter special symbols used in order to keep t
 </mood-stone>
 ```
 
-xtal-element is a declarative custom element solution that takes the live DOM element it belongs to and turns it into a web component for repeated use.  The *be-hive* tag is needed to activate the *be-bound* enhancement within the Shadow DOM realm.
+*xtal-element* is a declarative custom element solution that takes the live DOM element it belongs to and turns it into a web component for repeated use.  The *be-hive* tag is needed to activate the *be-bound* enhancement within the Shadow DOM realm.
 
 The thing to focus on is:
 
