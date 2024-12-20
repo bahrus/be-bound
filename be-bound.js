@@ -7,6 +7,7 @@ import { ASMR } from 'trans-render/asmr/asmr.js';
 import { find } from 'trans-render/dss/find.js';
 /** @import {BEConfig, IEnhancement, BEAllProps} from './ts-refs/be-enhanced/types.d.ts' */
 /** @import {Actions, PAP, AllProps, AP, BAP, Binding} from './ts-refs/be-bound/types.d.ts' */;
+/** @import {AbsorbingObject, SharingObject} from './ts-refs/trans-render/asmr/types' */
 
 /**
  * @implements {Actions}
@@ -62,11 +63,6 @@ class BeBound extends BE {
                 remoteSpecifier = await parse(`/${remoteProp}`);
             }
             else {
-                // if(false){ //in some small cases
-                //     remoteProp = remoteSpecifier.prop;
-                // }else{
-                //     //remoteProp = stdProp(enhancedElement);
-                // }
                 const { s, prop } = remoteSpecifier;
                 switch (s) {
                     case '/':
@@ -104,6 +100,11 @@ class BeBound extends BE {
         };
     }
 
+    /**
+     * 
+     * @param {AbsorbingObject} localAbsObj 
+     * @param {SharingObject} remoteShareObj 
+     */
     addLocalAbs(localAbsObj, remoteShareObj){
         localAbsObj.addEventListener('.', async (e) => {
             const val = await localAbsObj.getValue();
@@ -121,12 +122,7 @@ class BeBound extends BE {
         for (const binding of bindings) {
             const { localAbsObj, remoteAbsObj, localShareObj, remoteShareObj} = binding;
             this.addLocalAbs(localAbsObj, remoteShareObj);
-            // localAbsObj.addEventListener('.', async (e) => {
-            //     const val = await localAbsObj.getValue();
-            //     remoteShareObj.setValue(val);
-            // });
             remoteAbsObj.addEventListener('.', async (e) => {
-
                 const val = await remoteAbsObj.getValue();
                 localShareObj.setValue(val);
             });
