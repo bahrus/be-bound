@@ -12,7 +12,8 @@
   "module": "be-bound.js",
   "exports": {
     ".": "./index.js",
-    "./be-bound.js": "./be-bound.js"
+    "./be-bound.js": "./be-bound.js",
+    "./emc.js": "./emc.js"
   },
   "files": [
     "*.js",
