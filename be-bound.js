@@ -112,6 +112,13 @@ class BeBound extends BE {
         });
     }
 
+    addRemoteAbs(remoteAbsObj, localShareObj){
+        remoteAbsObj.addEventListener('.', async (e) => {
+            const val = await remoteAbsObj.getValue();
+            localShareObj.setValue(val);
+        });
+    }
+
     /**
      * 
      * @param {BAP} self 
@@ -122,10 +129,7 @@ class BeBound extends BE {
         for (const binding of bindings) {
             const { localAbsObj, remoteAbsObj, localShareObj, remoteShareObj} = binding;
             this.addLocalAbs(localAbsObj, remoteShareObj);
-            remoteAbsObj.addEventListener('.', async (e) => {
-                const val = await remoteAbsObj.getValue();
-                localShareObj.setValue(val);
-            });
+            this.addRemoteAbs(remoteAbsObj, localShareObj);
             this.reconcileValues(self, binding);
         }
         return {
