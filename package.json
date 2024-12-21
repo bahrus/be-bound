@@ -30,7 +30,7 @@
     "be-enhanced": "0.0.161",
     "be-hive": "0.0.241",
     "mount-observer": "0.0.39",
-    "trans-render": "0.0.871"
+    "trans-render": "0.0.872"
   },
   "devDependencies": {
     "ssi-server": "0.0.1",
