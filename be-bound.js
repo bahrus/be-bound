@@ -1,10 +1,11 @@
 // @ts-check
-import { config as beCnfg } from 'be-enhanced/config.js';
+import { propInfo, rejected, resolved } from 'be-enhanced/cc.js';
 import { BE } from 'be-enhanced/BE.js';
 import { parse } from 'trans-render/dss/parse.js';
 import { stdProp } from 'trans-render/asmr/stdProp.js';
 import { ASMR } from 'trans-render/asmr/asmr.js';
 import { find } from 'trans-render/dss/find.js';
+import {dispatchEvent as de} from 'trans-render/positractions/dispatchEvent.js';
 /** @import {BEConfig, IEnhancement, BEAllProps} from './ts-refs/be-enhanced/types.d.ts' */
 /** @import {Actions, PAP, AllProps, AP, BAP, Binding} from './ts-refs/be-bound/types.d.ts' */;
 /** @import {AbsorbingObject, SharingObject} from './ts-refs/trans-render/asmr/types' */
@@ -15,11 +16,11 @@ import { find } from 'trans-render/dss/find.js';
  */
 class BeBound extends BE {
     /**
-     * @type {BEConfig<BAP, Actions & IEnhancement, any>}
+     * @type {BEConfig<BAP, Actions & IEnhancement>}
      */
     static config = {
         propInfo: {
-            ...beCnfg.propInfo,
+            ...propInfo,
             bindingRules: {},
             rawStatements: {},
             bindings: {},
@@ -33,7 +34,8 @@ class BeBound extends BE {
             noAttrs: {
                 ifNoneOf: ['bindingRules'],
             }
-        }
+        },
+        positractions: [resolved, rejected],
     };
     /**
      * 
@@ -100,6 +102,8 @@ class BeBound extends BE {
         };
     }
 
+    de = de;
+
     /**
      * 
      * @param {AbsorbingObject} localAbsObj 
@@ -158,6 +162,11 @@ class BeBound extends BE {
                 break;
         }
     }
+    /**
+     * 
+     * @param {BAP} self 
+     * @returns 
+     */
     async noAttrs(self) {
         const { enhancedElement } = self;
         const remoteProp = stdProp(enhancedElement);
