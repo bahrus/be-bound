@@ -12,13 +12,11 @@
 </head>
 <body>
     <label>
-        <input name=howAmIFeeling>
+        <input id=howAmIFeeling>
     </label>
-    <mood-stone enh-🪢="between currentMood and @howAmIFeeling">
-        <template shadowrootmode=open>
-            <div itemscope>
-                <span itemprop=currentMood></span>
-            </div>
+    <mood-stone enh-🪢="between currentMood and #howAmIFeeling">
+        <template shadowrootmode=open itemscope>
+            <span itemprop=currentMood></span>
             <xtal-element
                 prop-defaults='{
                     "currentMood": "Happy"
