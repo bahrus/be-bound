@@ -26,9 +26,9 @@ class BeBound extends BE {
             bindings: {},
         },
         compacts: {
-            when_bindingRules_changes_invoke_getBindings: 0,
-            when_bindings_changes_invoke_hydrate: 0,
-            when_rawStatements_changes_invoke_onRawStatements: 0,
+            when_bindingRules_changes_call_getBindings: 0,
+            when_bindings_changes_call_hydrate: 0,
+            when_rawStatements_changes_call_onRawStatements: 0,
         },
         actions: {
             noAttrs: {
