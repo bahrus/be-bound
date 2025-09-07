@@ -22,24 +22,6 @@ Limitations:
 5.  Alternatively, one or both properties can be "source of truth" attributes that reflects the specified property value. [TODO]
 6.  If placed outside any shadowDOM that uses a host property path, it will two-way bind to the url query parameter or hash parameter of the specified name. [TODO]
 
-## Special Symbols
-
-In the examples below, we will encounter special symbols used in order to keep the statements small:
-
-| Symbol                             | Meaning                                                                      | Notes                                                                                           |
-|------------------------------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
-| /propName                          | "Hostish"                                                                    | Attaches listeners to a "propagator" EventTarget.                                               |
-| @propName                          | Name attribute                                                               | Listens for input events by default.                                                            |
-| \|propName                         | Itemprop attribute                                                           | If contenteditible, listens for input events by default.  Otherwise, uses be-value-added.       |
-| #propName                          | Id attribute                                                                 | Listens for input events by default.                                                            |
-| -prop-name                         | Marker indicates prop                                                        | Attaches listeners to a "propagator" EventTarget.                                               |
-| ~customElementNameInCamelCase      | Peer custom element within the nearest itemscope perimeter (recursively)     | Attaches listeners to a "propagator" EventTarget.                                               |
-
-"Hostish" means:
-
-1.  First, do a "closest" for an element with attribute itemscope, where the tag name has a dash in it.  Do that search recursively.  
-2.  If no match found, use getRootNode().host.
-
 # Part I Full Inference
 
 ## The most quintessential example
@@ -84,7 +66,7 @@ The thing to focus on is:
 
 *be-bound* two-way binds the input element's value property to mood-stone's currentMood property.  Here, be-bound is "piggy-backing" on the name of the input element, in the common use case that the name matches the property name from the host that we are binding to.  Scroll down to see how the syntax changes a bit to support scenarios where we can't rely on the name of the input field matching the host's property.
 
-What value from the adorned element (input) should be two-way bound the host's currentMode property if it isn't specified?  The rules are as follows:
+What value from the adorned element (input) should be two-way bound to the host's currentMode property if it isn't specified?  The rules are as follows:
 
 If type=checkbox, property "checked" is used in the two way binding. 
 
@@ -138,28 +120,16 @@ For that, we use what I call "Hemingway notation" within the attribute, where th
 <mood-stone>
     #shadow
         ...
-        <input be-bound='with /currentMood.'>
+        <input be-bound='with ?.currentMood.'>
 </mood-stone>
 ```
 
-
-The slash (/) is a special symbol which we use to indicate that the value of "currentMode" comes from the host web component (*mood-stone* in this case).
 
 We don't have to two-way bind with a property from the host.  We can also two way bind with peer elements within the HTML markup of the web component, based on other [special notation called DSS](https://github.com/bahrus/trans-render/wiki/VIII.--Directed-Scoped-Specifiers-(DSS)), that provides for a powerful way of finding nearby elements / properties with compact syntax.
 
-However, because we anticipate this element enhancement would *most typically* be used to two-way bind to a property coming from the host, we assume that that is the intention if no symbol is provided, making the syntax a little more readable / Hemingway like:
 
-## Least cryptic?
 
-```html
-<mood-stone>
-    #shadow
-        ...
-        <input be-bound='with currentMood.'>
-</mood-stone>
-```
-
-Note that the first word can either be capitalized or not capitalized, whichever seems more readable.
+Note that the first word ("with") can either be capitalized or not capitalized, whichever seems more readable.
 
 Now we suggest an alternative syntax that is shorter than the syntax above, but is a bit more cryptic.
 
@@ -169,7 +139,7 @@ If the name "be-bound" seems rather long to have to type over and over again, yo
 <mood-stone>
     #shadow
         ...
-        <input 🪢='with currentMood.'>
+        <input 🪢='with ?.currentMood.'>
 </mood-stone>
 ```
 
@@ -179,9 +149,11 @@ If the name "be-bound" seems rather long to have to type over and over again, yo
 
 ```html
 <mood-stone>
-    #shadow
+    <template shadowrootmode=open>
         ...
         <span contentEditable 🪢='with currentMood.'></span>
+        ...
+    </template>
 </mood-stone>
 ```
 
@@ -189,174 +161,44 @@ If the name "be-bound" seems rather long to have to type over and over again, yo
 
 ```html
 <my-custom-element>
-    #shadow
-        <div itemscope>
-            <span contenteditable itemprop=someStringProp 🪢>i am here</span>
-        </div>
+    <template shadowrootmode=open v>
+        ...
+        <span contenteditable itemprop=someStringProp 🪢>i am here</span>
+        ...
+    </template>
 </my-custom-element>
 ```
 
 ## Two way binding with peer elements
 
-### By Name
-
-```html
-<input name=search>
-...
-<span contenteditable 🪢='with @search.'>
-```
-
-### Perimeter support
-
-In the example above, the search for the matching element is done within the nearest form, or within the (shadow)root node.
-
-To specify to search within a closest perimeter, use the ^{...} pattern:
-
-```html
-<section>
-    Ignore this section
-    <input name=search>
-</section>
-<section>
-    Use this section
-    <input name=search>
-    ...
-    <span contenteditable 🪢="with ^{section}@search.">
-</section>
-```
-
-### By itemprop
-
-```html
-<span contenteditable itemprop=search>
-...
-<input 🪢='with |search.'>
-```
-
-In this case, the span's textContent property is kept in synch with the value of the search input element, and vice versa if the user edits the span's content.
-
-The search for the bound element is done, recursively, within itemscope attributed elements, and if not found, within the root node.  Similar perimeterizing can be done done with the ^ qualifier.
-
-## Binding with non visible HTML "Signals"
-
-```html
-<meta itemprop=searchProp>
-...
-<input 🪢='with |searchProp.'>
-```
-
-## By id
-
 ```html
 <input id=search>
-
 ...
-
-<span contenteditable 🪢='with #search.'></span>
+<span contenteditable 🪢='with #search.'>
 ```
-
-## By marker
-
-```html
-<mood-stone -current-mood>
-    <template shadowrootmode=open>
-        <div itemscope>
-            <span itemprop=currentMood></span>
-        </div>
-        <!-- This turns mood-stone into a custom element -->
-        <xtal-element
-            prop-defaults='{
-                "currentMood": "Happy"
-            }'
-            xform='{
-                "| currentMood": 0
-            }'
-        ></xtal-element>
-        <be-hive></be-hive>
-    </template>
-</mood-stone>
-
-<input 🪢="with -current-mood">
-```
-
-This can also work with built-in elements.
-
-## By peer custom element [TODO]
-
-This is quite similar to the example above, but doesn't involve adding a non-standard attribute to the peer custom element. It's a less less transparent that there is a two way connection, but it opens up more opportunities for customizations.  Anyway..
-
-```html
-<mood-stone>
-    <template shadowrootmode=open>
-        <div itemscope>
-            <span itemprop=currentMood></span>
-        </div>
-        <!-- This turns mood-stone into a custom element -->
-        <xtal-element
-            prop-defaults='{
-                "currentMood": "Happy"
-            }'
-            xform='{
-                "| currentMood": 0
-            }'
-        ></xtal-element>
-        <be-hive></be-hive>
-    </template>
-</mood-stone>
-
-<input 🪢="with ~MoodStone:currentMode">
-```
-
-<!-- maybe make be-linked/be sharing simply apply an enhancement? -->
-
-<!-- ```html
-<my-custom-element>
-    #shadow
-        ...
-        <my-child-element be-bound='Between my child prop and / host prop.'>
-            ...
-        </my-child-element>
-</my-custom-element>
-```
-
-or more compactly:
-
-```html
-<my-host-element>
-    #shadow
-        ...
-        <my-child-element be-bound='Between myChildProp and /hostProp.'>
-            ...
-        </my-child-element>
-</my-host-element>
-``` -->
 
 ## Being more explicit
 
 In all the examples we've seen so far, the element adorned by this *be-bound* enhancement was a built-in element, where we can usually infer the property we would want to bind to ("value" for input element, "textContent" from other types, for example).
 
 
-What happens if our local element we are adorning isn't a built-in element.  What we need to (or simply want to) be more explicit about what's happening? To support this, we need to switch from "with" statements, like we've seen thus far with "between" statements, as demonstrated below:
+What happens if our local element we are adorning isn't a built-in element.  What if we need (or simply want) to be more explicit about what's happening? To support this, we need to switch from "with" statements, like we've seen thus far with "between" statements, as demonstrated below:
 
 ## Specifying local property to bind to
 
 ```html
 <label>
-    <input name=howAmIFeeling>
+    <input id=howAmIFeeling>
 </label>
 ...
-<mood-stone enh-🪢='between currentMood and @howAmIFeeling.'></my-custom-element>
+<mood-stone enh-🪢='between currentMood and #howAmIFeeling.'></my-custom-element>
 
 ```
 
 
 We add the extra enh- prefix to hopefully avoid "stepping on the toes" of some other custom enhancement, based on the recommended reserved [prefix for this purpose](https://github.com/WICG/webcomponents/issues/1000).
 
-So, when the attribute starts with the word "Between" or "between",  as opposed to "With" or "with", it means we are specifying, first, the name of the local property name of the adorned element that we want to "sync up" with an "upstream" element.  In this case, with the input element based on the name attribute.  (But we can also synchronize with host properties if we use the "/" "sigil" as we've seen previously, or no sigil at all). 
-
-## Specifying remote property to bind to [TODO]
-
-
+So, when the attribute starts with the word "Between" or "between",  as opposed to "With" or "with", it means we are specifying, first, the name of the local property name of the adorned element that we want to "sync up" with an "upstream" element.  In this case, with the input element.  But we can also synchronize with host properties. 
 
 ## Special logic for forms
 
