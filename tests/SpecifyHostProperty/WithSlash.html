@@ -12,12 +12,10 @@
 </head>
 <body>
     <mood-stone>
-        <template shadowrootmode=open>
-            <div itemscope>
-                <span itemprop=currentMood></span>
-            </div>
+        <template shadowrootmode=open  itemscope>
+            <span itemprop=currentMood></span>
             <input 
-                🪢="with /currentMood."
+                🪢="with ?.currentMood."
             >
             <xtal-element
                 prop-defaults='{
