@@ -62,20 +62,16 @@ class BeBound extends BE {
             let remoteEvtName;
             if (remoteSpecifier === undefined) {
                 remoteProp = stdProp(enhancedElement);
-                remoteSpecifier = await parse(`/${remoteProp}`);
+                if(remoteProp === undefined) throw 500;
+                remoteSpecifier = await parse(`?.${remoteProp}`);
             }
             else {
-                const { s, prop } = remoteSpecifier;
-                switch (s) {
-                    case '/':
-                    case '-':
-                        remoteProp = prop;
-                        break;
-                }
-                remoteEvtName = remoteSpecifier.evt;
+                const { prop, evtName } = remoteSpecifier;
+                remoteProp = prop;
+                remoteEvtName = evtName;
             }
             const remoteEl = await find(enhancedElement, remoteSpecifier);
-            if(remoteEl === null) throw 404;
+            if(remoteEl === null || remoteEl === undefined) throw 404;
             const remoteShareObj = await ASMR.getSO(remoteEl, {
                 valueProp: remoteProp,
             });
