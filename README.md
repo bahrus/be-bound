@@ -120,7 +120,7 @@ For that, we use what I call "Hemingway notation" within the attribute, where th
 <mood-stone>
     #shadow
         ...
-        <input be-bound='with ?.currentMood.'>
+        <input be-bound='with currentMood.'>
 </mood-stone>
 ```
 
@@ -139,7 +139,7 @@ If the name "be-bound" seems rather long to have to type over and over again, yo
 <mood-stone>
     #shadow
         ...
-        <input 🪢='with ?.currentMood.'>
+        <input 🪢='with currentMood.'>
 </mood-stone>
 ```
 
@@ -168,6 +168,8 @@ If the name "be-bound" seems rather long to have to type over and over again, yo
     </template>
 </my-custom-element>
 ```
+
+The two way binding is now done with the host's someStringProp property.
 
 ## Two way binding with peer elements
 
@@ -232,11 +234,10 @@ Any web server that serves static files with server-side includes will do but...
 1.  Install git.
 2.  Fork/clone this repo.
 3.  Install node.
-4.  Install Python 3 or later.
-5.  Open command window to folder where you cloned this repo.
-6.  > npm install
-7.  > npm run serve
-8.  Open http://localhost:8000/demo in a modern browser.
+4.  Open command window to folder where you cloned this repo.
+5.  > npm install
+6.  > npm run serve
+7.  Open http://localhost:8000/demo in a modern browser.
 
 ## Running Tests
 
