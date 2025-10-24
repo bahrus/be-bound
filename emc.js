@@ -12,12 +12,11 @@ const withRemoteSpecifierString = String.raw `^with (?<remoteSpecifierString>.*)
  * @type {[string, string]}
  */
 const rssTors = ['remoteSpecifierString', 'remoteSpecifier'];
-const base = 'be-bound';
 /**
  * @type {EMC<any, AP>}
  */
 export const emc = {
-    base,
+    base: 'be-bound',
     map: {
         '0.0': {
             instanceOf: 'Object$entences',

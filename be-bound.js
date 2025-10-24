@@ -93,9 +93,9 @@ class BeBound extends BE {
                 remoteShareObj
             });
         }
-        return {
+        return /** @type {PAP} */ ({
             bindings
-        };
+        });
     }
 
     de = de;

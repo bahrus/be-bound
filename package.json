@@ -27,15 +27,15 @@
     "update": "ncu -u && npm install"
   },
   "dependencies": {
-    "be-enhanced": "0.0.187",
-    "be-hive": "0.0.265",
+    "be-enhanced": "0.0.188",
+    "be-hive": "0.0.266",
     "mount-observer": "0.0.102",
-    "trans-render": "0.0.958"
+    "trans-render": "0.0.959"
   },
   "devDependencies": {
-    "spa-ssi": "0.0.10",
-    "@playwright/test": "1.55.0",
-    "xtal-element": "0.0.632"
+    "spa-ssi": "0.0.23",
+    "@playwright/test": "1.55.1",
+    "xtal-element": "0.0.633"
   },
   "repository": {
     "type": "git",
