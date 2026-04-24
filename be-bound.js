@@ -1,71 +1,96 @@
 // @ts-check
-import { propInfo, rejected, resolved } from 'be-enhanced/cc.js';
-import { BE } from 'be-enhanced/BE.js';
-import { parse } from 'trans-render/dss/parse.js';
-import { stdProp } from 'trans-render/asmr/stdProp.js';
-import { ASMR } from 'trans-render/asmr/asmr.js';
-import { find } from 'trans-render/dss/find.js';
-import {dispatchEvent as de} from 'trans-render/positractions/dispatchEvent.js';
-/** @import {BEConfig, IEnhancement, BEAllProps} from './ts-refs/be-enhanced/types.d.ts' */
-/** @import {Actions, PAP, AllProps, AP, BAP, Binding} from './ts-refs/be-bound/types.d.ts' */;
-/** @import {AbsorbingObject, SharingObject} from './ts-refs/trans-render/asmr/types' */
+/** @import {Actions, PAP, AllProps, AP, Binding} from './types/be-bound/types' */;
+/** @import {RoundaboutOptions} from './types/roundabout/types' */;
+/** @import {ElementEnhancementGateway} from './types/assign-gingerly/types' */;
+/** @import {EMC} from './types/mount-observer/types' */;
+/** @import {RAConfig} from './types/roundabout/types' */;
+/** @import {AbsorbingObject, SharingObject} from './types/trans-render/asmr/types' */
+/**
+ * @type {EMC<any, AllProps, Element, RAConfig<AllProps, Actions>>}
+ */
+import emc from './emc.json' with {type: 'json'};
+
+const {customData} = emc;
 
 /**
  * @implements {Actions}
- * 
  */
-class BeBound extends BE {
+class BeBound {
+
     /**
-     * @type {BEConfig<BAP, Actions & IEnhancement>}
+     * @this {AllProps & Actions}
+     * @param {Element & ElementEnhancementGateway} enhancedElement 
+     * @param {*} ctx 
+     * @param {AllProps} initVals 
      */
-    static config = {
-        propInfo: {
-            ...propInfo,
-            bindingRules: {},
-            rawStatements: {},
-            bindings: {},
-        },
-        compacts: {
-            when_bindingRules_changes_call_getBindings: 0,
-            when_bindings_changes_call_hydrate: 0,
-            when_rawStatements_changes_call_onRawStatements: 0,
-        },
-        actions: {
-            noAttrs: {
-                ifNoneOf: ['bindingRules'],
+    constructor(enhancedElement, ctx, initVals){
+        this.init(this, enhancedElement, initVals);
+    }
+
+    /**
+     * @param {AllProps} self 
+     * @param {Element & ElementEnhancementGateway} enhancedElement 
+     * @param {PAP} initVals 
+     */
+    async init(self, enhancedElement, initVals){
+        const {defaultPropVals} = customData;
+        /**
+         * @type {RoundaboutOptions}
+         */
+        const raOptions = {
+            ...customData,
+            vm: self,
+            initialPropVals: {
+                enhancedElement,
+                ...defaultPropVals,
+                ...initVals
             }
-        },
-        positractions: [resolved, rejected],
-    };
+        };
+        (await import('roundabout-lib/roundabout.js')).roundabout(raOptions);
+    }
+
     /**
      * 
-     * @param {BAP} self 
+     * @param {AP} self 
      */
     onRawStatements(self) {
         const { rawStatements } = self;
         console.error('The following statements could not be parsed.', rawStatements);
     }
+
     /**
      * 
-     * @param {BAP} self 
+     * @param {AP} self 
      * @returns 
      */
     async getBindings(self) {
         const { bindingRules, enhancedElement } = self;
+        if(!bindingRules || !bindingRules.success) {
+            return {bindings: []};
+        }
+        
+        const {parse} = await import('trans-render/dss/parse.js');
+        const {stdProp} = await import('trans-render/asmr/stdProp.js');
+        const {ASMR} = await import('trans-render/asmr/asmr.js');
+        const {find} = await import('trans-render/dss/find.js');
+        
         const bindings = [];
-        for (const br of bindingRules) {
-            let { localEvent, localProp, remoteSpecifier } = br;
+        for (const statement of bindingRules.statements) {
+            const br = statement.value;
+            let { localEvent, localProp, remoteSpecifierString } = br;
             if (localProp !== undefined && localProp.includes(':')) {
                 localProp = `?.${localProp.replaceAll(':', '?.')}`;
             }
             let remoteProp;
             let remoteEvtName;
-            if (remoteSpecifier === undefined) {
+            let remoteSpecifier;
+            if (remoteSpecifierString === undefined) {
                 remoteProp = stdProp(enhancedElement);
                 if(remoteProp === undefined) throw 500;
                 remoteSpecifier = await parse(`?.${remoteProp}`);
             }
             else {
+                remoteSpecifier = await parse(remoteSpecifierString);
                 const { prop, evtName } = remoteSpecifier;
                 remoteProp = prop;
                 remoteEvtName = evtName;
@@ -98,8 +123,6 @@ class BeBound extends BE {
         });
     }
 
-    de = de;
-
     /**
      * 
      * @param {AbsorbingObject} localAbsObj 
@@ -121,7 +144,7 @@ class BeBound extends BE {
 
     /**
      * 
-     * @param {BAP} self 
+     * @param {AP} self 
      * @returns 
      */
     async hydrate(self) {
@@ -136,9 +159,10 @@ class BeBound extends BE {
             resolved: true,
         };
     }
+
     /**
      * 
-     * @param {BAP} self 
+     * @param {AP} self 
      * @param {Binding} binding 
      * @returns 
      */
@@ -158,13 +182,19 @@ class BeBound extends BE {
                 break;
         }
     }
+
     /**
      * 
-     * @param {BAP} self 
+     * @param {AP} self 
      * @returns 
      */
     async noAttrs(self) {
         const { enhancedElement } = self;
+        const {parse} = await import('trans-render/dss/parse.js');
+        const {stdProp} = await import('trans-render/asmr/stdProp.js');
+        const {ASMR} = await import('trans-render/asmr/asmr.js');
+        const {find} = await import('trans-render/dss/find.js');
+        
         const remoteProp = stdProp(enhancedElement);
         const remoteSpecifier = await parse(`/${remoteProp}`);
         const remoteEl = await find(enhancedElement, remoteSpecifier);
@@ -188,6 +218,4 @@ class BeBound extends BE {
     }
 }
 
-
-await BeBound.bootUp();
 export { BeBound };

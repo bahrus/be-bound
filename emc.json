@@ -1,0 +1,52 @@
+{
+    "enhConfig": {
+        "enhKey": "BeBound",
+        "spawn": "be-bound/be-bound.js",
+        "withAttrs": {
+            "base": "be-bound",
+            "_base": {
+                "mapsTo": "bindingRules",
+                "parser": "parse-pattern-statements",
+                "instanceOf": "Array",
+                "parserConfig": [
+                    {
+                        "name": "betweenLocalPropLocalEventAndRemoteSpecifierString",
+                        "pattern": "^between (?<localProp>[\\w\\:]+)\\:\\:(?<localEvent>[\\w]+)(?<!\\\\) and (?<remoteSpecifierString>.*)",
+                        "description": "Between local property with event and remote specifier: between prop::event and remote",
+                        "defaultVals": {}
+                    },
+                    {
+                        "name": "betweenLocalPropAndRemoteSpecifierString",
+                        "pattern": "^between (?<localProp>[\\w\\:]+)(?<!\\\\) and (?<remoteSpecifierString>.*)",
+                        "description": "Between local property and remote specifier: between prop and remote",
+                        "defaultVals": {}
+                    },
+                    {
+                        "name": "withRemoteSpecifierString",
+                        "pattern": "^with (?<remoteSpecifierString>.*)",
+                        "description": "With remote specifier: with remote",
+                        "defaultVals": {}
+                    }
+                ]
+            }
+        }
+    },
+    "customData": {
+        "weakRef": {
+            "properties": [
+                "enhancedElement"
+            ]
+        },
+        "actions": {
+            "noAttrs": {
+                "ifNoneOf": [
+                    "bindingRules"
+                ]
+            }
+        },
+        "compacts": {
+            "when_bindingRules_changes_call_getBindings": 0,
+            "when_bindings_changes_call_hydrate": 0
+        }
+    }
+}
