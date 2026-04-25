@@ -120,7 +120,7 @@ For that, we use what I call "Hemingway notation" within the attribute, where th
 <mood-stone>
     #shadow
         ...
-        <input be-bound='with currentMood.'>
+        <input be-bound='with currentMood'>
 </mood-stone>
 ```
 
@@ -139,7 +139,7 @@ If the name "be-bound" seems rather long to have to type over and over again, yo
 <mood-stone>
     #shadow
         ...
-        <input 🪢='with currentMood.'>
+        <input 🪢='with currentMood'>
 </mood-stone>
 ```
 
@@ -151,7 +151,7 @@ If the name "be-bound" seems rather long to have to type over and over again, yo
 <mood-stone>
     <template shadowrootmode=open>
         ...
-        <span contentEditable 🪢='with currentMood.'></span>
+        <span contentEditable 🪢='with currentMood'></span>
         ...
     </template>
 </mood-stone>
@@ -176,7 +176,7 @@ The two way binding is now done with the host's someStringProp property.
 ```html
 <input id=search>
 ...
-<span contenteditable 🪢='with #search.'>
+<span contenteditable 🪢='with #search'>
 ```
 
 ## Being more explicit
@@ -193,7 +193,7 @@ What happens if our local element we are adorning isn't a built-in element.  Wha
     <input id=howAmIFeeling>
 </label>
 ...
-<mood-stone enh-🪢='between currentMood and #howAmIFeeling.'></my-custom-element>
+<mood-stone enh-🪢='between currentMood and #howAmIFeeling'></my-custom-element>
 
 ```
 
@@ -206,7 +206,7 @@ So, when the attribute starts with the word "Between" or "between",  as opposed 
 
 ```html
 <input id=alternativeRating type=number>
-<form be-bound='between rating:value::change and #alternativeRating.'>
+<form be-bound='between rating?.value on change and #alternativeRating.'>
     <div part=rating-stars class="rating__stars">
         <input id="rating-1" class="rating__input rating__input-1" type="radio" name="rating" value="1">
         <input id="rating-2" class="rating__input rating__input-2" type="radio" name="rating" value="2">
