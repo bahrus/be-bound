@@ -45,7 +45,7 @@ export const emc = {
             base: 'be-bound',
             _base: {
                 mapsTo: 'bindingRules',
-                parser: 'parse-pattern-statements',
+                parser: 'parse-grouped-capture-statements',
                 instanceOf: 'Array',
                 parserConfig: parsePatterns
             }
@@ -57,7 +57,7 @@ export const emc = {
         },
         actions: {
             noAttrs: {
-                ifNoneOf: ['bindingRules'],
+                ifNoneOf: ['bindingRules', 'enhancedElement'],
             }
         },
         compacts: {

@@ -6,7 +6,7 @@
             "base": "🪢",
             "_base": {
                 "mapsTo": "bindingRules",
-                "parser": "parse-pattern-statements",
+                "parser": "parse-grouped-capture-statements",
                 "instanceOf": "Array",
                 "parserConfig": [
                     {
@@ -40,7 +40,8 @@
         "actions": {
             "noAttrs": {
                 "ifNoneOf": [
-                    "bindingRules"
+                    "bindingRules",
+                    "enhancedElement"
                 ]
             }
         },

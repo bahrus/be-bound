@@ -7,6 +7,7 @@ import myJSON from './emc.json' with {type: 'json'};
  * @type {EMC<any, AllProps> }
  */
 const emc = {
+    ...myJSON,
     enhConfig: {
         ...myJSON.enhConfig,
         enhKey: '🪢',
@@ -15,7 +16,6 @@ const emc = {
             base: '🪢'
         }
     },
-    customData: myJSON.customData
 }
 
 export function render(){
