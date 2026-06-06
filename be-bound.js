@@ -140,11 +140,18 @@ class BeBound {
     // }
 
     /**
+     * @type {AbortController | undefined}
+     */
+    #abortController;
+
+    /**
      * 
      * @param {AP} self 
      * @returns 
      */
     async hydrate(self) {
+        if(this.#abortController !== undefined) this.#abortController.abort();
+        this.#abortController = new AbortController();
         const { bindingRules, enhancedElement } = self;
         console.log({bindingRules});
         const {statements, success} = bindingRules;
@@ -158,12 +165,20 @@ class BeBound {
              });
 
         }
+        const {upSearch} = await import('inferencer/upSearch.js');
+
         for(const statement of statements){
             const {value} = statement;
             if(!value) throw 400;
             const {remoteId, remoteProp} = value;
-            const target = /** @type {any} */ (await ((await import('inferencer/upSearch.js')).upSearch(enhancedElement, remoteId)));
+            const target = /** @type {any} */ (await upSearch(enhancedElement, remoteId));
             console.log({target});
+            const inference = await infer(target);
+            const propagator = await inference.getPropagator();
+            propagator.addEventListener(remoteProp, e => {
+                console.log({e});
+            });
+
         }
         // for (const binding of bindings) {
         //     const { localAbsObj, remoteAbsObj, localShareObj, remoteShareObj} = binding;
