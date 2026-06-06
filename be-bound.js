@@ -1,5 +1,5 @@
 // @ts-check
-/** @import {Actions, PAP, AllProps, AP, Binding} from './types/be-bound/types' */;
+/** @import {Actions, PAP, AllProps, AP, BindingRule} from './types/be-bound/types' */;
 /** @import {RoundaboutOptions} from './types/roundabout/types' */;
 /** @import {ElementEnhancementGateway, SpawnContext} from './types/assign-gingerly/types' */;
 /** @import {EMC} from './types/mount-observer/types' */;
@@ -146,7 +146,7 @@ class BeBound {
 
     /**
      * 
-     * @param {AP} self 
+     * @param {AP & Actions} self 
      * @returns 
      */
     async hydrate(self) {
@@ -176,6 +176,7 @@ class BeBound {
             const inference = await infer(target);
             const propagator = await inference.getPropagator();
             propagator.addEventListener(remoteProp, e => {
+                self.reconcileValues(self, value, 'rToL');
                 console.log({e});
             });
 
@@ -194,24 +195,37 @@ class BeBound {
     /**
      * 
      * @param {AP} self 
-     * @param {Binding} binding 
+     * @param {BindingRule} rule
+     * @param {'rToL' | 'lToR'} direction
      * @returns 
      */
-    async reconcileValues(self, binding) {
+    async reconcileValues(self, rule, direction) {
         const { enhancedElement } = self;
-        const { localAbsObj, localShareObj, remoteAbsObj, remoteShareObj} = binding;
-        const localVal = await localAbsObj.getValue();
-        const remoteVal = await remoteAbsObj.getValue();
-        const {breakTie} = await import('trans-render/lib/breakTie.js');
-        const hs = breakTie(localVal, remoteVal);
-        switch (hs) {
-            case 'lhs':
-                remoteShareObj.setValue(localVal);
-                break;
-            case 'rhs':
-                localShareObj.setValue(remoteVal);
+        const {localProp, remoteProp, remoteId} = rule;
+        const {upSearch} = await import('inferencer/upSearch.js');
+        const remoteTarget = /** @type {any} */ (await upSearch(enhancedElement, remoteId));
+        switch(direction){
+            case 'rToL':
+                const remoteVal = remoteTarget[remoteProp || 'value'];
+                console.log(remoteVal);
                 break;
         }
+
+        //TODO: cache upSearch results
+
+        // const { localAbsObj, localShareObj, remoteAbsObj, remoteShareObj} = rule;
+        // const localVal = await localAbsObj.getValue();
+        // const remoteVal = await remoteAbsObj.getValue();
+        // const {breakTie} = await import('trans-render/lib/breakTie.js');
+        // const hs = breakTie(localVal, remoteVal);
+        // switch (hs) {
+        //     case 'lhs':
+        //         remoteShareObj.setValue(localVal);
+        //         break;
+        //     case 'rhs':
+        //         localShareObj.setValue(remoteVal);
+        //         break;
+        // }
     }
 
     /**
