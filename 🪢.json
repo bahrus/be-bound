@@ -39,9 +39,11 @@
         },
         "actions": {
             "noAttrs": {
-                "ifNoneOf": [
-                    "bindingRules",
+                "ifAllOf": [
                     "enhancedElement"
+                ],
+                "ifNoneOf": [
+                    "bindingRules"
                 ]
             }
         },

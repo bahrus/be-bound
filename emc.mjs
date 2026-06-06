@@ -57,7 +57,8 @@ export const emc = {
         },
         actions: {
             noAttrs: {
-                ifNoneOf: ['bindingRules', 'enhancedElement'],
+                ifAllOf: ['enhancedElement'],
+                ifNoneOf: ['bindingRules'],
             }
         },
         compacts: {
