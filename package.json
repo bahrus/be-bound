@@ -28,14 +28,14 @@
     "update": "ncu -u && npm install"
   },
   "dependencies": {
-    "be-hive": "0.1.9",
-    "mount-observer": "0.0.16",
-    "roundabout-lib": "0.0.2",
-    "nested-regex-groups": "0.0.1"
+    "be-hive": "0.1.13",
+    "mount-observer": "0.1.37",
+    "roundabout-lib": "0.0.20",
+    "nested-regex-groups": "0.0.6"
   },
   "devDependencies": {
-    "spa-ssi": "0.0.23",
-    "@playwright/test": "1.56.1",
+    "spa-ssi": "0.0.27",
+    "@playwright/test": "1.60.0",
     "xtal-element": "0.0.637"
   },
   "repository": {

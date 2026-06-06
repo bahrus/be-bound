@@ -1,16 +1,12 @@
 // @ts-check
 /** @import {Actions, PAP, AllProps, AP, Binding} from './types/be-bound/types' */;
 /** @import {RoundaboutOptions} from './types/roundabout/types' */;
-/** @import {ElementEnhancementGateway} from './types/assign-gingerly/types' */;
+/** @import {ElementEnhancementGateway, SpawnContext} from './types/assign-gingerly/types' */;
 /** @import {EMC} from './types/mount-observer/types' */;
 /** @import {RAConfig} from './types/roundabout/types' */;
 /** @import {AbsorbingObject, SharingObject} from './types/trans-render/asmr/types' */
 /**
- * @type {EMC<any, AllProps, Element, RAConfig<AllProps, Actions>>}
- */
-import emc from './emc.json' with {type: 'json'};
 
-const {customData} = emc;
 
 /**
  * @implements {Actions}
@@ -20,20 +16,21 @@ class BeBound {
     /**
      * @this {AllProps & Actions}
      * @param {Element & ElementEnhancementGateway} enhancedElement 
-     * @param {*} ctx 
+     * @param {SpawnContext} ctx 
      * @param {AllProps} initVals 
      */
     constructor(enhancedElement, ctx, initVals){
-        this.init(this, enhancedElement, initVals);
+        this.init(this, enhancedElement, ctx, initVals);
     }
 
     /**
      * @param {AllProps} self 
      * @param {Element & ElementEnhancementGateway} enhancedElement 
+     * @param {SpawnContext} ctx 
      * @param {PAP} initVals 
      */
-    async init(self, enhancedElement, initVals){
-        const {defaultPropVals} = customData;
+    async init(self, enhancedElement, ctx, initVals){
+        const {customData} = /** @type {EMC<any, AllProps, Element, RAConfig<AllProps, Actions>>} */ (ctx.emc);
         /**
          * @type {RoundaboutOptions}
          */
@@ -42,7 +39,7 @@ class BeBound {
             vm: self,
             initialPropVals: {
                 enhancedElement,
-                ...defaultPropVals,
+                ...customData?.defaultPropVals,
                 ...initVals
             }
         };
