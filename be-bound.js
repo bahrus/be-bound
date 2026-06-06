@@ -4,7 +4,7 @@
 /** @import {ElementEnhancementGateway, SpawnContext} from './types/assign-gingerly/types' */;
 /** @import {EMC} from './types/mount-observer/types' */;
 /** @import {RAConfig} from './types/roundabout/types' */;
-/** @import {AbsorbingObject, SharingObject} from './types/trans-render/asmr/types' */
+/** @import {Infer} from './types/inferencer/types' */
 /**
 
 
@@ -145,7 +145,26 @@ class BeBound {
      * @returns 
      */
     async hydrate(self) {
-        // const { bindings, enhancedElement } = self;
+        const { bindingRules, enhancedElement } = self;
+        console.log({bindingRules});
+        const {statements, success} = bindingRules;
+        if(!success) throw 400;
+        if(statements.length === 0){
+             const inference = await infer(enhancedElement);
+             statements.push({
+                value: {
+                    remoteProp: inference.defaultRemoteBindingPropName
+                }
+             });
+
+        }
+        for(const statement of statements){
+            const {value} = statement;
+            if(!value) throw 400;
+            const {remoteId, remoteProp} = value;
+            const target = /** @type {any} */ (await ((await import('inferencer/upSearch.js')).upSearch(enhancedElement, remoteId)));
+            console.log({target});
+        }
         // for (const binding of bindings) {
         //     const { localAbsObj, remoteAbsObj, localShareObj, remoteShareObj} = binding;
         //     this.addLocalAbs(localAbsObj, remoteShareObj);
@@ -187,7 +206,19 @@ class BeBound {
      */
     async noAttrs(self) {
         const { enhancedElement } = self;
-        console.log( {enhancedElement} );
+        const inference = await infer(enhancedElement);
+        return /** @type {PAP} */({
+            bindingRules: {
+                success: true,
+                statements: [
+                    {
+                        value: {
+                            remoteProp: inference.defaultRemoteBindingPropName
+                        }
+                    }
+                ]
+            }
+        });
         // const {parse} = await import('trans-render/dss/parse.js');
         // const {stdProp} = await import('trans-render/asmr/stdProp.js');
         // const {ASMR} = await import('trans-render/asmr/asmr.js');
@@ -217,3 +248,9 @@ class BeBound {
 }
 
 export { BeBound };
+
+/**
+ * 
+ * @param {Element & ElementEnhancementGateway} from 
+ */
+async function infer(from){return /** @type {Infer} */ (/** @type {any} */ (from.enh.get((await import('inferencer/inferencer.js')).registryItem)));}

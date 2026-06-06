@@ -56,15 +56,18 @@ export const emc = {
             properties: ['enhancedElement']
         },
         actions: {
-            noAttrs: {
-                ifAllOf: ['enhancedElement'],
-                ifNoneOf: ['bindingRules'],
+            // noAttrs: {
+            //     ifAllOf: ['enhancedElement'],
+            //     ifNoneOf: ['bindingRules'],
+            // },
+            hydrate: {
+                ifAllOf: ['bindingRules', 'enhancedElement']
             }
         },
-        compacts: {
-            when_bindingRules_changes_call_getBindings: 0,
-            when_bindings_changes_call_hydrate: 0,
-        }
+        // compacts: {
+        //     //when_bindingRules_changes_call_getBindings: 0,
+        //     when_bindingRules_changes_call_hydrate: 0,
+        // }
     }
 }
 
