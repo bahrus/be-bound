@@ -23,8 +23,14 @@
                     },
                     {
                         "name": "withRemoteId",
-                        "pattern": "^with #?(?<remoteId>.*)",
-                        "description": "With remote specifier: with remote",
+                        "pattern": "^with #(?<remoteId>.*)",
+                        "description": "With remote element by ID: with #elementId",
+                        "defaultVals": {}
+                    },
+                    {
+                        "name": "withRemoteProp",
+                        "pattern": "^with (?<remoteProp>[\\w\\.]+)",
+                        "description": "With remote property on host: with propName",
                         "defaultVals": {}
                     }
                 ]

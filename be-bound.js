@@ -61,7 +61,6 @@ class BeBound {
      * @returns 
      */
     async hydrate(self) {
-        console.log('hydrate');
         if(this.#abortController !== undefined) this.#abortController.abort();
         this.#abortController = new AbortController();
         const { bindingRules, enhancedElement } = self;
