@@ -160,7 +160,8 @@ class BeBound {
              const inference = await infer(enhancedElement);
              statements.push({
                 value: {
-                    remoteProp: inference.defaultRemoteBindingPropName
+                    remoteProp: inference.defaultRemoteBindingPropName,
+                    localProp: inference.
                 }
              });
 

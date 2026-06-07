@@ -36,20 +36,10 @@ Limitations:
             name=currentMood 
             be-bound
         >
-        <xtal-element
-            prop-defaults='{
-                "currentMood": "Happy"
-            }'
-            xform='{
-                "| currentMood": 0
-            }'
-        ></xtal-element>
         <be-hive></be-hive>
     </template>
 </mood-stone>
 ```
-
-*xtal-element* is a declarative custom element solution that takes the live DOM element it belongs to and turns it into a web component for repeated use.  The *be-hive* tag is needed to activate the *be-bound* enhancement within the Shadow DOM realm.
 
 The thing to focus on is:
 
@@ -94,14 +84,6 @@ If the two types are the same, if the two types aren't of type object, the longe
             type=checkbox
             be-bound
         >
-        <xtal-element
-            prop-defaults='{
-                "isHappy": true
-            }'
-            xform='{
-                "| isHappy": 0
-            }'
-        ></xtal-element>
         <be-hive></be-hive>
     </template>
 </mood-stone>
@@ -142,8 +124,6 @@ If the name "be-bound" seems rather long to have to type over and over again, yo
         <input 🪢='with currentMood'>
 </mood-stone>
 ```
-
-
 
 ## Non form-associated bindings with contentEditable
 
