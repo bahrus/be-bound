@@ -7,28 +7,28 @@
 
 const betweenLocalProp = String.raw `^between (?<localProp>[\w\:]+)`;
 const betweenLocalPropLocalEvent = String.raw `${betweenLocalProp}\:\:(?<localEvent>[\w]+)`;
-const andRemoteSpecifierString = String.raw `(?<!\\) and (?<remoteSpecifierString>.*)`;
-const betweenLocalPropAndRemoteSpecifierString = String.raw `${betweenLocalProp}${andRemoteSpecifierString}`;
-const betweenLocalPropLocalEventAndRemoteSpecifierString = String.raw `${betweenLocalPropLocalEvent}${andRemoteSpecifierString}`;
-const withRemoteSpecifierString = String.raw `^with (?<remoteSpecifierString>.*)`;
+const andRemoteId = String.raw `(?<!\\) and (?<remoteId>.*)`;
+const betweenLocalPropAndRemoteId = String.raw `${betweenLocalProp}${andRemoteId}`;
+const betweenLocalPropLocalEventAndRemoteId = String.raw `${betweenLocalPropLocalEvent}${andRemoteId}`;
+const withRemoteId = String.raw `^with (?<remoteId>.*)`;
 
 /** @type {PatternConfig[]} */
 const parsePatterns = [
     {
-        name: 'betweenLocalPropLocalEventAndRemoteSpecifierString',
-        pattern: betweenLocalPropLocalEventAndRemoteSpecifierString,
+        name: 'betweenLocalPropLocalEventAndRemoteId',
+        pattern: betweenLocalPropLocalEventAndRemoteId,
         description: 'Between local property with event and remote specifier: between prop::event and remote',
         defaultVals: {}
     },
     {
-        name: 'betweenLocalPropAndRemoteSpecifierString',
-        pattern: betweenLocalPropAndRemoteSpecifierString,
+        name: 'betweenLocalPropAndRemoteId',
+        pattern: betweenLocalPropAndRemoteId,
         description: 'Between local property and remote specifier: between prop and remote',
         defaultVals: {}
     },
     {
-        name: 'withRemoteSpecifierString',
-        pattern: withRemoteSpecifierString,
+        name: 'withRemoteId',
+        pattern: withRemoteId,
         description: 'With remote specifier: with remote',
         defaultVals: {}
     }

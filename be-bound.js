@@ -52,6 +52,9 @@ class BeBound {
      */
     #abortController;
 
+    /** @type {Infer | undefined} */
+    #localInference;
+
     /**
      * 
      * @param {AP & Actions} self 
@@ -65,22 +68,20 @@ class BeBound {
         const {statements, success} = bindingRules;
         if(!success) throw 400;
         if(statements.length === 0){
-             const inference = await infer(enhancedElement);
              statements.push({
-                value: {
-                    remoteProp: inference.defaultRemoteBindingPropName,
-                    localProp: inference.valueProperty,
-                }
+                value: {}
              });
-
         }
         const {upSearch} = await import('inferencer/upSearch.js');
         const localInference = await infer(enhancedElement);
+        this.#localInference = localInference;
         const localPropagator = await localInference.getPropagator();
         for(const statement of statements){
             const {value} = statement;
             if(!value) throw 400;
-            const {remoteId, remoteProp, localProp} = value;
+            let {remoteId, remoteProp, localProp} = value;
+            if(remoteProp === undefined) remoteProp = localInference.defaultRemoteBindingPropName;
+            if(localProp === undefined) localProp = localInference.valueProperty;
             const target = /** @type {any} */ (await upSearch(enhancedElement, remoteId));
             console.log({target});
             const remoteInference = await infer(target);
@@ -105,7 +106,9 @@ class BeBound {
      */
     async reconcileValues(self, rule, direction) {
         const { enhancedElement } = self;
-        const {localProp, remoteProp, remoteId} = rule;
+        let {localProp, remoteProp, remoteId} = rule;
+        if(remoteProp === undefined) remoteProp = this.#localInference?.defaultRemoteBindingPropName;
+        if(localProp === undefined) localProp = this.#localInference?.valueProperty;
         const {upSearch} = await import('inferencer/upSearch.js');
         const remoteTarget = /** @type {any} */ (await upSearch(enhancedElement, remoteId));
         if(enhancedElement[localProp] === remoteTarget[remoteProp]) return;
