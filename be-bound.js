@@ -61,10 +61,10 @@ class BeBound {
      * @returns 
      */
     async hydrate(self) {
+        console.log('hydrate');
         if(this.#abortController !== undefined) this.#abortController.abort();
         this.#abortController = new AbortController();
         const { bindingRules, enhancedElement } = self;
-        console.log({bindingRules});
         const {statements, success} = bindingRules;
         if(!success) throw 400;
         if(statements.length === 0){
@@ -83,7 +83,6 @@ class BeBound {
             if(remoteProp === undefined) remoteProp = localInference.defaultRemoteBindingPropName;
             if(localProp === undefined) localProp = localInference.valueProperty;
             const target = /** @type {any} */ (await upSearch(enhancedElement, remoteId));
-            console.log({target});
             const remoteInference = await infer(target);
             const remotePropagator = await remoteInference.getPropagator();
             remotePropagator.addEventListener(remoteProp, e => {

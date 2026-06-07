@@ -30,8 +30,8 @@
   "dependencies": {
     "be-hive": "0.1.13",
     "inferencer": "0.0.6",
-    "mount-observer": "0.1.37",
-    "roundabout-lib": "0.0.20",
+    "mount-observer": "0.1.38",
+    "roundabout-lib": "0.0.21",
     "nested-regex-groups": "0.0.6"
   },
   "devDependencies": {
