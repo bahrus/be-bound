@@ -5,28 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Full Inference => By Name => Boolean</title>
     <!-- #include virtual="/imports.html" -->
+
     <script type=module>
-        import 'xtal-element/index.js';
-        import '/🪢.js';
+        import 'be-hive/be-hive.js';
+        class MoodStone extends HTMLElement{
+            #isHappy;
+            get isHappy(){
+                return this.#isHappy;
+            }
+            set isHappy(nv){
+                this.#isHappy = nv;
+                this.shadowRoot.querySelector('[itemprop="isHappy"]').textContent = nv ? '😊' : '😢'
+            }
+            connectedCallback(){
+                this.isHappy = true;
+            }
+        }
+        customElements.define('mood-stone', MoodStone);
     </script>
 </head>
 <body>
+    <be-hive>
+        <script type=emc-parser 
+                src="be-hive/parsers/parse-grouped-capture-statements.js" 
+                parser-name=parse-grouped-capture-statements></script>
+        <script type=emc 
+                src="be-bound/🪢.json" 
+                wait-for-parsers=parse-grouped-capture-statements></script>
+    </be-hive>
     <mood-stone>
         <template shadowrootmode=open itemscope>
+            
             <span itemprop=isHappy></span>
+
             <input 
                 name=isHappy
                 type=checkbox
                 🪢
             >
-            <xtal-element
-                prop-defaults='{
-                    "isHappy": true
-                }'
-                xform='{
-                    "| isHappy": 0
-                }'
-            ></xtal-element>
             <be-hive></be-hive>
         </template>
     </mood-stone>
