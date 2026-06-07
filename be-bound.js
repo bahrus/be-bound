@@ -75,20 +75,22 @@ class BeBound {
 
         }
         const {upSearch} = await import('inferencer/upSearch.js');
-
+        const localInference = await infer(enhancedElement);
+        const localPropagator = await localInference.getPropagator();
         for(const statement of statements){
             const {value} = statement;
             if(!value) throw 400;
-            const {remoteId, remoteProp} = value;
+            const {remoteId, remoteProp, localProp} = value;
             const target = /** @type {any} */ (await upSearch(enhancedElement, remoteId));
             console.log({target});
-            const inference = await infer(target);
-            const propagator = await inference.getPropagator();
-            propagator.addEventListener(remoteProp, e => {
+            const remoteInference = await infer(target);
+            const remotePropagator = await remoteInference.getPropagator();
+            remotePropagator.addEventListener(remoteProp, e => {
                 self.reconcileValues(self, value, 'rToL');
-                console.log({e});
             });
-
+            localPropagator.addEventListener(localProp, e => {
+                self.reconcileValues(self, value, 'lToR');
+            })
         }
 
     }
@@ -105,10 +107,13 @@ class BeBound {
         const {localProp, remoteProp, remoteId} = rule;
         const {upSearch} = await import('inferencer/upSearch.js');
         const remoteTarget = /** @type {any} */ (await upSearch(enhancedElement, remoteId));
+        if(enhancedElement[localProp] === remoteTarget[remoteProp]) return;
         switch(direction){
             case 'rToL':
-                const remoteVal = remoteTarget[remoteProp || 'value'];
-                enhancedElement[localProp] = remoteVal;
+                enhancedElement[localProp] = remoteTarget[remoteProp];
+                break;
+            case 'lToR':
+                remoteTarget[remoteProp] = enhancedElement[localProp];
                 break;
         }
 
