@@ -30,7 +30,7 @@
   "dependencies": {
     "be-hive": "0.1.13",
     "inferencer": "0.0.7",
-    "mount-observer": "0.1.38",
+    "mount-observer": "0.1.39",
     "roundabout-lib": "0.0.21",
     "nested-regex-groups": "0.0.6"
   },
