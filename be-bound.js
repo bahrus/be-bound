@@ -1,5 +1,5 @@
 // @ts-check
-/** @import {Actions, PAP, AllProps, AP, BindingRule} from './types/be-bound/types' */;
+/** @import {Actions, PAP, AllProps, AP, BindingRule, Directions} from './types/be-bound/types' */;
 /** @import {RoundaboutOptions} from './types/roundabout/types' */;
 /** @import {ElementEnhancementGateway, SpawnContext} from './types/assign-gingerly/types' */;
 /** @import {EMC} from './types/mount-observer/types' */;
@@ -90,7 +90,8 @@ class BeBound {
             });
             localPropagator.addEventListener(localProp, e => {
                 self.reconcileValues(self, value, 'lToR');
-            })
+            });
+            self.reconcileValues(self, value, 'tie');
         }
 
     }
@@ -99,7 +100,7 @@ class BeBound {
      * 
      * @param {AP} self 
      * @param {BindingRule} rule
-     * @param {'rToL' | 'lToR'} direction
+     * @param {Directions} direction
      * @returns 
      */
     async reconcileValues(self, rule, direction) {
@@ -115,12 +116,68 @@ class BeBound {
             case 'lToR':
                 remoteTarget[remoteProp] = enhancedElement[localProp];
                 break;
+            case 'tie':
+                const lhsValue = enhancedElement[localProp];
+                const rhsValue = remoteTarget[remoteProp];
+                const tb = breakTie(lhsValue, rhsValue);
+                switch(tb){
+                    case 'lhs':
+                        remoteTarget[remoteProp] = enhancedElement[localProp];
+                        break;
+                    case 'rhs':
+                        enhancedElement[localProp] = remoteTarget[remoteProp];
+                        break;
+                }
+                break;
         }
 
 
     }
 
 
+}
+
+const typeRankings = [
+    'undefined',
+    'null',
+    'string',
+    'boolean',
+    'number',
+    'bigint',
+    'symbol',
+    'object',
+    'function'
+];
+/**
+ * 
+ * @param {any} lhs 
+ * @param {any} rhs 
+ * @returns 
+ */
+export function breakTie(lhs, rhs) {
+    if (lhs === rhs)
+        return 'eq';
+    const lhsType = lhs === null ? 'null' : typeof lhs;
+    const rhsType = rhs === null ? 'null' : typeof rhs;
+    const lhsTypeScore = typeRankings.indexOf(lhsType);
+    const rhsTypeScore = typeRankings.indexOf(rhsType);
+    if (lhsTypeScore > rhsTypeScore)
+        return 'lhs';
+    if (rhsTypeScore > lhsTypeScore)
+        return 'rhs';
+    switch (lhsType) {
+        case 'string':
+            if (lhs.length > rhs.length)
+                return 'lhs';
+            if (rhs.length > lhs.length)
+                return 'rhs';
+        default:
+            if (lhs > rhs)
+                return 'lhs';
+            if (rhs > lhs)
+                return 'rhs';
+    }
+    return 'eq';
 }
 
 export { BeBound };
