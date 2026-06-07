@@ -90,15 +90,7 @@ class BeBound {
             });
 
         }
-        // for (const binding of bindings) {
-        //     const { localAbsObj, remoteAbsObj, localShareObj, remoteShareObj} = binding;
-        //     this.addLocalAbs(localAbsObj, remoteShareObj);
-        //     this.addRemoteAbs(remoteAbsObj, localShareObj);
-        //     this.reconcileValues(self, binding);
-        // }
-        // return {
-        //     resolved: true,
-        // };
+
     }
 
     /**
@@ -117,73 +109,13 @@ class BeBound {
             case 'rToL':
                 const remoteVal = remoteTarget[remoteProp || 'value'];
                 enhancedElement[localProp] = remoteVal;
-                console.log(remoteVal);
                 break;
         }
 
-        //TODO: cache upSearch results
 
-        // const { localAbsObj, localShareObj, remoteAbsObj, remoteShareObj} = rule;
-        // const localVal = await localAbsObj.getValue();
-        // const remoteVal = await remoteAbsObj.getValue();
-        // const {breakTie} = await import('trans-render/lib/breakTie.js');
-        // const hs = breakTie(localVal, remoteVal);
-        // switch (hs) {
-        //     case 'lhs':
-        //         remoteShareObj.setValue(localVal);
-        //         break;
-        //     case 'rhs':
-        //         localShareObj.setValue(remoteVal);
-        //         break;
-        // }
     }
 
-    /**
-     * 
-     * @param {AP} self 
-     * @returns 
-     */
-    async noAttrs(self) {
-        const { enhancedElement } = self;
-        const inference = await infer(enhancedElement);
-        return /** @type {PAP} */({
-            bindingRules: {
-                success: true,
-                statements: [
-                    {
-                        value: {
-                            remoteProp: inference.defaultRemoteBindingPropName
-                        }
-                    }
-                ]
-            }
-        });
-        // const {parse} = await import('trans-render/dss/parse.js');
-        // const {stdProp} = await import('trans-render/asmr/stdProp.js');
-        // const {ASMR} = await import('trans-render/asmr/asmr.js');
-        // const {find} = await import('trans-render/dss/find.js');
-        
-        // const remoteProp = stdProp(enhancedElement);
-        // const remoteSpecifier = await parse(`/${remoteProp}`);
-        // const remoteEl = await find(enhancedElement, remoteSpecifier);
-        // if(remoteEl === null) throw 404;
-        // const remoteShareObj = await ASMR.getSO(remoteEl, {
-        //     valueProp: remoteProp
-        // });
-        // const remoteAbsObj = await ASMR.getAO(remoteEl, {
-        //     propToAbsorb: remoteProp
-        // });
-        // const localShareObj = await ASMR.getSO(enhancedElement);
-        // const localAbsObj = await ASMR.getAO(enhancedElement);
-        // return {
-        //     bindings: [{
-        //             remoteAbsObj,
-        //             remoteShareObj,
-        //             localShareObj,
-        //             localAbsObj,
-        //         }]
-        // };
-    }
+
 }
 
 export { BeBound };
