@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peer Element Binding => By ID => From Text Content</title>
+    <!-- #include virtual="/imports.html" -->
+
+    <script type=module>
+        import 'be-hive/be-hive.js';
+    </script>
+</head>
+<body>
+    <be-hive>
+        <script type=emc-parser 
+                src="be-hive/parsers/parse-grouped-capture-statements.js" 
+                parser-name=parse-grouped-capture-statements></script>
+        <script type=emc 
+                src="be-bound/🪢.json" 
+                wait-for-parsers=parse-grouped-capture-statements></script>
+    </be-hive>
+
+    <input id=search>
+
+    <span contenteditable 🪢="with #search"></span>
+</body>
+</html>
