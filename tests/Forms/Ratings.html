@@ -5,21 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form rating example</title>
 <!-- #include virtual="/imports.html" -->
-    <be-hive>
-        <script type=emc-parser 
-                src="be-hive/parsers/parse-pattern-statements.js" 
-                parser-name=parse-pattern-statements></script>
-        <script type=emc 
-                src="be-bound/🪢.json" 
-                wait-for-parsers=parse-pattern-statements></script>
-    </be-hive>
     <script type=module>
         import 'be-hive/be-hive.js';
     </script>
 </head>
 <body>
+    <be-hive>
+        <script type=emc-parser 
+                src="be-hive/parsers/parse-grouped-capture-statements.js" 
+                parser-name=parse-grouped-capture-statements></script>
+        <script type=emc 
+                src="be-bound/🪢.json" 
+                wait-for-parsers=parse-grouped-capture-statements></script>
+    </be-hive>
     <input id=alternativeRating type=number>
-    <form id=ratingStars 🪢='between rating:value::change and #alternativeRating.'>
+    <form id=ratingStars 🪢='between ?.rating?.value on change and #alternativeRating.'>
         <div part=rating-stars class="rating__stars">
             <input id="rating-1" class="rating__input rating__input-1" type="radio" name="rating" value="1">
             <input id="rating-2" class="rating__input rating__input-2" type="radio" name="rating" value="2">

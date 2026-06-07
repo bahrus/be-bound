@@ -78,7 +78,7 @@ class BeBound {
         for(const statement of statements){
             const {value} = statement;
             if(!value) throw 400;
-            let {remoteId, remoteProp, localProp} = value;
+            let {remoteId, remoteProp, localProp, localEvent} = value;
             if(remoteProp === undefined) remoteProp = localInference.defaultRemoteBindingPropName;
             if(localProp === undefined) localProp = localInference.valueProperty;
             const target = /** @type {any} */ (await upSearch(enhancedElement, remoteId));
@@ -87,9 +87,16 @@ class BeBound {
             remotePropagator.addEventListener(remoteProp, e => {
                 self.reconcileValues(self, value, 'rToL');
             });
-            localPropagator.addEventListener(localProp, e => {
-                self.reconcileValues(self, value, 'lToR');
-            });
+            if(localEvent){
+                // Listen for a specific DOM event on the enhanced element
+                enhancedElement.addEventListener(localEvent, e => {
+                    self.reconcileValues(self, value, 'lToR');
+                }, {signal: this.#abortController.signal});
+            } else {
+                localPropagator.addEventListener(localProp, e => {
+                    self.reconcileValues(self, value, 'lToR');
+                });
+            }
             self.reconcileValues(self, value, 'tie');
         }
 
@@ -109,30 +116,28 @@ class BeBound {
         if(localProp === undefined) localProp = this.#localInference?.valueProperty;
         const {upSearch} = await import('inferencer/upSearch.js');
         const remoteTarget = /** @type {any} */ (await upSearch(enhancedElement, remoteId));
-        if(enhancedElement[localProp] === remoteTarget[remoteProp]) return;
+        const localValue = resolvePath(enhancedElement, localProp);
+        const remoteValue = remoteTarget[remoteProp];
+        if(localValue === remoteValue) return;
         switch(direction){
             case 'rToL':
-                enhancedElement[localProp] = remoteTarget[remoteProp];
+                setPath(enhancedElement, localProp, remoteValue);
                 break;
             case 'lToR':
-                remoteTarget[remoteProp] = enhancedElement[localProp];
+                remoteTarget[remoteProp] = localValue;
                 break;
             case 'tie':
-                const lhsValue = enhancedElement[localProp];
-                const rhsValue = remoteTarget[remoteProp];
-                const tb = breakTie(lhsValue, rhsValue);
+                const tb = breakTie(localValue, remoteValue);
                 switch(tb){
                     case 'lhs':
-                        remoteTarget[remoteProp] = enhancedElement[localProp];
+                        remoteTarget[remoteProp] = localValue;
                         break;
                     case 'rhs':
-                        enhancedElement[localProp] = remoteTarget[remoteProp];
+                        setPath(enhancedElement, localProp, remoteValue);
                         break;
                 }
                 break;
         }
-
-
     }
 
 
@@ -182,6 +187,47 @@ export function breakTie(lhs, rhs) {
 }
 
 export { BeBound };
+
+/**
+ * Resolve a property path on an object.
+ * Handles both simple props ("value") and ?. paths ("?.rating?.value").
+ * @param {any} obj 
+ * @param {string} path 
+ * @returns {any}
+ */
+function resolvePath(obj, path) {
+    if(!path.startsWith('?.')) return obj[path];
+    const segments = path.split('?.').filter(s => s.length > 0);
+    let current = obj;
+    for(const seg of segments){
+        if(current == null) return undefined;
+        current = current[seg];
+    }
+    return current;
+}
+
+/**
+ * Set a value at a property path on an object.
+ * Handles both simple props ("value") and ?. paths ("?.rating?.value").
+ * @param {any} obj 
+ * @param {string} path 
+ * @param {any} value 
+ */
+function setPath(obj, path, value) {
+    if(!path.startsWith('?.')) {
+        obj[path] = value;
+        return;
+    }
+    const segments = path.split('?.').filter(s => s.length > 0);
+    let current = obj;
+    for(let i = 0; i < segments.length - 1; i++){
+        if(current == null) return;
+        current = current[segments[i]];
+    }
+    if(current != null){
+        current[segments[segments.length - 1]] = value;
+    }
+}
 
 /**
  * 
