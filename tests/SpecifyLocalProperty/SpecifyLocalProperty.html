@@ -5,38 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Peer Element Binding => Specify Local Property</title>
     <!-- #include virtual="/imports.html" -->
-    <be-hive>
-        <script type=emc-parser 
-                src="be-hive/parsers/parse-pattern-statements.js" 
-                parser-name=parse-pattern-statements></script>
-        <script type=emc 
-                src="be-bound/🪢.json" 
-                wait-for-parsers=parse-pattern-statements></script>
-    </be-hive>
+
     <script type=module>
-        import 'xtal-element/index.js';
         import 'be-hive/be-hive.js';
+        class MoodStone extends HTMLElement{
+            #currentMood;
+            get currentMood(){
+                return this.#currentMood;
+            }
+            set currentMood(nv){
+                this.#currentMood = nv;
+                this.shadowRoot.querySelector('[itemprop="currentMood"]').textContent = nv;
+            }
+            connectedCallback(){
+                this.currentMood = 'Happy';
+            }
+        }
+        customElements.define('mood-stone', MoodStone);
     </script>
 </head>
 <body>
+    <be-hive>
+        <script type=emc-parser 
+                src="be-hive/parsers/parse-grouped-capture-statements.js" 
+                parser-name=parse-grouped-capture-statements></script>
+        <script type=emc 
+                src="be-bound/🪢.json" 
+                wait-for-parsers=parse-grouped-capture-statements></script>
+    </be-hive>
     <label>
         <input id=howAmIFeeling>
     </label>
     <mood-stone enh-🪢="between currentMood and #howAmIFeeling">
         <template shadowrootmode=open itemscope>
             <span itemprop=currentMood></span>
-            <xtal-element
-                prop-defaults='{
-                    "currentMood": "Happy"
-                }'
-                xform='{
-                    "| currentMood": 0
-                }'
-            ></xtal-element>
             <be-hive></be-hive>
         </template>
     </mood-stone>
-
     <div id=target></div>
     <script>
         function runTest(){

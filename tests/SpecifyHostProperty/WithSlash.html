@@ -3,36 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Specify Host Property > With Slash</title>
+    <title>Specify Host Property => Content Editable</title>
     <!-- #include virtual="/imports.html" -->
-    <be-hive>
-        <script type=emc-parser 
-                src="be-hive/parsers/parse-pattern-statements.js" 
-                parser-name=parse-pattern-statements></script>
-        <script type=emc 
-                src="be-bound/🪢.json" 
-                wait-for-parsers=parse-pattern-statements></script>
-    </be-hive>
+
     <script type=module>
-        import 'xtal-element/index.js';
         import 'be-hive/be-hive.js';
+        class MoodStone extends HTMLElement{
+            #currentMood;
+            get currentMood(){
+                return this.#currentMood;
+            }
+            set currentMood(nv){
+                this.#currentMood = nv;
+                this.shadowRoot.querySelector('[itemprop="currentMood"]').textContent = nv;
+            }
+            connectedCallback(){
+                this.currentMood = 'Happy';
+            }
+        }
+        customElements.define('mood-stone', MoodStone);
     </script>
 </head>
 <body>
+    <be-hive>
+        <script type=emc-parser 
+                src="be-hive/parsers/parse-grouped-capture-statements.js" 
+                parser-name=parse-grouped-capture-statements></script>
+        <script type=emc 
+                src="be-bound/🪢.json" 
+                wait-for-parsers=parse-grouped-capture-statements></script>
+    </be-hive>
     <mood-stone>
-        <template shadowrootmode=open  itemscope>
+        <template shadowrootmode=open itemscope>
             <span itemprop=currentMood></span>
-            <input 
-                🪢="with ?.currentMood."
-            >
-            <xtal-element
-                prop-defaults='{
-                    "currentMood": "Happy"
-                }'
-                xform='{
-                    "| currentMood": 0
-                }'
-            ></xtal-element>
+            <span contentEditable 
+                🪢="with currentMood"
+            ></span>
             <be-hive></be-hive>
         </template>
     </mood-stone>
@@ -40,11 +46,11 @@
     <script>
         function runTest(){
             const rn = document.querySelector('mood-stone').shadowRoot;
-            const input = rn.querySelector('input');
-            input.value = 'hello';
-            input.dispatchEvent(new Event('input'));
+            const span = rn.querySelector('[contenteditable]');
+            span.textContent = 'hello';
+            span.dispatchEvent(new Event('input'));
             setTimeout(() => {
-                if(rn.querySelector('span').textContent === 'hello'){
+                if(rn.querySelector('[itemprop="currentMood"]').textContent === 'hello'){
                     target.setAttribute('mark', 'good')
                 }
             }, 500);

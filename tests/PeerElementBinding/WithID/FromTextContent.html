@@ -3,26 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peer Element Binding => By id</title>
+    <title>Peer Element Binding => By ID => From Text Content</title>
     <!-- #include virtual="/imports.html" -->
-    <be-hive>
-        <script type=emc-parser 
-                src="be-hive/parsers/parse-pattern-statements.js" 
-                parser-name=parse-pattern-statements></script>
-        <script type=emc 
-                src="be-bound/🪢.json" 
-                wait-for-parsers=parse-pattern-statements></script>
-    </be-hive>
+
     <script type=module>
         import 'be-hive/be-hive.js';
     </script>
 </head>
 <body>
+    <be-hive>
+        <script type=emc-parser 
+                src="be-hive/parsers/parse-grouped-capture-statements.js" 
+                parser-name=parse-grouped-capture-statements></script>
+        <script type=emc 
+                src="be-bound/🪢.json" 
+                wait-for-parsers=parse-grouped-capture-statements></script>
+    </be-hive>
+
     <input id=search>
 
-    ...
-    
-    <span id=span contenteditable 🪢='with #search.'></span>
+    <span id=span contenteditable 🪢="with #search"></span>
     <div id=target></div>
     <script>
         function runTest(){
