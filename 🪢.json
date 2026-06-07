@@ -11,19 +11,19 @@
                 "parserConfig": [
                     {
                         "name": "betweenLocalPropLocalEventAndRemoteId",
-                        "pattern": "^between (?<localProp>[\\w\\:]+)\\:\\:(?<localEvent>[\\w]+)(?<!\\\\) and (?<remoteId>.*)",
+                        "pattern": "^between (?<localProp>[\\w\\:]+)\\:\\:(?<localEvent>[\\w]+)(?<!\\\\) and #?(?<remoteId>.*)",
                         "description": "Between local property with event and remote specifier: between prop::event and remote",
                         "defaultVals": {}
                     },
                     {
                         "name": "betweenLocalPropAndRemoteId",
-                        "pattern": "^between (?<localProp>[\\w\\:]+)(?<!\\\\) and (?<remoteId>.*)",
+                        "pattern": "^between (?<localProp>[\\w\\:]+)(?<!\\\\) and #?(?<remoteId>.*)",
                         "description": "Between local property and remote specifier: between prop and remote",
                         "defaultVals": {}
                     },
                     {
                         "name": "withRemoteId",
-                        "pattern": "^with (?<remoteId>.*)",
+                        "pattern": "^with #?(?<remoteId>.*)",
                         "description": "With remote specifier: with remote",
                         "defaultVals": {}
                     }
