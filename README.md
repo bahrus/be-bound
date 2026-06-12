@@ -107,7 +107,7 @@ For that, we use what I call "Hemingway notation" within the attribute, where th
 ```
 
 
-We don't have to two-way bind with a property from the host.  We can also two way bind with peer elements within the HTML markup of the web component, based on other [special notation called DSS](https://github.com/bahrus/trans-render/wiki/VIII.--Directed-Scoped-Specifiers-(DSS)), that provides for a powerful way of finding nearby elements / properties with compact syntax.
+We don't have to two-way bind with a property from the host.  We can also two way bind with peer elements within the HTML markup of the web component, based on id, as we will see below.
 
 
 
