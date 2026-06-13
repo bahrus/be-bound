@@ -5,31 +5,66 @@
 /** @import {RAConfig} from './types/roundabout/types' */
 /** @import {PatternConfig} from './types/nested-regex-groups/types' */
 
-const betweenLocalProp = String.raw `^between (?<localProp>[\w\:]+)`;
-const betweenLocalPropLocalEvent = String.raw `${betweenLocalProp}\:\:(?<localEvent>[\w]+)`;
-const andRemoteId = String.raw `(?<!\\) and (?<remoteId>.*)`;
-const betweenLocalPropAndRemoteId = String.raw `${betweenLocalProp}${andRemoteId}`;
-const betweenLocalPropLocalEventAndRemoteId = String.raw `${betweenLocalPropLocalEvent}${andRemoteId}`;
-const withRemoteId = String.raw `^with (?<remoteId>.*)`;
-
 /** @type {PatternConfig[]} */
 const parsePatterns = [
     {
-        name: 'betweenLocalPropLocalEventAndRemoteId',
-        pattern: betweenLocalPropLocalEventAndRemoteId,
-        description: 'Between local property with event and remote specifier: between prop::event and remote',
+        name: 'betweenPathEventAndRemoteId',
+        pattern: String.raw`^between (?<localProp>\?\.[\w\?\.]+)@(?<localEvent>[\w]+) and #(?<remoteId>\S+)`,
+        description: 'Between path-based local property with event and remote by ID: between ?.path?.prop@event and #id',
+        defaultVals: {}
+    },
+    {
+        name: 'betweenPathEventAndRemoteProp',
+        pattern: String.raw`^between (?<localProp>\?\.[\w\?\.]+)@(?<localEvent>[\w]+) and (?<remoteProp>[\w\.]+)`,
+        description: 'Between path-based local property with event and remote property: between ?.path?.prop@event and prop',
+        defaultVals: {}
+    },
+    {
+        name: 'betweenLocalPropEventAndRemoteId',
+        pattern: String.raw`^between (?<localProp>[\w]+)@(?<localEvent>[\w]+) and #(?<remoteId>\S+)`,
+        description: 'Between local property with event and remote by ID: between prop@event and #id',
+        defaultVals: {}
+    },
+    {
+        name: 'betweenLocalPropEventAndRemoteProp',
+        pattern: String.raw`^between (?<localProp>[\w]+)@(?<localEvent>[\w]+) and (?<remoteProp>[\w\.]+)`,
+        description: 'Between local property with event and remote property: between prop@event and prop',
         defaultVals: {}
     },
     {
         name: 'betweenLocalPropAndRemoteId',
-        pattern: betweenLocalPropAndRemoteId,
-        description: 'Between local property and remote specifier: between prop and remote',
+        pattern: String.raw`^between (?<localProp>[\w]+) and #(?<remoteId>\S+)`,
+        description: 'Between local property and remote by ID: between prop and #id',
+        defaultVals: {}
+    },
+    {
+        name: 'betweenLocalPropAndRemoteProp',
+        pattern: String.raw`^between (?<localProp>[\w]+) and (?<remoteProp>[\w\.]+)`,
+        description: 'Between local property and remote property: between prop and prop',
+        defaultVals: {}
+    },
+    {
+        name: 'withRemoteIdAndEvent',
+        pattern: String.raw`^with #(?<remoteId>[\w]+)@(?<localEvent>[\w]+)`,
+        description: 'With remote element by ID and explicit event: with #elementId@event',
+        defaultVals: {}
+    },
+    {
+        name: 'withRemotePropAndEvent',
+        pattern: String.raw`^with (?<remoteProp>[\w\.]+)@(?<localEvent>[\w]+)`,
+        description: 'With remote property and explicit event: with propName@event',
         defaultVals: {}
     },
     {
         name: 'withRemoteId',
-        pattern: withRemoteId,
-        description: 'With remote specifier: with remote',
+        pattern: String.raw`^with #(?<remoteId>\S+)`,
+        description: 'With remote element by ID: with #elementId',
+        defaultVals: {}
+    },
+    {
+        name: 'withRemoteProp',
+        pattern: String.raw`^with (?<remoteProp>[\w\.]+)`,
+        description: 'With remote property on host: with propName',
         defaultVals: {}
     }
 ];
@@ -56,18 +91,10 @@ export const emc = {
             properties: ['enhancedElement']
         },
         actions: {
-            // noAttrs: {
-            //     ifAllOf: ['enhancedElement'],
-            //     ifNoneOf: ['bindingRules'],
-            // },
             hydrate: {
                 ifAllOf: ['bindingRules', 'enhancedElement']
             }
-        },
-        // compacts: {
-        //     //when_bindingRules_changes_call_getBindings: 0,
-        //     when_bindingRules_changes_call_hydrate: 0,
-        // }
+        }
     }
 }
 

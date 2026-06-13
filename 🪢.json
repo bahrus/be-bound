@@ -46,6 +46,18 @@
                         "defaultVals": {}
                     },
                     {
+                        "name": "withRemoteIdAndEvent",
+                        "pattern": "^with #(?<remoteId>[\\w]+)@(?<localEvent>[\\w]+)",
+                        "description": "With remote element by ID and explicit event: with #elementId@event",
+                        "defaultVals": {}
+                    },
+                    {
+                        "name": "withRemotePropAndEvent",
+                        "pattern": "^with (?<remoteProp>[\\w\\.]+)@(?<localEvent>[\\w]+)",
+                        "description": "With remote property and explicit event: with propName@event",
+                        "defaultVals": {}
+                    },
+                    {
                         "name": "withRemoteId",
                         "pattern": "^with #(?<remoteId>\\S+)",
                         "description": "With remote element by ID: with #elementId",

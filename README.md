@@ -185,11 +185,9 @@ So, when the attribute starts with the word "Between" or "between",  as opposed 
 ## Specifying event name
 
 ```html
-<label>
-    <input id=howAmIFeeling>
-</label>
-...
-<mood-stone enh-🪢='between currentMood and #howAmIFeeling'></my-custom-element>
+    <input id=search>
+
+    <span contenteditable 🪢="with #search@change"></span>
 
 ```
 

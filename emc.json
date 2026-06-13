@@ -10,21 +10,63 @@
                 "instanceOf": "Array",
                 "parserConfig": [
                     {
-                        "name": "betweenLocalPropLocalEventAndRemoteId",
-                        "pattern": "^between (?<localProp>[\\w\\:]+)\\:\\:(?<localEvent>[\\w]+)(?<!\\\\) and (?<remoteId>.*)",
-                        "description": "Between local property with event and remote specifier: between prop::event and remote",
+                        "name": "betweenPathEventAndRemoteId",
+                        "pattern": "^between (?<localProp>\\?\\.[\\w\\?\\.]+)@(?<localEvent>[\\w]+) and #(?<remoteId>\\S+)",
+                        "description": "Between path-based local property with event and remote by ID: between ?.path?.prop@event and #id",
+                        "defaultVals": {}
+                    },
+                    {
+                        "name": "betweenPathEventAndRemoteProp",
+                        "pattern": "^between (?<localProp>\\?\\.[\\w\\?\\.]+)@(?<localEvent>[\\w]+) and (?<remoteProp>[\\w\\.]+)",
+                        "description": "Between path-based local property with event and remote property: between ?.path?.prop@event and prop",
+                        "defaultVals": {}
+                    },
+                    {
+                        "name": "betweenLocalPropEventAndRemoteId",
+                        "pattern": "^between (?<localProp>[\\w]+)@(?<localEvent>[\\w]+) and #(?<remoteId>\\S+)",
+                        "description": "Between local property with event and remote by ID: between prop@event and #id",
+                        "defaultVals": {}
+                    },
+                    {
+                        "name": "betweenLocalPropEventAndRemoteProp",
+                        "pattern": "^between (?<localProp>[\\w]+)@(?<localEvent>[\\w]+) and (?<remoteProp>[\\w\\.]+)",
+                        "description": "Between local property with event and remote property: between prop@event and prop",
                         "defaultVals": {}
                     },
                     {
                         "name": "betweenLocalPropAndRemoteId",
-                        "pattern": "^between (?<localProp>[\\w\\:]+)(?<!\\\\) and (?<remoteId>.*)",
-                        "description": "Between local property and remote specifier: between prop and remote",
+                        "pattern": "^between (?<localProp>[\\w]+) and #(?<remoteId>\\S+)",
+                        "description": "Between local property and remote by ID: between prop and #id",
+                        "defaultVals": {}
+                    },
+                    {
+                        "name": "betweenLocalPropAndRemoteProp",
+                        "pattern": "^between (?<localProp>[\\w]+) and (?<remoteProp>[\\w\\.]+)",
+                        "description": "Between local property and remote property: between prop and prop",
+                        "defaultVals": {}
+                    },
+                    {
+                        "name": "withRemoteIdAndEvent",
+                        "pattern": "^with #(?<remoteId>[\\w]+)@(?<localEvent>[\\w]+)",
+                        "description": "With remote element by ID and explicit event: with #elementId@event",
+                        "defaultVals": {}
+                    },
+                    {
+                        "name": "withRemotePropAndEvent",
+                        "pattern": "^with (?<remoteProp>[\\w\\.]+)@(?<localEvent>[\\w]+)",
+                        "description": "With remote property and explicit event: with propName@event",
                         "defaultVals": {}
                     },
                     {
                         "name": "withRemoteId",
-                        "pattern": "^with (?<remoteId>.*)",
-                        "description": "With remote specifier: with remote",
+                        "pattern": "^with #(?<remoteId>\\S+)",
+                        "description": "With remote element by ID: with #elementId",
+                        "defaultVals": {}
+                    },
+                    {
+                        "name": "withRemoteProp",
+                        "pattern": "^with (?<remoteProp>[\\w\\.]+)",
+                        "description": "With remote property on host: with propName",
                         "defaultVals": {}
                     }
                 ]
