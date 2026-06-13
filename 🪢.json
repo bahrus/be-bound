@@ -11,26 +11,26 @@
                 "parserConfig": [
                     {
                         "name": "betweenPathEventAndRemoteId",
-                        "pattern": "^between (?<localProp>\\?\\.[\\w\\?\\.]+) on (?<localEvent>[\\w]+) and #(?<remoteId>\\S+)",
-                        "description": "Between path-based local property with event and remote by ID: between ?.path?.prop on event and #id",
+                        "pattern": "^between (?<localProp>\\?\\.[\\w\\?\\.]+)@(?<localEvent>[\\w]+) and #(?<remoteId>\\S+)",
+                        "description": "Between path-based local property with event and remote by ID: between ?.path?.prop@event and #id",
                         "defaultVals": {}
                     },
                     {
                         "name": "betweenPathEventAndRemoteProp",
-                        "pattern": "^between (?<localProp>\\?\\.[\\w\\?\\.]+) on (?<localEvent>[\\w]+) and (?<remoteProp>[\\w\\.]+)",
-                        "description": "Between path-based local property with event and remote property: between ?.path?.prop on event and prop",
+                        "pattern": "^between (?<localProp>\\?\\.[\\w\\?\\.]+)@(?<localEvent>[\\w]+) and (?<remoteProp>[\\w\\.]+)",
+                        "description": "Between path-based local property with event and remote property: between ?.path?.prop@event and prop",
                         "defaultVals": {}
                     },
                     {
                         "name": "betweenLocalPropEventAndRemoteId",
-                        "pattern": "^between (?<localProp>[\\w]+) on (?<localEvent>[\\w]+) and #(?<remoteId>\\S+)",
-                        "description": "Between local property with event and remote by ID: between prop on event and #id",
+                        "pattern": "^between (?<localProp>[\\w]+)@(?<localEvent>[\\w]+) and #(?<remoteId>\\S+)",
+                        "description": "Between local property with event and remote by ID: between prop@event and #id",
                         "defaultVals": {}
                     },
                     {
                         "name": "betweenLocalPropEventAndRemoteProp",
-                        "pattern": "^between (?<localProp>[\\w]+) on (?<localEvent>[\\w]+) and (?<remoteProp>[\\w\\.]+)",
-                        "description": "Between local property with event and remote property: between prop on event and prop",
+                        "pattern": "^between (?<localProp>[\\w]+)@(?<localEvent>[\\w]+) and (?<remoteProp>[\\w\\.]+)",
+                        "description": "Between local property with event and remote property: between prop@event and prop",
                         "defaultVals": {}
                     },
                     {

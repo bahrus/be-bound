@@ -182,11 +182,22 @@ We add the extra enh- prefix to hopefully avoid "stepping on the toes" of some o
 
 So, when the attribute starts with the word "Between" or "between",  as opposed to "With" or "with", it means we are specifying, first, the name of the local property name of the adorned element that we want to "sync up" with an "upstream" element.  In this case, with the input element.  But we can also synchronize with host properties. 
 
+## Specifying event name
+
+```html
+<label>
+    <input id=howAmIFeeling>
+</label>
+...
+<mood-stone enh-🪢='between currentMood and #howAmIFeeling'></my-custom-element>
+
+```
+
 ## Special logic for forms
 
 ```html
 <input id=alternativeRating type=number>
-<form be-bound='between ?.rating?.value on change and #alternativeRating.'>
+<form be-bound='between ?.rating?.value@change and #alternativeRating.'>
     <div part=rating-stars class="rating__stars">
         <input id="rating-1" class="rating__input rating__input-1" type="radio" name="rating" value="1">
         <input id="rating-2" class="rating__input rating__input-2" type="radio" name="rating" value="2">
