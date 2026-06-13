@@ -78,15 +78,22 @@ class BeBound {
         for(const statement of statements){
             const {value} = statement;
             if(!value) throw 400;
-            let {remoteId, remoteProp, localProp, localEvent} = value;
+            let {remoteId, remoteProp, localProp, localEvent, remoteEvent} = value;
             if(remoteProp === undefined) remoteProp = localInference.defaultRemoteBindingPropName;
             if(localProp === undefined) localProp = localInference.valueProperty;
             const target = /** @type {any} */ (await upSearch(enhancedElement, remoteId));
             const remoteInference = await infer(target);
             const remotePropagator = await remoteInference.getPropagator();
-            remotePropagator.addEventListener(remoteProp, e => {
-                self.reconcileValues(self, value, 'rToL');
-            });
+            if(remoteEvent){
+                // Listen for a specific DOM event on the remote element
+                target.addEventListener(remoteEvent, e => {
+                    self.reconcileValues(self, value, 'rToL');
+                }, {signal: this.#abortController.signal});
+            } else {
+                remotePropagator.addEventListener(remoteProp, e => {
+                    self.reconcileValues(self, value, 'rToL');
+                });
+            }
             if(localEvent){
                 // Listen for a specific DOM event on the enhanced element
                 enhancedElement.addEventListener(localEvent, e => {

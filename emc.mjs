@@ -45,13 +45,13 @@ const parsePatterns = [
     },
     {
         name: 'withRemoteIdAndEvent',
-        pattern: String.raw`^with #(?<remoteId>[\w]+)@(?<localEvent>[\w]+)`,
+        pattern: String.raw`^with #(?<remoteId>[\w]+)@(?<remoteEvent>[\w]+)`,
         description: 'With remote element by ID and explicit event: with #elementId@event',
         defaultVals: {}
     },
     {
         name: 'withRemotePropAndEvent',
-        pattern: String.raw`^with (?<remoteProp>[\w\.]+)@(?<localEvent>[\w]+)`,
+        pattern: String.raw`^with (?<remoteProp>[\w\.]+)@(?<remoteEvent>[\w]+)`,
         description: 'With remote property and explicit event: with propName@event',
         defaultVals: {}
     },

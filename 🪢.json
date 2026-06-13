@@ -47,13 +47,13 @@
                     },
                     {
                         "name": "withRemoteIdAndEvent",
-                        "pattern": "^with #(?<remoteId>[\\w]+)@(?<localEvent>[\\w]+)",
+                        "pattern": "^with #(?<remoteId>[\\w]+)@(?<remoteEvent>[\\w]+)",
                         "description": "With remote element by ID and explicit event: with #elementId@event",
                         "defaultVals": {}
                     },
                     {
                         "name": "withRemotePropAndEvent",
-                        "pattern": "^with (?<remoteProp>[\\w\\.]+)@(?<localEvent>[\\w]+)",
+                        "pattern": "^with (?<remoteProp>[\\w\\.]+)@(?<remoteEvent>[\\w]+)",
                         "description": "With remote property and explicit event: with propName@event",
                         "defaultVals": {}
                     },
