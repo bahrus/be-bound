@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Inference =>  Content Editable</title>
+    <!-- #include virtual="/imports.html" -->
+
+    <script type=module>
+        import 'be-hive/be-hive.js';
+        class MoodStone extends HTMLElement{
+            #currentMood;
+            get currentMood(){
+                return this.#currentMood;
+            }
+            set currentMood(nv){
+                this.#currentMood = nv;
+                this.shadowRoot.querySelector('div[itemprop="currentMood"]').textContent = nv;
+            }
+            connectedCallback(){
+                this.currentMood = 'Happy';
+            }
+        }
+        customElements.define('mood-stone', MoodStone);
+    </script>
+</head>
+<body>
+    <be-hive>
+        <script type=emc-parser 
+                src="be-hive/parsers/parse-grouped-capture-statements.js" 
+                parser-name=parse-grouped-capture-statements></script>
+        <script type=emc 
+                src="be-bound/🪢.json" 
+                wait-for-parsers=parse-grouped-capture-statements></script>
+    </be-hive>
+    <mood-stone>
+        <template shadowrootmode=open itemscope>
+            <div itemprop="currentMood" ></div>
+            <span itemprop=currentMood contentEditable 
+                🪢
+            ></span>
+            <be-hive></be-hive>
+        </template>
+    </mood-stone>
+</body>
+</html>

@@ -52,6 +52,9 @@ class BeBound {
      */
     #abortController;
 
+    /** @type {boolean} */
+    #reconciling = false;
+
     /** @type {Infer | undefined} */
     #localInference;
 
@@ -117,6 +120,9 @@ class BeBound {
      * @returns 
      */
     async reconcileValues(self, rule, direction) {
+        if(this.#reconciling) return;
+        this.#reconciling = true;
+        try {
         const { enhancedElement } = self;
         let {localProp, remoteProp, remoteId} = rule;
         if(remoteProp === undefined) remoteProp = this.#localInference?.defaultRemoteBindingPropName;
@@ -144,6 +150,9 @@ class BeBound {
                         break;
                 }
                 break;
+        }
+        } finally {
+            this.#reconciling = false;
         }
     }
 

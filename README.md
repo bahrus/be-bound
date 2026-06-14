@@ -151,6 +151,22 @@ If the name "be-bound" seems rather long to have to type over and over again, yo
 
 The two way binding is now done with the host's someStringProp property.
 
+## One-way binding with non-editable elements
+
+While be-bound is designed for two-way binding, it naturally supports one-way (host → child) binding when the child element has no user-editable mechanism:
+
+```html
+<my-custom-element>
+    <template shadowrootmode=open>
+        ...
+        <span itemprop=someStringProp 🪢></span>
+        ...
+    </template>
+</my-custom-element>
+```
+
+Here the span is not contentEditable and has no form-like input behavior — so there's no way for the user to change its value. The binding still works from host to span: when `someStringProp` changes on the host, the span's `textContent` updates automatically. This is useful for display-only elements that reflect host state without needing a separate one-way binding enhancement.
+
 ## Two way binding with peer elements
 
 ```html

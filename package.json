@@ -28,9 +28,9 @@
     "update": "ncu -u && npm install"
   },
   "dependencies": {
-    "be-hive": "0.1.13",
-    "inferencer": "0.0.10",
-    "mount-observer": "0.1.39",
+    "be-hive": "0.1.14",
+    "inferencer": "0.0.13",
+    "mount-observer": "0.1.40",
     "roundabout-lib": "0.0.21",
     "nested-regex-groups": "0.0.6"
   },
