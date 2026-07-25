@@ -74,7 +74,7 @@ class BeBound {
                 value: {}
              });
         }
-        const {upSearch} = await import('inferencer/upSearch.js');
+        const {upSearch} = await import('assign-gingerly/inferencer/upSearch.js');
         const localInference = await infer(enhancedElement);
         this.#localInference = localInference;
         const localPropagator = await localInference.getPropagator();
@@ -127,7 +127,7 @@ class BeBound {
         let {localProp, remoteProp, remoteId} = rule;
         if(remoteProp === undefined) remoteProp = this.#localInference?.defaultRemoteBindingPropName;
         if(localProp === undefined) localProp = this.#localInference?.valueProperty;
-        const {upSearch} = await import('inferencer/upSearch.js');
+        const {upSearch} = await import('assign-gingerly/inferencer/upSearch.js');
         const remoteTarget = /** @type {any} */ (await upSearch(enhancedElement, remoteId));
         const localValue = resolvePath(enhancedElement, localProp);
         const remoteValue = remoteTarget[remoteProp];
@@ -249,4 +249,4 @@ function setPath(obj, path, value) {
  * 
  * @param {Element & ElementEnhancementGateway} from 
  */
-async function infer(from){return /** @type {Infer} */ (/** @type {any} */ (from.enh.get((await import('inferencer/inferencer.js')).registryItem)));}
+async function infer(from){return /** @type {Infer} */ (/** @type {any} */ (from.enh.get((await import('assign-gingerly/inferencer/inferencer.js')).registryItem)));}
