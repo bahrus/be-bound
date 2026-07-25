@@ -28,8 +28,8 @@
     "update": "ncu -u && npm install"
   },
   "dependencies": {
+    "assign-gingerly": "0.0.64",
     "be-hive": "0.1.15",
-    "inferencer": "0.0.13",
     "mount-observer": "0.1.43",
     "roundabout-lib": "0.0.28",
     "nested-regex-groups": "0.0.7"
