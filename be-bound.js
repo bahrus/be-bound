@@ -82,11 +82,23 @@ class BeBound {
             const {value} = statement;
             if(!value) throw 400;
             let {remoteId, remoteProp, localProp, localEvent, remoteEvent} = value;
-            if(remoteProp === undefined) remoteProp = localInference.defaultRemoteBindingPropName;
-            if(localProp === undefined) localProp = localInference.valueProperty;
             const target = /** @type {any} */ (await upSearch(enhancedElement, remoteId));
             const remoteInference = await infer(target);
+            if(remoteProp === undefined) {
+                if(remoteId === undefined){
+                    remoteProp = localInference.defaultRemoteBindingPropName;
+                }else{
+                    remoteProp = remoteInference.valueProperty;
+                    remoteEvent = remoteInference.eventType;
+                }
+                
+            }
+            if(localProp === undefined) localProp = localInference.valueProperty;
+            
+            
+            
             const remotePropagator = await remoteInference.getPropagator();
+            //console.log({target, remotePropagator, localPropagator, localProp, remoteProp, localEvent, remoteEvent});
             if(remoteEvent){
                 // Listen for a specific DOM event on the remote element
                 target.addEventListener(remoteEvent, e => {
@@ -125,10 +137,19 @@ class BeBound {
         try {
         const { enhancedElement } = self;
         let {localProp, remoteProp, remoteId} = rule;
-        if(remoteProp === undefined) remoteProp = this.#localInference?.defaultRemoteBindingPropName;
-        if(localProp === undefined) localProp = this.#localInference?.valueProperty;
         const {upSearch} = await import('assign-gingerly/inferencer/upSearch.js');
         const remoteTarget = /** @type {any} */ (await upSearch(enhancedElement, remoteId));
+        const remoteInference = await infer(remoteTarget);
+        if(remoteProp === undefined) {
+            if(remoteId === undefined){
+                remoteProp = this.#localInference?.defaultRemoteBindingPropName;
+            }else{
+                remoteProp = remoteInference.valueProperty;
+            }
+            
+        }
+        if(localProp === undefined) localProp = this.#localInference?.valueProperty;
+        
         const localValue = resolvePath(enhancedElement, localProp);
         const remoteValue = remoteTarget[remoteProp];
         if(localValue === remoteValue) return;
