@@ -17,6 +17,7 @@
   },
   "files": [
     "*.js",
+    "*.json",
     "types.d.ts"
   ],
   "types": "types.d.ts",
@@ -28,15 +29,15 @@
     "update": "ncu -u && npm install"
   },
   "dependencies": {
-    "assign-gingerly": "0.0.64",
-    "be-hive": "0.1.15",
-    "mount-observer": "0.1.43",
-    "roundabout-lib": "0.0.28",
-    "nested-regex-groups": "0.0.7"
+    "assign-gingerly": "0.0.72",
+    "be-hive": "0.1.16",
+    "mount-observer": "0.1.44",
+    "roundabout-lib": "0.0.30",
+    "nested-regex-groups": "0.0.8"
   },
   "devDependencies": {
     "spa-ssi": "0.0.27",
-    "@playwright/test": "1.62.0",
+    "@playwright/test": "1.62.1",
     "xtal-element": "0.0.637"
   },
   "repository": {
