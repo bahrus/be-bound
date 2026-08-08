@@ -29,9 +29,9 @@
     "update": "ncu -u && npm install"
   },
   "dependencies": {
-    "assign-gingerly": "0.0.72",
+    "assign-gingerly": "0.0.73",
     "be-hive": "0.1.16",
-    "mount-observer": "0.1.44",
+    "mount-observer": "0.1.45",
     "roundabout-lib": "0.0.30",
     "nested-regex-groups": "0.0.8"
   },
