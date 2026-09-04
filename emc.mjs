@@ -74,7 +74,7 @@ const parsePatterns = [
  */
 export const emc = {
     enhConfig: {
-        enhKey: 'BeBound',
+        enhKey: 'beBound',
         spawn: 'be-bound/be-bound.js',
         withAttrs: {
             base: 'be-bound',
