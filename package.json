@@ -29,15 +29,15 @@
     "update": "ncu -u && npm install"
   },
   "dependencies": {
-    "assign-gingerly": "0.0.93",
+    "assign-gingerly": "0.0.97",
     "be-hive": "0.1.18",
     "mount-observer": "0.1.53",
-    "roundabout-lib": "0.0.36",
+    "roundabout-lib": "0.0.38",
     "nested-regex-groups": "0.0.8"
   },
   "devDependencies": {
     "spa-ssi": "0.0.28",
-    "@playwright/test": "1.62.1"
+    "@playwright/test": "1.63.0"
   },
   "repository": {
     "type": "git",
