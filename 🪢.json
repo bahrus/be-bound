@@ -79,11 +79,19 @@
                 "enhancedElement"
             ]
         },
+        "compacts": {
+            "when_bindingRules_changes_call_onBindingRulesChange": 0
+        },
         "actions": {
             "hydrate": {
+                "ifKeyIn": [
+                    "bindings",
+                    "initialized"
+                ],
                 "ifAllOf": [
-                    "bindingRules",
-                    "enhancedElement"
+                    "bindings",
+                    "enhancedElement",
+                    "initialized"
                 ]
             }
         }

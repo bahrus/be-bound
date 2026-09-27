@@ -222,7 +222,43 @@ So, when the attribute starts with the word "Between" or "between",  as opposed 
 </form>
 ```
 
+## Programmatic attachment (no attribute)
 
+Frameworks that render on the client can attach be-bound without any attribute, and without the cost of stringifying and parsing binding statements.  First register the enhancement's config once:
+
+```JS
+import { defBeBound } from 'be-bound/def.js';
+const emc = await defBeBound(document.body); // or a shadow root's host, for a scoped registry
+```
+
+Then set `bindings` -- an array of binding rules, each with the same (optional) fields the attribute statements parse into: `localProp`, `localEvent`, `remoteId`, `remoteProp`, `remoteEvent`.  Omitted fields are inferred, exactly as with the attribute.  An empty array is equivalent to a bare `be-bound` attribute.
+
+### Declarative -- via `enh.set`
+
+```JS
+// equivalent to <span contenteditable 🪢="with #search">
+span.enh.set.beBound.bindings = [{remoteId: 'search'}];
+```
+
+This can be done before or after `defBeBound` has been called.
+
+### Imperative -- via `enh.get()`
+
+```JS
+const beBound = span.enh.get(emc);
+beBound.bindings = [{remoteId: 'search'}];
+```
+
+A few more equivalents:
+
+| Attribute                                          | `bindings`                                                                 |
+|----------------------------------------------------|----------------------------------------------------------------------------|
+| `🪢="with #search@change"`                         | `[{remoteId: 'search', remoteEvent: 'change'}]`                            |
+| `🪢="with someStringProp"`                         | `[{remoteProp: 'someStringProp'}]`                                         |
+| `enh-🪢="between currentMood and #howAmIFeeling"`  | `[{localProp: 'currentMood', remoteId: 'howAmIFeeling'}]`                  |
+| `be-bound="between ?.rating?.value@change and #alternativeRating"` | `[{localProp: '?.rating?.value', localEvent: 'change', remoteId: 'alternativeRating'}]` |
+
+See [demo/Programmatic](demo/Programmatic/) for runnable examples.
 
 ## Real world examples [TODO:  update to use the current syntax]
 

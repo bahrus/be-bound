@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programmatic imperative</title>
+    <!-- #include virtual="/imports.html" -->
+</head>
+<body>
+    <input id=search>
+
+    <span id=span contenteditable></span>
+    <div id=target></div>
+    <script type=module>
+        import {defBeBound} from '/def.js';
+        const emc = await defBeBound(document.body);
+        const beBound = span.enh.get(emc);
+        beBound.bindings = [{remoteId: 'search'}];
+        setTimeout(() => {
+            span.textContent = 'hello';
+            span.dispatchEvent(new Event('input'));
+            setTimeout(() => {
+                if(search.value === 'hello'){
+                    target.setAttribute('mark', 'good');
+                }
+            }, 500);
+        }, 1500);
+    </script>
+</body>
+</html>

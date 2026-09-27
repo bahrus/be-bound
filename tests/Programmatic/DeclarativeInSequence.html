@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programmatic declarative in sequence</title>
+    <!-- #include virtual="/imports.html" -->
+</head>
+<body>
+    <input id=search>
+
+    <span id=span contenteditable></span>
+    <div id=target></div>
+    <script type=module>
+        import {defBeBound} from '/def.js';
+        await defBeBound(document.body);
+        // equivalent to <span 🪢="with #search">
+        span.enh.set.beBound.bindings = [{remoteId: 'search'}];
+        console.log(span.enh.beBound);
+        setTimeout(() => {
+            span.textContent = 'hello';
+            span.dispatchEvent(new Event('input'));
+            setTimeout(() => {
+                if(search.value === 'hello'){
+                    target.setAttribute('mark', 'good');
+                }
+            }, 500);
+        }, 1500);
+    </script>
+</body>
+</html>

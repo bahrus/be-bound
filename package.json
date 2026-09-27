@@ -11,9 +11,11 @@
   "main": "be-bound.js",
   "module": "be-bound.js",
   "exports": {
-    ".": "./index.js",
+    ".": "./be-bound.js",
     "./be-bound.js": "./be-bound.js",
-    "./emc.js": "./emc.js"
+    "./def.js": "./def.js",
+    "./emc.json": "./emc.json",
+    "./🪢.json": "./🪢.json"
   },
   "files": [
     "*.js",

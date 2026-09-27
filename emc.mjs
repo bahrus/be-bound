@@ -90,9 +90,16 @@ export const emc = {
         weakRef: {
             properties: ['enhancedElement']
         },
+        // Transfers the attribute-parsed `bindingRules` into `bindings` — the
+        // property `hydrate` actually reads. Programmatic callers skip
+        // `bindingRules` entirely and assign `bindings` directly.
+        compacts: {
+            when_bindingRules_changes_call_onBindingRulesChange: 0
+        },
         actions: {
             hydrate: {
-                ifAllOf: ['bindingRules', 'enhancedElement']
+                ifKeyIn: ['bindings', 'initialized'],
+                ifAllOf: ['bindings', 'enhancedElement', 'initialized']
             }
         }
     }

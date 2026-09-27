@@ -5,8 +5,6 @@
 /** @import {EMC} from './types/mount-observer/types' */;
 /** @import {RAConfig} from './types/roundabout/types' */;
 /** @import {Infer} from './types/inferencer/types' */
-/**
-
 
 /**
  * @implements {Actions}
@@ -30,7 +28,7 @@ class BeBound {
      * @param {PAP} initVals 
      */
     async init(self, enhancedElement, ctx, initVals){
-        const {customData} = /** @type {EMC<any, AllProps, Element, RAConfig<AllProps, Actions>>} */ (ctx.emc);
+        const {customData} = /** @type {EMC<any, AllProps, Element, RAConfig<AllProps, Actions>>} */ (ctx.emc || ctx.config);
         /**
          * @type {RoundaboutOptions}
          */
@@ -43,7 +41,29 @@ class BeBound {
                 ...initVals
             }
         };
-        (await import('roundabout-lib/roundabout.js')).roundabout(raOptions);
+        await (await import('roundabout-lib/roundabout.js')).roundabout(raOptions);
+        self.initialized = true;
+    }
+
+    /**
+     * Transfers the attribute-parsed `bindingRules` into `bindings` -- the
+     * property `hydrate` actually reads.  Programmatic callers skip
+     * `bindingRules` entirely and assign `bindings` directly.
+     * Invoked via the `when_bindingRules_changes_call_onBindingRulesChange`
+     * compact, never called directly.
+     * @param {AP} self
+     * @returns {PAP}
+     */
+    onBindingRulesChange(self){
+        const {bindingRules} = self;
+        if(bindingRules === undefined) return {};
+        if(!bindingRules.success) throw 400;
+        /** @type {Array<Partial<BindingRule>>} */
+        const bindings = [];
+        for(const statement of bindingRules.statements){
+            if(statement.value !== undefined) bindings.push(statement.value);
+        }
+        return {bindings};
     }
 
 
@@ -66,21 +86,15 @@ class BeBound {
     async hydrate(self) {
         if(this.#abortController !== undefined) this.#abortController.abort();
         this.#abortController = new AbortController();
-        const { bindingRules, enhancedElement } = self;
-        const {statements, success} = bindingRules;
-        if(!success) throw 400;
-        if(statements.length === 0){
-             statements.push({
-                value: {}
-             });
-        }
+        const { bindings, enhancedElement } = self;
+        // Empty attribute (or empty array): a single, fully inferred rule.
+        /** @type {Array<Partial<BindingRule>>} */
+        const rules = bindings.length === 0 ? [{}] : bindings;
         const {upSearch} = await import('assign-gingerly/inferencer/upSearch.js');
         const localInference = await infer(enhancedElement);
         this.#localInference = localInference;
         const localPropagator = await localInference.getPropagator();
-        for(const statement of statements){
-            const {value} = statement;
-            if(!value) throw 400;
+        for(const value of rules){
             let {remoteId, remoteProp, localProp, localEvent, remoteEvent} = value;
             const target = /** @type {any} */ (await upSearch(enhancedElement, remoteId));
             const remoteInference = await infer(target);
@@ -127,7 +141,7 @@ class BeBound {
     /**
      * 
      * @param {AP} self 
-     * @param {BindingRule} rule
+     * @param {Partial<BindingRule>} rule
      * @param {Directions} direction
      * @returns 
      */
