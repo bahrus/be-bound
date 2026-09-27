@@ -224,7 +224,15 @@ So, when the attribute starts with the word "Between" or "between",  as opposed 
 
 ## Programmatic attachment (no attribute)
 
-Frameworks that render on the client can attach be-bound without any attribute, and without the cost of stringifying and parsing binding statements.  First register the enhancement's config once:
+The attribute syntax shown above shines for server-rendered HTML and progressive enhancement:  the markup alone says what gets bound to what.  But most web development today renders on the client, with a framework (Lit, React, Vue, Svelte, etc.) that already has a JavaScript reference to each element it creates.  In that setting, attaching be-bound programmatically is the better fit:
+
+1.  **A less clunky API.**  Frameworks tend to be awkward about setting arbitrary (let alone emoji) attributes, and building up a string like `"between ?.rating?.value@change and #alternativeRating"` from framework state is error prone.  Setting `bindings` to an array of plain objects is ordinary JavaScript, which the framework, your editor, and TypeScript all understand.
+2.  **Less stringifying and parsing.**  With an attribute, the framework serializes the binding rules to a string, and be-bound then parses that string back apart with regular expressions.  Setting `bindings` directly skips both steps.
+3.  **Less overhead monitoring attributes.**  The attribute approach relies on [be-hive](https://github.com/bahrus/be-hive) / [mount-observer](https://github.com/bahrus/mount-observer) watching the DOM for elements that carry (or gain) the attribute, and for changes to its value.  The programmatic approach needs none of that -- `def.js` just registers the enhancement's config, and the enhancement is attached exactly when, and to exactly the elements, your code says.
+
+Both approaches produce the same enhancement, with the same inference rules, so you can mix them in one app -- attributes for server-rendered islands, programmatic attachment inside client-rendered components.
+
+First register the enhancement's config once:
 
 ```JS
 import { defBeBound } from 'be-bound/def.js';
