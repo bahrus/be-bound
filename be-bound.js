@@ -86,7 +86,12 @@ class BeBound {
     async hydrate(self) {
         if(this.#abortController !== undefined) this.#abortController.abort();
         this.#abortController = new AbortController();
-        const { bindings, enhancedElement } = self;
+        const { enhancedElement } = self;
+        // Remote elements passed by reference must only ever be held weakly --
+        // including in the bindings value stored on this enhancement.
+        const weakened = weakenRemoteElements(self.bindings);
+        const bindings = weakened ?? self.bindings;
+        const {signal} = this.#abortController;
         // Empty attribute (or empty array): a single, fully inferred rule.
         /** @type {Array<Partial<BindingRule>>} */
         const rules = bindings.length === 0 ? [{}] : bindings;
@@ -95,11 +100,14 @@ class BeBound {
         this.#localInference = localInference;
         const localPropagator = await localInference.getPropagator();
         for(const value of rules){
-            let {remoteId, remoteProp, localProp, localEvent, remoteEvent} = value;
-            const target = /** @type {any} */ (await upSearch(enhancedElement, remoteId));
+            let {remoteId, remoteElement, remoteProp, localProp, localEvent, remoteEvent} = value;
+            const target = /** @type {any} */ (remoteElement !== undefined
+                ? /** @type {WeakRef<Element>} */ (remoteElement).deref() // held weakly
+                : await upSearch(enhancedElement, remoteId));
+            if(target === undefined) continue; // a remote element that has been garbage collected
             const remoteInference = await infer(target);
             if(remoteProp === undefined) {
-                if(remoteId === undefined){
+                if(remoteId === undefined && remoteElement === undefined){
                     remoteProp = localInference.defaultRemoteBindingPropName;
                 }else{
                     remoteProp = remoteInference.valueProperty;
@@ -117,24 +125,25 @@ class BeBound {
                 // Listen for a specific DOM event on the remote element
                 target.addEventListener(remoteEvent, e => {
                     self.reconcileValues(self, value, 'rToL');
-                }, {signal: this.#abortController.signal});
+                }, {signal});
             } else {
                 remotePropagator.addEventListener(remoteProp, e => {
                     self.reconcileValues(self, value, 'rToL');
-                });
+                }, {signal});
             }
             if(localEvent){
                 // Listen for a specific DOM event on the enhanced element
                 enhancedElement.addEventListener(localEvent, e => {
                     self.reconcileValues(self, value, 'lToR');
-                }, {signal: this.#abortController.signal});
+                }, {signal});
             } else {
                 localPropagator.addEventListener(localProp, e => {
                     self.reconcileValues(self, value, 'lToR');
-                });
+                }, {signal});
             }
             self.reconcileValues(self, value, 'tie');
         }
+        if(weakened !== undefined) return /** @type {PAP} */ ({bindings: weakened});
 
     }
 
@@ -150,12 +159,15 @@ class BeBound {
         this.#reconciling = true;
         try {
         const { enhancedElement } = self;
-        let {localProp, remoteProp, remoteId} = rule;
+        let {localProp, remoteProp, remoteId, remoteElement} = rule;
         const {upSearch} = await import('assign-gingerly/inferencer/upSearch.js');
-        const remoteTarget = /** @type {any} */ (await upSearch(enhancedElement, remoteId));
+        const remoteTarget = /** @type {any} */ (remoteElement !== undefined
+            ? /** @type {WeakRef<Element>} */ (remoteElement).deref() // held weakly
+            : await upSearch(enhancedElement, remoteId));
+        if(remoteTarget === undefined) return; // garbage collected
         const remoteInference = await infer(remoteTarget);
         if(remoteProp === undefined) {
-            if(remoteId === undefined){
+            if(remoteId === undefined && remoteElement === undefined){
                 remoteProp = this.#localInference?.defaultRemoteBindingPropName;
             }else{
                 remoteProp = remoteInference.valueProperty;
@@ -192,6 +204,20 @@ class BeBound {
     }
 
 
+}
+
+/**
+ * If any binding's remoteElement is an element (rather than a WeakRef), return
+ * a copy of bindings with each such element wrapped in a WeakRef.  Otherwise
+ * return undefined.  Never mutates bindings.
+ * @param {Array<Partial<BindingRule>>} bindings
+ * @returns {Array<Partial<BindingRule>> | undefined}
+ */
+function weakenRemoteElements(bindings){
+    if(!bindings.some(b => b?.remoteElement instanceof Element)) return undefined;
+    return bindings.map(b => b?.remoteElement instanceof Element
+        ? {...b, remoteElement: new WeakRef(b.remoteElement)}
+        : b);
 }
 
 const typeRankings = [

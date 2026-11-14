@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programmatic be-bound targetElement</title>
+    <!-- #include virtual="/imports.html" -->
+
+</head>
+<body>
+    <input id=kitchen value=kitchen>
+    <input id=porch value=porch>
+    <span id=span1 contenteditable></span>
+    <span id=span2 contenteditable></span>
+
+    <script type=module>
+        import {defBeBound} from '/def.js';
+        const emc = await defBeBound(document.body);
+        // references a framework might already hold -- no ids needed
+        const kitchen = document.querySelector('#kitchen');
+        const porch = document.querySelector('#porch');
+        span1.enh.get(emc).bindings = [{remoteElement: kitchen}];              // the element itself...
+        span2.enh.get(emc).bindings = [{remoteElement: new WeakRef(porch)}];   // ...or a WeakRef to it
+    </script>
+</body>
+</html>

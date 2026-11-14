@@ -266,6 +266,17 @@ A few more equivalents:
 | `enh-🪢="between currentMood and #howAmIFeeling"`  | `[{localProp: 'currentMood', remoteId: 'howAmIFeeling'}]`                  |
 | `be-bound="between ?.rating?.value@change and #alternativeRating"` | `[{localProp: '?.rating?.value', localEvent: 'change', remoteId: 'alternativeRating'}]` |
 
+### Binding to an element directly
+
+Instead of `remoteId`, a rule can name the remote element by reference, via `remoteElement`:  either the element itself, or a `WeakRef` to it.  Handy when it has no id, or when a framework already holds a reference to it.
+
+```JS
+span.enh.get(emc).bindings = [{remoteElement: searchInput}];              // an element...
+other.enh.get(emc).bindings = [{remoteElement: new WeakRef(otherInput)}]; // ...or a WeakRef to one
+```
+
+Either way, the enhancement only ever holds the remote element **weakly** -- an element is swapped for a `WeakRef` as soon as the enhancement sees it, including in the stored property value (your own object isn't modified).  So it never keeps a removed element alive; if one is garbage collected, it's simply skipped.  (Your own code may of course still hold it strongly -- that's up to you.)
+
 See [demo/Programmatic](demo/Programmatic/) for runnable examples.
 
 ## Real world examples [TODO:  update to use the current syntax]

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programmatic be-bound targetElement</title>
+    <!-- #include virtual="/imports.html" -->
+
+</head>
+<body>
+    <input id=kitchen value=kitchen>
+    <input id=porch value=porch>
+    <span id=span1 contenteditable></span>
+    <span id=span2 contenteditable></span>
+    <div id=target></div>
+
+    <script type=module>
+        import {defBeBound} from '/def.js';
+        const emc = await defBeBound(document.body);
+        const kitchen = document.querySelector('#kitchen');
+        const porch = document.querySelector('#porch');
+        const original = {remoteElement: kitchen};
+        const beBound = span1.enh.get(emc);
+        beBound.bindings = [original];
+        span2.enh.get(emc).bindings = [{remoteElement: new WeakRef(porch)}];
+        setTimeout(async () => {
+            window.__initial = [span1.textContent, span2.textContent].join();
+            porch.value = 'patio';
+            porch.dispatchEvent(new Event('input'));
+            span1.textContent = 'galley';
+            span1.dispatchEvent(new Event('input'));
+            setTimeout(() => {
+                const checks = {
+                    initial: window.__initial === 'kitchen,porch',
+                    remoteToLocal: span2.textContent === 'patio',
+                    localToRemote: kitchen.value === 'galley',
+                    storedWeakly: beBound.bindings[0].remoteElement instanceof WeakRef
+                        && beBound.bindings[0].remoteElement.deref() === kitchen,
+                    callerUntouched: original.remoteElement === kitchen,
+                };
+                target.dataset.checks = JSON.stringify(checks);
+                if(Object.values(checks).every(Boolean)) target.setAttribute('mark', 'good');
+            }, 300);
+        }, 1500);
+    </script>
+</body>
+</html>

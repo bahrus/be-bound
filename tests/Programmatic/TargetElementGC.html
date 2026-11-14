@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programmatic be-bound targetElement GC</title>
+    <!-- #include virtual="/imports.html" -->
+
+</head>
+<body>
+    <input id=kitchen value=kitchen>
+    <input id=porch value=porch>
+    <span id=span1 contenteditable></span>
+    <span id=span2 contenteditable></span>
+
+    <script type=module>
+        import {defBeBound} from '/def.js';
+        const emc = await defBeBound(document.body);
+        // Set up inside a function scope, so this page keeps no reference of its own
+        // to #kitchen -- only the DOM (until the test removes it) and the enhancement.
+        (() => {
+            document.querySelector('#span1').enh.get(emc).bindings = [{remoteElement: document.querySelector('#kitchen')}];
+            document.querySelector('#span2').enh.get(emc).bindings = [{remoteElement: new WeakRef(document.querySelector('#porch'))}];
+        })();
+    </script>
+</body>
+</html>
