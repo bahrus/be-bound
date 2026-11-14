@@ -2,7 +2,7 @@
 
 be-bound is an attribute-based custom enhancement that provides limited "two-way binding" support. 
 
-It follows almost identical patterns to other [be-enhanced](https://github.com/bahrus/be-enhanced) based binding enhancements, especially [be-observant](https://github.com/bahrus/be-observant).
+It follows almost identical patterns to other [be-hive](https://github.com/bahrus/be-hive) based binding enhancements, especially [be-observant](https://github.com/bahrus/be-observant).
 
 [![NPM version](https://badge.fury.io/js/be-bound.png)](http://badge.fury.io/js/be-bound)
 [![How big is this package in your project?](https://img.shields.io/bundlephobia/minzip/be-bound?style=for-the-badge)](https://bundlephobia.com/result?p=be-bound)
