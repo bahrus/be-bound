@@ -141,7 +141,7 @@ If the name "be-bound" seems rather long to have to type over and over again, yo
 
 ```html
 <my-custom-element>
-    <template shadowrootmode=open v>
+    <template shadowrootmode=open>
         ...
         <span contenteditable itemprop=someStringProp 🪢>i am here</span>
         ...
